@@ -4,8 +4,11 @@ case $- in
     *) return;;
 esac
 
-# Path to the bash it configuration
-export BASH_IT="/data/data/com.termux/files/home/.bash_it"
+# Load envs
+set -a
+source "${HOME}/.config/common/env"
+source "${HOME}/.config/${HOSTNAME}/env"
+set +a
 
 # Lock and Load a custom theme file.
 # Leave empty to disable theming.
@@ -81,9 +84,3 @@ export SCM_CHECK=true
 # Load Bash It
 source "$BASH_IT"/bash_it.sh
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# Load envs
-set -a
-source "${HOME}/.config/common/env"
-source "${HOME}/.config/${HOSTNAME}/env"
-set +a
