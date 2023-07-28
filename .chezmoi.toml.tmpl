@@ -1,0 +1,10 @@
+{{ $passphrase := promptStringOnce . "passphrase" "passphrase" -}}
+{{ $hostname := promptStringOnce . "hostname" "hostname" -}}
+
+encryption = "gpg"
+[data]
+    passphrase = {{ $passphrase | quote }}
+    hostname = {{ $hostname | quote }}
+[gpg]
+    symmetric = true
+    args = ["-z", "9", "--batch", "--passphrase", {{ $passphrase | quote }}]
