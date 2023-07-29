@@ -1,1 +1,7 @@
 README.md
+{{- if ne .hostname "phone" }}
+.config/phone
+{{- end }}
+{{- if ne .hostname "hashbang" }}
+.config/hashbang
+{{- end }}
