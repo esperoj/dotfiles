@@ -1,15 +1,14 @@
-# If not running interactively, don't do anything
-case $- in
-  *i*) ;;
-    *) return;;
-esac
-
 # Load envs
 set -a
 source "${HOME}/.config/common/env"
 source "${HOME}/.config/${HOSTNAME}/env"
 set +a
 
+# If not running interactively, don't do anything
+case $- in
+  *i*) ;;
+    *) return;;
+esac
 # Lock and Load a custom theme file.
 # Leave empty to disable theming.
 # location /.bash_it/themes/
