@@ -21,7 +21,7 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 source "${HOME}/.asdf/asdf.sh"
 
 # Add asdf plugins
-plugins=(aria2 chezmoi doppler ffmpeg jq python nodejs sqlite yq)
+plugins=(chezmoi doppler python nodejs)
 for plugin in "${plugins[@]}"; do
   echo Installing plugin "${plugin}"
   asdf plugin add "${plugin}"
