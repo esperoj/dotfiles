@@ -3,6 +3,7 @@ install.sh
 LICENSE
 README.md
 Dockerfile
+.tool-versions
 
 # Pants workspace files
 /.pants.*

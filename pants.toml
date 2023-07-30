@@ -12,7 +12,7 @@ backend_packages = [
 interpreter_constraints = ['CPython>=3.11']
 
 [python-bootstrap]
-search_path = ["<ASDF>"]
+search_path = ["<ASDF_LOCAL>", "<ASDF>", "<PYENV>", "<PATH>"]
 
 [shfmt]
 args = ["--indent 2", "--simplify"]
