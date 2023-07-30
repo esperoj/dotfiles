@@ -15,6 +15,6 @@ pants.toml
 {{- if ne .hostname "phone" }}
 .config/phone/
 {{- end }}
-{{- if ne .hostname "hashbang" }}
-.config/hashbang/
+{{- if ne .hostname "projectsegfault" }}
+.config/projectsegfault/
 {{- end }}
