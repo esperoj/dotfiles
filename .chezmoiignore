@@ -3,6 +3,14 @@ install.sh
 LICENSE
 README.md
 
+# Pants workspace files
+/.pants.*
+/dist/
+/.pids
+
+BUILD
+pants.toml
+
 {{- if ne .hostname "phone" }}
 .config/phone/
 {{- end }}
