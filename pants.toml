@@ -9,7 +9,7 @@ backend_packages = [
 ]
 
 [python]
-interpreter_constraints = ['CPython>=3.7']
+interpreter_constraints = ['CPython>=3.11']
 
 [python-bootstrap]
 search_path = ["<ASDF>"]
