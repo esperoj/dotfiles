@@ -1,1 +1,10 @@
 source "$HOME/.asdf/asdf.sh"
+if [ ! -d "${TMPDIR}/esperoj" ] ; then
+  echo Recreating temporary directories
+  folders=('.cache')
+  for folder in "${folders[@]}" ; do
+    mkdir -p "${TMPDIR}/esperoj/${folder}"
+    rm -rf "${HOME}/${folder}"
+    ln -s "${TMPDIR}/esperoj/${folder}" .
+  done
+fi
