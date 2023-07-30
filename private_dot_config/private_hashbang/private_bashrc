@@ -1,2 +1,1 @@
 . "$HOME/.asdf/asdf.sh"
-unset -f npm
