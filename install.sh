@@ -1,18 +1,24 @@
 #!/bin/bash
+set -Eeuxo pipefail
+GIT_RAW_TEMPLATE=${GIT_RAW_TEMPLATE:-'${base:-https://codeberg.org}/${username:-esperoj}/${repo}/raw/branch/${branch:-main}/${path}'}
 
 # Install Bash-it
-git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
+git clone --depth 1 --filter=blob:none https://github.com/Bash-it/bash-it.git ~/.bash_it
 ~/.bash_it/install.sh --silent
 
 # Install fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+git clone --depth 1 --filter=blob:none https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --no-zsh --no-fish --all
 
 # Setup ssh
-mkdir -p ~/.ssh
-curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >~/.ssh/id_ed25519
-chmod 600 ~/.ssh/id_ed25519
-curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/private_known_hosts" >~/.ssh/known_hosts
+(
+  mkdir -p ~/.ssh && cd "$_"
+  curl -sSfl $(eval "(repo=dotfiles;path=private_dot_ssh/encrypted_private_id_ed25519.asc && printf ${GIT_RAW_TEMPLATE})") \
+    | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d\
+    >id_ed25519
+  chmod 600 id_ed25519
+  curl -sSfl $(eval "(repo=dotfiles;path=private_dot_ssh/private_known_hosts && printf ${GIT_RAW_TEMPLATE})") >known_hosts
+)
 
 # Install asdf
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
