@@ -17,7 +17,7 @@ asdf_install() {
 install_oh_my_zsh() {
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
-export -f asdf_install
+export -f asdf_install install_oh_my_zsh
 if [[ $OS = Android ]]; then
 	apt update -qy
 	apt install -qy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf
