@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Running ${HOME}/.bashrc"
+source "${HOME}/.profile"
+source "${HOME}/.config/${MACHINE_NAME}/bashrc"

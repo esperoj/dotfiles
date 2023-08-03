@@ -1,8 +1,6 @@
-#!/bin/bash
-echo "Running ${HOME}/.bashrc"
+echo "Running ${HOME}/.profile"
 set -a
 MACHINE_NAME={{ .machineName | quote }}
 . "${HOME}/.env"
 . "${HOME}/.config/${MACHINE_NAME}/env"
 set +a
-source "${HOME}/.config/${MACHINE_NAME}/bashrc"
