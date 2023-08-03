@@ -40,3 +40,4 @@ shellcheck' | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
 pkg-install.sh ALL apt-get install -qy --no-install-recommends ffmpeg yt-dlp
 pkg-install.sh INTERACTIVE apt-get install -qy --no-install-recommends vim tmux mosh zsh fzf
 pkg-install.sh INTERACTIVE install_oh_my_zsh
+chezmoi init --apply --force
