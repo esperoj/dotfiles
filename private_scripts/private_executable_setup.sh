@@ -14,7 +14,7 @@ asdf_install() {
 	asdf global $1 latest
 }
 install_oh_my_zsh() {
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 }
 export -f asdf_install install_oh_my_zsh
 if [[ $OS = Android ]]; then
