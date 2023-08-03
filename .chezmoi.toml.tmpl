@@ -2,7 +2,7 @@
 encryption = "gpg"
 [data]
     passphrase = {{ $passphrase }}
-    hostname = {{ env "HOSTNAME" | quote }}
+    machineName = {{ env "MACHINE_NAME" | quote }}
 [gpg]
     symmetric = true
     args = ["-z", "9", "--batch", "--passphrase", {{ $passphrase }}]

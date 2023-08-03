@@ -1,4 +1,8 @@
 #!/bin/bash
-export HOSTNAME={{ .hostname | quote }}
-source "${HOME}/.config/common/bashrc"
-source "${HOME}/.config/${HOSTNAME}/bashrc"
+echo "Running ${HOME}/.bashrc"
+set -a
+MACHINE_NAME={{ .machineName | quote }}
+. "${HOME}/.env"
+. "${HOME}/.config/${MACHINE_NAME}/env"
+set +a
+source "${HOME}/.config/${MACHINE_NAME}/bashrc"

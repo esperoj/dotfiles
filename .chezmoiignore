@@ -4,12 +4,9 @@ LICENSE
 README.md
 Dockerfile
 
-{{- if ne .hostname "phone" }}
+{{- if ne .machineName "phone" }}
 .config/phone/
 {{- end }}
-{{- if ne .hostname "projectsegfault" }}
-.config/projectsegfault/
-{{- end }}
-{{- if ne .hostname "hashbang" }}
-.config/hashbang/
+{{- if ne .machineName "segfault" }}
+.config/segfault/
 {{- end }}
