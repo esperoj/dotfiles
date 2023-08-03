@@ -1,11 +1,10 @@
 #!/bin/bash
-set -xEeuo pipefail
+set -Eeuo pipefail
 cd "${HOME}"
 mkdir -p ${HOME}/{.local/,}bin
 OS=$(uname -o)
 init_chezmoi() {
 	chezmoi init --apply --depth=1 --force --purge https://codeberg.org/esperoj/dotfiles.git
-	chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
 }
 asdf_install() {
 	set -- "$@"
@@ -21,12 +20,14 @@ export -f asdf_install install_oh_my_zsh
 if [[ $OS = Android ]]; then
 	apt update -qy
 	apt install -qy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf
+  install_oh_my_zsh
 	init_chezmoi
+  chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
 	exit
 fi
-
-pkg-install.sh BASE apt-get install -qy --no-install-recommends 7zip curl dirmngr git gnupg jq parallel python3 sqlite3 wget
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
+apt update -qy
+apt-get install -qy --no-install-recommends 7zip curl dirmngr git gnupg jq parallel python3 sqlite3 wget
+git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 . "$HOME/.asdf/asdf.sh"
 echo 'chezmoi' | xargs -I {} bash -c 'pkg-install.sh BASE asdf_install {}'
 init_chezmoi
@@ -40,4 +41,4 @@ shellcheck' | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
 pkg-install.sh ALL apt-get install -qy --no-install-recommends ffmpeg yt-dlp
 pkg-install.sh INTERACTIVE apt-get install -qy --no-install-recommends vim tmux mosh zsh fzf
 pkg-install.sh INTERACTIVE install_oh_my_zsh
-chezmoi init --apply --force
+chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
