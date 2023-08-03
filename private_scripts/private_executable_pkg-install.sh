@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
 export PIPX_HOME=/usr
@@ -41,7 +41,7 @@ dlx()
 	url="$1"
 	asset="$2"
 	dstdir="$3"
-	[[ -z $dstdir ]] && dstdir="/usr/bin"
+	[[ -z $dstdir ]] && dstdir="/.local/bin"
 
 	[[ -z "$url" ]] && { echo >&2 "[${asset}] URL: '$loc'"; return 255; }
 	case $url in
@@ -87,7 +87,7 @@ dlx()
 			&& return 0
 			;;
 		*.xz)
-			curl -SsfL "$url" | tar xfvJ - --transform="flags=r;s|.*/||" --no-anchored  -C /usr/bin --wildcards "$asset" \
+			curl -SsfL "$url" | tar xfvJ - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" \
 			&& chmod 755 "${dstdir}/${asset}" \
 			&& return 0
 			;;
@@ -157,24 +157,24 @@ bin()
 	local src
     src=$(dearch "$1") || exit 0
 
-	dlx "$src" "$2"
+	dlx "$src" "$2" "$3"
 }
 
 TAG="${1^^}"
 shift 1
 
-# Can not use Dockerfile 'ARG SF_PACKAGES=${SF_PACKAGES:-"MINI BASE NET"}'
+# Can not use Dockerfile 'ARG SF_PACKAGES=${SF_PACKAGES:-"BASE"}'
 # because 'make' sets SF_PACKAGES to an _empty_ string and docker thinks
 # an empty string does not warrant ':-"MINI BASE NET"' substititon.
-[[ -z $SF_PACKAGES ]] && SF_PACKAGES="MINI BASE NET"
+[[ -z $PACKAGES ]] && PACKAGES="BASE"
 
-[[ -n $SF_PACKAGES ]] && {
-	SF_PACKAGES="${SF_PACKAGES^^}" # Convert to upper case
+[[ -n $PACKAGES ]] && {
+	PACKAGES="${PACKAGES^^}" # Convert to upper case
 	[[ "$TAG" == *DISABLED* ]] && { echo "Skipping Packages: $TAG [DISABLED]"; exit; }
 	[[ "$TAG" == ALLALL ]] && {
-		[[ "$SF_PACKAGES" != *ALLALL* ]] && { echo "Skipping Packages: ALLALL"; exit; }
+		[[ "$PACKAGES" != *ALLALL* ]] && { echo "Skipping Packages: ALLALL"; exit; }
 	}
-	[[ "$SF_PACKAGES" != *ALL* ]] && [[ "$SF_PACKAGES" != *"$TAG"* ]] && { echo "Skipping Packages: $TAG"; exit; }
+	[[ "$PACKAGES" != *ALL* ]] && [[ "$PACKAGES" != *"$TAG"* ]] && { echo "Skipping Packages: $TAG"; exit; }
 }
 
 [[ "$1" == ghbin ]] && {
