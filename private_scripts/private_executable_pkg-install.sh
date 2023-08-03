@@ -14,27 +14,31 @@ export PIPX_BIN_DIR=/usr/bin
 # str='lsd_.*_%arch:x86_64=SKIP%.deb$'
 # str='lsd_.*_%arch:x86_64=amd64:DEFAULT=SKIP%.deb$'
 # str='lsd_.*_%arch:x86_64=amd64%.deb$ and linux-%arch:x86_64=amd64%.dat'
-dearch()
-{
+dearch() {
 	local str
-    # Convert any '%arch%' to 'x86_64'
+	# Convert any '%arch%' to 'x86_64'
 	str=${1//%arch%/$HOSTTYPE}
 	[[ $str =~ %arch.*% ]] && {
-        # Check if this specific architecture is set to be skipped.
-		[[ $str =~ %arch:[^%]*$HOSTTYPE=SKIP ]] && { echo >&2 "Skipping. Not available for $HOSTTYPE."; return 255; }
-        # Use translation table to convert 'x86_64' to 'amd64'
+		# Check if this specific architecture is set to be skipped.
+		[[ $str =~ %arch:[^%]*$HOSTTYPE=SKIP ]] && {
+			echo >&2 "Skipping. Not available for $HOSTTYPE."
+			return 255
+		}
+		# Use translation table to convert 'x86_64' to 'amd64'
 		str=$(echo "$str" | sed -e "s/%arch:[^%]*$HOSTTYPE=\([^:%]*\)[^%]*%/\1/g")
-        [[ $str =~ %arch.*DEFAULT=SKIP% ]] && { echo >&2 "Skipping. Not available for $HOSTTYPE."; return 255; }
+		[[ $str =~ %arch.*DEFAULT=SKIP% ]] && {
+			echo >&2 "Skipping. Not available for $HOSTTYPE."
+			return 255
+		}
 	}
-    # ..and default is to set to ARCH value
-    str=$(echo "$str" | sed -e "s/%arch:[^%]*%/$HOSTTYPE/g")
+	# ..and default is to set to ARCH value
+	str=$(echo "$str" | sed -e "s/%arch:[^%]*%/$HOSTTYPE/g")
 	echo "$str"
 }
 
 # Download & Extract
 # [URL] [asset] <dstdir>
-dlx()
-{
+dlx() {
 	local url
 	local asset
 	local dstdir
@@ -43,63 +47,66 @@ dlx()
 	dstdir="$3"
 	[[ -z $dstdir ]] && dstdir="/.local/bin"
 
-	[[ -z "$url" ]] && { echo >&2 "[${asset}] URL: '$loc'"; return 255; }
+	[[ -z "$url" ]] && {
+		echo >&2 "[${asset}] URL: '$loc'"
+		return 255
+	}
 	case $url in
-		*.zip)
-			[[ -f /tmp/pkg.zip ]] && rm -f /tmp/pkg.zip
-			curl -SsfL -o /tmp/pkg.zip "$url" || return
-			if [[ -z $asset ]]; then
-				# HERE: Directory
-				unzip /tmp/pkg.zip -d "${dstdir}" || return
-			else
-				# HERE: Single file
-				unzip -o -j /tmp/pkg.zip "$asset" -d "${dstdir}" || return
-				chmod 755 "${dstdir}/$(basename "${asset}")" || return
-			fi
-			rm -f /tmp/pkg.zip \
-			&& return 0
-			;;
-		*.deb)
-			### Need to force-architecture as we install x86_64 only packages on aarch64
-			curl -SsfL -o /tmp/pkg.deb "$url" \
-			&& dpkg -i --force-architecture --ignore-depends=sshfs /tmp/pkg.deb \
-			&& rm -rf /tmp/pkg.deb \
-			&& return 0
-			;;
-		*.tar.gz|*.tgz)
-			curl -SsfL "$url" | tar xfvz - --transform="flags=r;s|.*/||" --no-anchored  -C "${dstdir}" --wildcards "$asset" \
-			&& chmod 755 "${dstdir}/${asset}" \
-			&& return 0
-			;;
-		*.gz)
-			curl -SsfL "$url" | gunzip >"${dstdir}/${asset}" \
-			&& chmod 755 "${dstdir}/${asset}" \
-			&& return 0
-			;;
-		*.tar.bz2)
-			curl -SsfL "$url" | tar xfvj - --transform="flags=r;s|.*/||" --no-anchored  -C "${dstdir}" --wildcards "$asset" \
-			&& chmod 755 "${dstdir}/${asset}" \
-			&& return 0
-			;;
-		*.bz2)
-			curl -SsfL "$url" | bunzip2 >"${dstdir}/${asset}" \
-			&& chmod 755 "${dstdir}/${asset}" \
-			&& return 0
-			;;
-		*.xz)
-			curl -SsfL "$url" | tar xfvJ - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" \
-			&& chmod 755 "${dstdir}/${asset}" \
-			&& return 0
-			;;
-		*)
-			curl -SsfL "$url" >"${dstdir}/${asset}" \
-			&& chmod 755 "${dstdir}/${asset}" \
-			&& return 0
+	*.zip)
+		[[ -f /tmp/pkg.zip ]] && rm -f /tmp/pkg.zip
+		curl -SsfL -o /tmp/pkg.zip "$url" || return
+		if [[ -z $asset ]]; then
+			# HERE: Directory
+			unzip /tmp/pkg.zip -d "${dstdir}" || return
+		else
+			# HERE: Single file
+			unzip -o -j /tmp/pkg.zip "$asset" -d "${dstdir}" || return
+			chmod 755 "${dstdir}/$(basename "${asset}")" || return
+		fi
+		rm -f /tmp/pkg.zip &&
+			return 0
+		;;
+	*.deb)
+		### Need to force-architecture as we install x86_64 only packages on aarch64
+		curl -SsfL -o /tmp/pkg.deb "$url" &&
+			dpkg -i --force-architecture --ignore-depends=sshfs /tmp/pkg.deb &&
+			rm -rf /tmp/pkg.deb &&
+			return 0
+		;;
+	*.tar.gz | *.tgz)
+		curl -SsfL "$url" | tar xfvz - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" &&
+			chmod 755 "${dstdir}/${asset}" &&
+			return 0
+		;;
+	*.gz)
+		curl -SsfL "$url" | gunzip >"${dstdir}/${asset}" &&
+			chmod 755 "${dstdir}/${asset}" &&
+			return 0
+		;;
+	*.tar.bz2)
+		curl -SsfL "$url" | tar xfvj - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" &&
+			chmod 755 "${dstdir}/${asset}" &&
+			return 0
+		;;
+	*.bz2)
+		curl -SsfL "$url" | bunzip2 >"${dstdir}/${asset}" &&
+			chmod 755 "${dstdir}/${asset}" &&
+			return 0
+		;;
+	*.xz)
+		curl -SsfL "$url" | tar xfvJ - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" &&
+			chmod 755 "${dstdir}/${asset}" &&
+			return 0
+		;;
+	*)
+		curl -SsfL "$url" >"${dstdir}/${asset}" &&
+			chmod 755 "${dstdir}/${asset}" &&
+			return 0
+		;;
 	esac
 }
 
-ghlatest()
-{
+ghlatest() {
 	local loc
 	local regex
 	local args
@@ -126,36 +133,33 @@ ghlatest()
 # Install latest Binary from GitHub and smear it into /usr/bin
 # [<user>/<repo>] [<regex-match>] [asset]
 # Examples:
-# ghbin tomnomnom/waybackurls "linux-amd64-" waybackurls 
+# ghbin tomnomnom/waybackurls "linux-amd64-" waybackurls
 # ghbin SagerNet/sing-box "linux-amd64." sing-box
-# ghbin projectdiscovery/httpx "linux_amd64.zip$" httpx 
-# ghbin Peltoche/lsd "lsd_.*_amd64.deb$" 
-ghbin()
-{
+# ghbin projectdiscovery/httpx "linux_amd64.zip$" httpx
+# ghbin Peltoche/lsd "lsd_.*_amd64.deb$"
+ghbin() {
 	local url
 	local asset
-    local src
-    src=$(dearch "$2") || exit 0
+	local src
+	src=$(dearch "$2") || exit 0
 	asset="$3"
 
 	url=$(ghlatest "$1" "$src")
 	dlx "$url" "$asset"
 }
 
-ghdir()
-{
+ghdir() {
 	local url
-    local src
-    src=$(dearch "$2") || exit 0
+	local src
+	src=$(dearch "$2") || exit 0
 
 	url=$(ghlatest "$1" "$src")
 	dlx "$url" "" "$3"
 }
 
-bin()
-{
+bin() {
 	local src
-    src=$(dearch "$1") || exit 0
+	src=$(dearch "$1") || exit 0
 
 	dlx "$src" "$2" "$3"
 }
@@ -170,11 +174,20 @@ shift 1
 
 [[ -n $PACKAGES ]] && {
 	PACKAGES="${PACKAGES^^}" # Convert to upper case
-	[[ "$TAG" == *DISABLED* ]] && { echo "Skipping Packages: $TAG [DISABLED]"; exit; }
-	[[ "$TAG" == ALLALL ]] && {
-		[[ "$PACKAGES" != *ALLALL* ]] && { echo "Skipping Packages: ALLALL"; exit; }
+	[[ "$TAG" == *DISABLED* ]] && {
+		echo "Skipping Packages: $TAG [DISABLED]"
+		exit
 	}
-	[[ "$PACKAGES" != *ALL* ]] && [[ "$PACKAGES" != *"$TAG"* ]] && { echo "Skipping Packages: $TAG"; exit; }
+	[[ "$TAG" == ALLALL ]] && {
+		[[ "$PACKAGES" != *ALLALL* ]] && {
+			echo "Skipping Packages: ALLALL"
+			exit
+		}
+	}
+	[[ "$PACKAGES" != *ALL* ]] && [[ "$PACKAGES" != *"$TAG"* ]] && {
+		echo "Skipping Packages: $TAG"
+		exit
+	}
 }
 
 [[ "$1" == ghbin ]] && {

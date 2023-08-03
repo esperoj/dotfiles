@@ -7,21 +7,21 @@ init_chezmoi() {
 	chezmoi init --apply --depth=1 --force --purge https://codeberg.org/esperoj/dotfiles.git
 	chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
 }
-asdf_install(){
-  set -- "$@"
-  [[ $(command -v ${2-$1}) ]] && echo "The packages $1 is installed" && return
-  asdf plugin add $1 $3
-  asdf install $1 latest
-  asdf global $1 latest
+asdf_install() {
+	set -- "$@"
+	[[ $(command -v ${2-$1}) ]] && echo "The packages $1 is installed" && return
+	asdf plugin add $1 $3
+	asdf install $1 latest
+	asdf global $1 latest
 }
-install_oh_my_zsh(){
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+install_oh_my_zsh() {
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 export -f asdf_install
 if [[ $OS = Android ]]; then
 	apt update -qy
 	apt install -qy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf
-  init_chezmoi
+	init_chezmoi
 	exit
 fi
 
