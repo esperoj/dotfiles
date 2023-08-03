@@ -1,4 +1,4 @@
-{{ $passphrase := promptStringOnce . "passphrase" "passphrase" -}}
+{{- $passphrase := env "$ENCRYPTION_PASSPHRASE" -}}
 {{ $hostname := promptStringOnce . "hostname" "hostname" -}}
 
 encryption = "gpg"
