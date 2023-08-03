@@ -4,4 +4,4 @@ MACHINE_NAME={{ .machineName | quote }}
 . "${HOME}/.env"
 . "${HOME}/.config/${MACHINE_NAME}/env"
 set +a
-. "$HOME/.asdf/asdf.sh"
+[[ $(uname -o) = Linux ]] && . "$HOME/.asdf/asdf.sh"
