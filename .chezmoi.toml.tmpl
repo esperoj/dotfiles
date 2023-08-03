@@ -1,10 +1,8 @@
-{{- $passphrase := env "$ENCRYPTION_PASSPHRASE" -}}
-{{ $hostname := promptStringOnce . "hostname" "hostname" -}}
-
+{{- $passphrase := env "ENCRYPTION_PASSPHRASE" | quote -}}
 encryption = "gpg"
 [data]
-    passphrase = {{ $passphrase | quote }}
-    hostname = {{ $hostname | quote }}
+    passphrase = {{ $passphrase }}
+    hostname = {{ env "HOSTNAME" | quote }}
 [gpg]
     symmetric = true
-    args = ["-z", "9", "--batch", "--passphrase", {{ $passphrase | quote }}]
+    args = ["-z", "9", "--batch", "--passphrase", {{ $passphrase }}]

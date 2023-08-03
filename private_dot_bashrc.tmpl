@@ -1,4 +1,4 @@
 #!/bin/bash
-export HOSTNAME="{{- .hostname }}"
+export HOSTNAME={{ .hostname | quote }}
 source "${HOME}/.config/common/bashrc"
 source "${HOME}/.config/${HOSTNAME}/bashrc"
