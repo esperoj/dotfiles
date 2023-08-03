@@ -99,3 +99,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+echo "Running ${HOME}/.zshrc"
+source "${HOME}/.profile"
+source "${HOME}/.config/${MACHINE_NAME}/bashrc"

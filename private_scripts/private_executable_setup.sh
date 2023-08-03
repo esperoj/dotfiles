@@ -20,7 +20,7 @@ install_oh_my_zsh(){
 export -f asdf_install
 if [[ $OS = Android ]]; then
 	apt update -qy
-	apt install -qy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg
+	apt install -qy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf
   init_chezmoi
 	exit
 fi
@@ -37,6 +37,6 @@ restic' | xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}'
 echo 'nodejs node
 shfmt
 shellcheck' | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
-pkg-install.sh INTERACTIVE apt-get install -qy --no-install-recommends vim tmux mosh zsh
+pkg-install.sh INTERACTIVE apt-get install -qy --no-install-recommends vim tmux mosh zsh fzf
 pkg-install.sh INTERACTIVE install_oh_my_zsh
 pkg-install.sh ALL apt-get install -qy --no-install-recommends ffmpeg yt-dlp
