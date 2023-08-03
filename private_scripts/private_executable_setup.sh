@@ -42,3 +42,4 @@ pkg-install.sh ALL apt-get install -qy --no-install-recommends ffmpeg yt-dlp
 pkg-install.sh INTERACTIVE apt-get install -qy --no-install-recommends vim tmux mosh zsh fzf
 pkg-install.sh INTERACTIVE install_oh_my_zsh
 chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
+ln -s $(command -v 7zz) "${HOME}/.local/bin/7z"
