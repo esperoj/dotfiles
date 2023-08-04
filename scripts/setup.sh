@@ -46,7 +46,7 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		apt-get install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr openssh-client
+		apt-get install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr openssh-client ca-certificates
 		# Install asdf
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		. "$HOME/.asdf/asdf.sh"
