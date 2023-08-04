@@ -42,7 +42,7 @@ if [[ $(uname -o) = *Linux* ]]; then
 	git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
   . "$HOME/.asdf/asdf.sh"
   # Install chezmoi
-	echo 'chezmoi' | xargs -I {} bash -c 'pkg-install.sh BASE asdf_install {}'
+	asdf_install chezmoi
   # If the src is not a local path, then clone it and then change src to a local path
   [[ ! -d ${src} ]] && git clone --depth=1 --quiet ${src} .local/share/chezmoi  && src="${HOME}/.local/share/chezmoi"
   chezmoi init --apply ${src@Q}
