@@ -15,13 +15,13 @@ asdf_install() {
 install_oh_my_zsh() {
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 }
-export -f asdf_install install_oh_my_zsh
-
-# Setup ssh
+setup_ssh(){
 mkdir -p ~/.ssh
 curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >~/.ssh/id_ed25519
 chmod 600 ~/.ssh/id_ed25519
 curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/private_known_hosts" >~/.ssh/known_hosts
+}
+export -f asdf_install install_oh_my_zsh
 
 #Install packages on android
 if [[ $(uname -o) = Android ]]; then
@@ -36,7 +36,7 @@ if [[ $(uname -o) = *Linux* ]]; then
 	# Install packages
 	apt-get update -qqy
 	apt-get install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr
-
+  setup_ssh
 	# Install chezmoi and init the environment
   # Install asdf
 	git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
