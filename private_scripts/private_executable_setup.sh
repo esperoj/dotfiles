@@ -18,8 +18,8 @@ install_oh_my_zsh() {
 export -f asdf_install install_oh_my_zsh
 
 if [[ $(uname -o) = Android ]]; then
-	apt update -qqy
-	apt install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh-client
+	apt-get update -qqy
+	apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh-client
 	install_oh_my_zsh
 	chezmoi init --apply --depth=1 --force --purge https://codeberg.org/esperoj/dotfiles.git
 	chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
@@ -28,13 +28,15 @@ fi
 if [[ $(uname -o) = *Linux* ]]; then
 	# Install packages
 	apt update -qqy
-	apt install -qqy --no-install-recommends 7zip curl dirmngr git gnupg jq parallel python3 sqlite3 wget unzip bzip2 openssh-client
+	apt install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr
 
 	# Install chezmoi and init the environment
 	sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
-	$HOME/.local/bin/chezmoi init --one-shot https://codeberg.org/esperoj/dotfiles.git
-	git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
+  git clone --depth=1 --quiet https://codeberg.org/esperoj/dotfiles.git
+	$HOME/.local/bin/chezmoi init --one-shot dotfiles 
 	source .profile
+	git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
+	pkg-install.sh BASE apt install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 openssh-client
 	echo 'chezmoi' | xargs -I {} bash -c 'pkg-install.sh BASE asdf_install {}'
 	echo 'aria2 aria2c
 rclone
