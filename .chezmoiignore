@@ -9,3 +9,6 @@ Dockerfile
 {{- if ne .machineName "segfault" }}
 .config/segfault/
 {{- end }}
+{{- if ne .machineName "ci" }}
+.config/ci/
+{{- end }}
