@@ -1,4 +1,5 @@
 .github/
+scripts/
 LICENSE
 README.md
 Dockerfile
