@@ -1,5 +1,5 @@
 #!/bin/bash
-set -Eeuo pipefail
+set -xEeuo pipefail
 
 cd "${HOME}"
 mkdir -p ${HOME}/{.local/,}bin
