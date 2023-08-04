@@ -22,8 +22,7 @@ jobs:
         name: Install
         env:
           ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-        run: | export PATH="$(pwd)/scripts:$PATH" \
-          &&  setup.sh clone "" dotfiles
+            run: export PATH="$(pwd)/scripts:$PATH" && setup.sh clone "" dotfiles
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
