@@ -5,4 +5,4 @@ encryption = "gpg"
     machineName = {{ env "MACHINE_NAME" | quote }}
 [gpg]
     symmetric = true
-    args = ["-z", "9", "--batch", "--passphrase", {{ $passphrase }}]
+    args = ["--quiet", "-z", "9", "--batch", "--passphrase", {{ $passphrase }}]
