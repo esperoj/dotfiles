@@ -1,5 +1,5 @@
 #!/bin/bash
-set -Exeo pipefail
+set -Eeo pipefail
 src=${1:-'git@codeberg.org:esperoj/dotfiles.git'}
 cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
