@@ -28,15 +28,12 @@ fi
 # Install chezmoi and init the environment
 sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
 chezmoi init --one-shot https://codeberg.org/esperoj/dotfiles.git
+git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 source .profile
 
 # Install packages
 apt update -qy
 pkg-install.sh BASE apt-get install -qy --no-install-recommends 7zip curl dirmngr git gnupg jq parallel python3 sqlite3 wget
-
-git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
-. "$HOME/.asdf/asdf.sh"
-
 echo 'chezmoi' | xargs -I {} bash -c 'pkg-install.sh BASE asdf_install {}'
 echo 'aria2 aria2c
 rclone
