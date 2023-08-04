@@ -35,7 +35,7 @@ fi
 if [[ $(uname -o) = *Linux* ]]; then
 	# Install packages
 	apt-get update -qqy
-	apt-get install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr
+	apt-get install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr openssh-client
   setup_ssh
 	# Install chezmoi and init the environment
   # Install asdf
@@ -45,9 +45,9 @@ if [[ $(uname -o) = *Linux* ]]; then
 	asdf_install chezmoi
   # If the src is not a local path, then clone it and then change src to a local path
   [[ ! -d ${src} ]] && git clone --depth=1 --quiet ${src} .local/share/chezmoi  && src="${HOME}/.local/share/chezmoi"
-  chezmoi init --apply ${src@Q}
+  chezmoi init --apply "${src}"
 	source .profile
-	pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 openssh-client
+	pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 
 	echo 'aria2 aria2c
 rclone
 restic' | xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}'
