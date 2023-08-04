@@ -19,7 +19,7 @@ export -f asdf_install install_oh_my_zsh
 
 if [[ $(uname -o) = Android ]]; then
 	apt update -qy
-	apt install -qy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf
+	apt install -qy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh
 	install_oh_my_zsh
 	chezmoi init --apply --depth=1 --force --purge https://codeberg.org/esperoj/dotfiles.git
 	chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
