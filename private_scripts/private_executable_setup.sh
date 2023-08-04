@@ -27,16 +27,16 @@ fi
 
 if [[ $(uname -o) = *Linux* ]]; then
 	# Install packages
-	apt update -qqy
-	apt install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr
+	apt-get update -qqy
+	apt-get install -qqy --no-install-recommends curl gnupg git unzip bzip2 wget dirmngr
 
 	# Install chezmoi and init the environment
 	sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
-  git clone --depth=1 --quiet https://codeberg.org/esperoj/dotfiles.git
-	$HOME/.local/bin/chezmoi init --one-shot dotfiles 
+  git clone --depth=1 --quiet https://codeberg.org/esperoj/dotfiles.git ~/dotfiles
+	$HOME/.local/bin/chezmoi init --one-shot ~/dotfiles
 	source .profile
 	git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
-	pkg-install.sh BASE apt install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 openssh-client
+	pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 openssh-client
 	echo 'chezmoi' | xargs -I {} bash -c 'pkg-install.sh BASE asdf_install {}'
 	echo 'aria2 aria2c
 rclone
