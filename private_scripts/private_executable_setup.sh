@@ -50,6 +50,7 @@ shellcheck' | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
 
 	# Reinit with ssh
 	chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
+  rm -rf dotfiles
 fi
 
 ln -s $(command -v 7zz) "${HOME}/.local/bin/7z"
