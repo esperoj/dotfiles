@@ -1,5 +1,4 @@
 .github/
-setup.sh
 LICENSE
 README.md
 Dockerfile

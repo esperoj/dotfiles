@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 cd "${HOME}"
 mkdir -p ${HOME}/{.local/,}bin
+mkdir -p "${HOME}/.ssh/sockets"
 
 asdf_install() {
 	set -- "$@"
@@ -25,16 +26,15 @@ if [[ $(uname -o) = Android ]]; then
 fi
 
 if [[ $(uname -o) = *Linux* ]]; then
+	# Install packages
+	apt update -qy
+	apt-get install -qy --no-install-recommends 7zip curl dirmngr git gnupg jq parallel python3 sqlite3 wget unzip bzip2
 
 	# Install chezmoi and init the environment
 	sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
-	chezmoi init --one-shot https://codeberg.org/esperoj/dotfiles.git
+	$HOME/.local/bin/chezmoi init --one-shot https://codeberg.org/esperoj/dotfiles.git
 	git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 	source .profile
-
-	# Install packages
-	apt update -qy
-	pkg-install.sh BASE apt-get install -qy --no-install-recommends 7zip curl dirmngr git gnupg jq parallel python3 sqlite3 wget
 	echo 'chezmoi' | xargs -I {} bash -c 'pkg-install.sh BASE asdf_install {}'
 	echo 'aria2 aria2c
 rclone
@@ -51,4 +51,3 @@ shellcheck' | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
 fi
 
 ln -s $(command -v 7zz) "${HOME}/.local/bin/7z"
-mkdir -p "${HOME}/.ssh/sockets"
