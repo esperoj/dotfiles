@@ -1,6 +1,5 @@
 #!/bin/bash
 set -Eeo pipefail
-cd "${HOME}"
 
 asdf_install() {
 	set -- "$@"
@@ -23,7 +22,7 @@ setup_ssh() {
 clone() {
 	local src dest
 	src=${1:-'git@codeberg.org:esperoj/dotfiles.git'}
-	dest=${2:-'.local/share/chezmoi'}
+	dest=${2:-"${HOME}.local/share/chezmoi"}
 	setup_ssh
 	git clone --depth=1 --quiet ${src} ${dest}
 }
@@ -32,6 +31,7 @@ export -f asdf_install install_oh_my_zsh
 
 #Install packages on android
 install() {
+	cd "${HOME}"
 	mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 	if [[ $(uname -o) = Android ]]; then
 		apt-get update -qqy
@@ -58,18 +58,18 @@ install() {
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh zsh fzf
 		pkg-install.sh INTERACTIVE install_oh_my_zsh
-  }
+		ln -s $(chezmoi source-path)/scripts .
+		ln -s $(command -v 7zz) ".local/bin/7z"
+	}
 }
 
 [[ "$1" == clone ]] && {
 	shift 1
 	clone "$@"
-	#ln -s $(chezmoi source-path)/scripts .
 	exit
 }
 [[ "$1" == install ]] && {
 	shift 1
 	install "$@"
-	#ln -s $(command -v 7zz) ".local/bin/7z"
 	exit
 }
