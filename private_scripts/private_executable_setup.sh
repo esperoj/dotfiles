@@ -34,8 +34,8 @@ if [[ $(uname -o) = *Linux* ]]; then
 	sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
   git clone --depth=1 --quiet https://codeberg.org/esperoj/dotfiles.git ~/dotfiles
 	$HOME/.local/bin/chezmoi init --one-shot ~/dotfiles
-	source .profile
 	git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
+	source .profile
 	pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 openssh-client
 	echo 'chezmoi' | xargs -I {} bash -c 'pkg-install.sh BASE asdf_install {}'
 	echo 'aria2 aria2c
