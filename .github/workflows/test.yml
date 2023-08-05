@@ -28,6 +28,7 @@ jobs:
         run: |
           export PATH="$(pwd)/scripts:$PATH"
           source setup.sh setup_ssh
+          echo "$SSH_AUTH_SOCK"
           echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> "$GITHUB_ENV"
           echo "SSH_AGENT_PID=${SSH_AGENT_PID}" >> "$GITHUB_ENV"
       -
@@ -38,6 +39,8 @@ jobs:
       -
         name: Build
         uses: docker/build-push-action@v4
+        env:
+          SSH_AUTH_SOCK: "${{ env.SSH_AUTH_SOCK }}"
         with:
           context: .
           pull: false
