@@ -1,8 +1,8 @@
 #!/bin/bash
 set -Eeuxo pipefail
+chezmoi update
 lsb_release -a
 uname -a
-chezmoi status
 rclone listremotes
 restic stats
 python --version
