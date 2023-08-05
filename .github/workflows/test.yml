@@ -46,6 +46,7 @@ jobs:
           load: true
           no-cache: false
           platforms: linux/amd64
+          ssh: "default=$SSH_AUTH_SOCK"
       -
         name: Test
         run: |
