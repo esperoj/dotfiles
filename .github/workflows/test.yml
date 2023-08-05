@@ -28,6 +28,8 @@ jobs:
         run: |
           export PATH="$(pwd)/scripts:$PATH"
           source setup.sh setup_ssh
+          eval $(ssh-agent)
+          ssh-add "${HOME}/.ssh/id_ed25519"
           echo "$SSH_AUTH_SOCK"
           echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> "$GITHUB_ENV"
           echo "SSH_AGENT_PID=${SSH_AGENT_PID}" >> "$GITHUB_ENV"
