@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
-export PIPX_HOME=/usr
-export PIPX_BIN_DIR=/usr/bin
+# export PIPX_HOME=/usr
+# export PIPX_BIN_DIR=/usr/bin
 
 [[ -n $BESTEFFORT ]] && force_exit_code=0
 
