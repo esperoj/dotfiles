@@ -1,6 +1,6 @@
 #!/bin/bash
 set -Eeuxo pipefail
-chezmoi update
+chezmoi status
 lsb_release -a
 uname -a
 rclone listremotes
