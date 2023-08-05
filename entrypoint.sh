@@ -1,5 +1,6 @@
 #!/bin/bash
-. "${HOME}/.asdf/asdf.sh"
+bash -c ". ${HOME}/.asdf/asdf.sh
 chezmoi init --apply --force
-source "${HOME}/.profile"
-"$@"
+source ${HOME}/.profile
+${@}
+"
