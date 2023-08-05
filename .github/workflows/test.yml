@@ -36,5 +36,5 @@ jobs:
           context: .
           push: false
           tags: dotfiles:latest
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
