@@ -57,6 +57,7 @@ install() {
 	}
 	ln -s $(chezmoi source-path)/scripts .
 	ln -s $(command -v 7zz) ".local/bin/7z"
+	ln -s $(command -v python3) ".local/bin/python"
 	mkdir -p "${HOME}/.ssh/sockets"
 }
 
