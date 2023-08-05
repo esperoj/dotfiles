@@ -53,9 +53,10 @@ jobs:
           ssh: "default=${{ env.SSH_AUTH_SOCK }}"
       -
         name: Test
+        env:
+          ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         run: |
-          docker image inspect segfault:latest
-          docker run --rm segfault:latest ls -al /root
+          docker run --env ENCRYPTION_PASSPHRASE --rm segfault:latest rclone listremotes
 #      -
 #        name: Build and push
 #        uses: docker/build-push-action@v4
