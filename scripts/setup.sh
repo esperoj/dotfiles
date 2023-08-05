@@ -12,11 +12,14 @@ install_oh_my_zsh() {
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 }
 setup_ssh() {
-	mkdir -p ~/.ssh
-	curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >~/.ssh/id_ed25519
-	chmod 600 ~/.ssh/id_ed25519
-	curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/private_known_hosts" >~/.ssh/known_hosts
 	mkdir -p "${HOME}/.ssh/sockets"
+  eval $(ssh-agent)
+#	curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >~/.ssh/id_ed25519
+  cat "private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >"${HOME}/.ssh/id_ed25519"
+	chmod 600 "${HOME}/.ssh/id_ed25519"
+  ssh-add "${HOME}/.ssh/id_ed25519"
+#	curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/private_known_hosts" >~/.ssh/known_hosts
+  cp "private_dot_ssh/private_known_hosts" "${HOME}/.ssh/known_hosts"
 }
 
 clone() {
@@ -46,13 +49,13 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		apt-get install -qqy --no-install-recommends curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates
+		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates
 		# Install asdf
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		. "$HOME/.asdf/asdf.sh"
 		# Install chezmoi
 		asdf_install chezmoi
-		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3
+    chezmoi init --ssh 'git@codeberg.org:esperoj/dotfiles.git'
 		echo 'aria2 aria2c,rclone,restic' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}'
 		echo 'nodejs node,shfmt,shellcheck' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh zsh fzf
@@ -73,5 +76,10 @@ install() {
 [[ "$1" == install ]] && {
 	shift 1
 	install "$@"
+	exit
+}
+[[ "$1" == setup_ssh ]] && {
+	shift 1
+	setup_ssh "$@"
 	exit
 }

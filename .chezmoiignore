@@ -3,6 +3,7 @@ scripts/
 LICENSE
 README.md
 Dockerfile
+entrypoint.sh
 
 {{- if ne .machineName "phone" }}
 .config/phone/

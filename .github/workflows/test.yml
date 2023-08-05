@@ -22,22 +22,41 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
-        name: Clone
+        name: Setup ssh
         env:
           ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-        run: export PATH="$(pwd)/scripts:$PATH" && setup.sh clone "" ./dotfiles
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        run: export PATH="$(pwd)/scripts:$PATH" && setup.sh setup_ssh
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
       -
         name: Build
         uses: docker/build-push-action@v4
         with:
           context: .
+          pull: false
           push: false
-          tags: dotfiles:latest
+          tags: segfault:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: PACKAGES=ALL
+          file: {context}/Dockerfile
+          load: true
+          no-cache: false
+          platforms: linux/amd64,linux/arm64
+          ssh: default=$SSH_AUTH_SOCK
+      -
+        name: Test
+        run: |
+          docker image inspect segfault:latest
+          docker run --rm segfault:latest ls -al /root
+#      -
+#        name: Build and push
+#        uses: docker/build-push-action@v4
+#        with:
+#          context: .
+#          platforms: linux/amd64,linux/arm64
+#          push: true
+#          tags: ${{ env.LATEST_TAG }}
