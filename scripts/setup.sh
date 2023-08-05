@@ -10,7 +10,7 @@ asdf_install() {
 }
 
 install_oh_my_zsh() {
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes # --keep-zshrc
 }
 
 setup_ssh() {
