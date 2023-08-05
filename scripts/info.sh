@@ -11,5 +11,3 @@ ssh segfault "uname -a; lsb_release -a"
 ssh envs "uname -a; lsb_release -a"
 ssh serv00 "uname -a"
 ssh ct8 "uname -a"
-ssh git@codeberg.org
-ssh git@github.com
