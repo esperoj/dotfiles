@@ -25,7 +25,9 @@ jobs:
         name: Setup ssh
         env:
           ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-        run: export PATH="$(pwd)/scripts:$PATH" && setup.sh setup_ssh
+        run: |
+          export PATH="$(pwd)/scripts:$PATH" && setup.sh setup_ssh
+          echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> "$GITHUB_ENV"
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
