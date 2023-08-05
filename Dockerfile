@@ -1,7 +1,7 @@
 FROM kalilinux/kali-rolling
 ARG PACKAGES="ALL"
 ARG MACHINE_NAME="ci"
-ENV PATH="${HOME}/.local/bin:${PATH}"
+ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /root
 COPY private_dot_ssh/private_known_hosts .ssh/known_hosts
 COPY scripts/setup.sh scripts/pkg-install.sh .local/bin/
