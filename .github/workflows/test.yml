@@ -46,7 +46,7 @@ jobs:
           load: true
           no-cache: false
           platforms: linux/amd64,linux/arm64
-          ssh: default=$SSH_AUTH_SOCK
+         # ssh: default=$SSH_AUTH_SOCK
       -
         name: Test
         run: |
@@ -60,3 +60,4 @@ jobs:
 #          platforms: linux/amd64,linux/arm64
 #          push: true
 #          tags: ${{ env.LATEST_TAG }}
+
