@@ -34,7 +34,7 @@ install() {
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
 	}
 	install_calibre() {
-		pkg-install.sh ALL apt-get install -qqy --no-install-recommends && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
+		pkg-install.sh ALL wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
 	install_oh_my_zsh() {
 		pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
