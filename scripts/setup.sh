@@ -59,7 +59,7 @@ install() {
 		pkg-install.sh INTERACTIVE install_oh_my_zsh
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
     # Install Calibre
-		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local"
+		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin" 
 		ln -s $(chezmoi source-path)/scripts .
 		ln -s $(command -v 7zz) ".local/bin/7z"
 	}
