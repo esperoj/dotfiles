@@ -53,7 +53,7 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		pkg-install.sh BASE apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo python3
+		pkg-install.sh BASE apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo python3 apt-utils
 		# Need for calibre
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0
 		# Need to install oh my zsh
@@ -67,6 +67,7 @@ install() {
 	}
 
 	# Post install
+	. "$HOME/.asdf/asdf.sh"
 	ln -s $(chezmoi source-path)/scripts .
 	ln -s $(command -v 7zz) ".local/bin/7z"
 	ln -s $(command -v python3) ".local/bin/python"
