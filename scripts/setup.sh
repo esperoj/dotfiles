@@ -55,9 +55,11 @@ install() {
 		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3
 		echo 'aria2 aria2c,rclone,restic' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}'
 		echo 'nodejs node,shfmt,shellcheck' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
-		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh zsh fzf
 		pkg-install.sh INTERACTIVE install_oh_my_zsh
+		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
+    # Install Calibre
+		pkg-install.sh ALL wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local"
 		ln -s $(chezmoi source-path)/scripts .
 		ln -s $(command -v 7zz) ".local/bin/7z"
 	}
