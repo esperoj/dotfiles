@@ -23,7 +23,6 @@ install() {
 	}
 	# Need asdf to install
 	install_with_asdf() {
-		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		asdf_install chezmoi
 		echo 'aria2 aria2c,rclone,restic' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}'
 		echo 'nodejs node,shfmt,shellcheck' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
@@ -59,6 +58,8 @@ install() {
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0
 		# Need to install oh my zsh
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends zsh
+		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
+		. "$HOME/.asdf/asdf.sh"
 		echo 'install_with_asdf
     install_with_apt_get
     install_calibre
@@ -66,7 +67,6 @@ install() {
 	}
 
 	# Post install
-	. "$HOME/.asdf/asdf.sh"
 	ln -s $(chezmoi source-path)/scripts .
 	ln -s $(command -v 7zz) ".local/bin/7z"
 	ln -s $(command -v python3) ".local/bin/python"
