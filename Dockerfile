@@ -1,6 +1,6 @@
 FROM kalilinux/kali-rolling
 ARG PACKAGES="ALL"
-ARG MACHINE_NAME="ci"
+ENV MACHINE_NAME="ci"
 ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /root
 COPY private_dot_ssh/private_known_hosts .ssh/known_hosts

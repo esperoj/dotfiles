@@ -57,6 +57,7 @@ install() {
 	}
 	ln -s $(chezmoi source-path)/scripts .
 	ln -s $(command -v 7zz) ".local/bin/7z"
+	mkdir -p "${HOME}/.ssh/sockets"
 }
 
 [[ "$1" == install ]] && {
