@@ -64,6 +64,7 @@ install() {
 	install "$@"
 	return
 }
+
 [[ "$1" == setup_ssh ]] && {
 	shift 1
 	setup_ssh "$@"
