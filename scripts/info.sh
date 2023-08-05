@@ -4,7 +4,7 @@ chezmoi status
 lsb_release -a
 uname -a
 rclone listremotes
-restic stats
+restic check
 python --version
 node --version
 ssh segfault "uname -a; lsb_release -a"
