@@ -19,10 +19,10 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
-        name: Install
+        name: Clone
         env:
           ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-        run: export PATH="$(pwd)/scripts:$PATH" && setup.sh clone "" "$(pwd)/dotfiles"
+        run: export PATH="$(pwd)/scripts:$PATH" && setup.sh clone "" ./dotfiles
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
