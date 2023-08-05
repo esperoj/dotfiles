@@ -55,6 +55,8 @@ install() {
 		# Install Calibre
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0 xdg-utils && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
+  
+  # Post install
 	ln -s $(chezmoi source-path)/scripts .
 	ln -s $(command -v 7zz) ".local/bin/7z"
 	ln -s $(command -v python3) ".local/bin/python"
