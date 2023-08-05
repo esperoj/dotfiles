@@ -43,8 +43,8 @@ jobs:
           pull: false
           push: false
           tags: segfault:latest
-            #cache-from: type=gha
-            #cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: PACKAGES=ALL
           file: Dockerfile
           load: true

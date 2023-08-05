@@ -14,20 +14,10 @@ install_oh_my_zsh() {
 setup_ssh() {
 	mkdir -p "${HOME}/.ssh/sockets"
 	eval $(ssh-agent)
-	#	curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >~/.ssh/id_ed25519
 	cat "private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >"${HOME}/.ssh/id_ed25519"
 	chmod 600 "${HOME}/.ssh/id_ed25519"
 	ssh-add "${HOME}/.ssh/id_ed25519"
-	#	curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/private_known_hosts" >~/.ssh/known_hosts
 	cp "private_dot_ssh/private_known_hosts" "${HOME}/.ssh/known_hosts"
-}
-
-clone() {
-	local src dest
-	src=${1:-'git@codeberg.org:esperoj/dotfiles.git'}
-	dest=${2:-"${HOME}.local/share/chezmoi"}
-	setup_ssh
-	git clone --depth=1 --quiet ${src} ${dest}
 }
 
 export -f asdf_install install_oh_my_zsh
@@ -40,8 +30,7 @@ install() {
 		apt-get update -qqy
 		apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh-client
 		install_oh_my_zsh
-		chezmoi init --apply --depth=1 --force --purge https://codeberg.org/esperoj/dotfiles.git
-		chezmoi init --apply --ssh git@codeberg.org:esperoj/dotfiles.git
+		chezmoi init --ssh 'git@codeberg.org:esperoj/dotfiles.git'
 		termux-setup-storage
 		termux-change-repo
 	fi
@@ -63,16 +52,11 @@ install() {
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
 		# Install Calibre
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0 xdg-utils && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
+	}
 		ln -s $(chezmoi source-path)/scripts .
 		ln -s $(command -v 7zz) ".local/bin/7z"
-	}
 }
 
-[[ "$1" == clone ]] && {
-	shift 1
-	clone "$@"
-	return
-}
 [[ "$1" == install ]] && {
 	shift 1
 	install "$@"
