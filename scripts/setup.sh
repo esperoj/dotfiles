@@ -52,7 +52,7 @@ install() {
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh zsh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		pkg-install.sh INTERACTIVE install_oh_my_zsh
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
-    # Install Calibre
+		# Install Calibre
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0 xdg-utils && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
 	ln -s $(chezmoi source-path)/scripts .
