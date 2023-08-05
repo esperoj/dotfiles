@@ -40,7 +40,7 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates
+		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip jq parallel python3 sqlite3 curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates lsb-release sudo pip tree
 		# Install asdf
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		. "$HOME/.asdf/asdf.sh"
@@ -49,10 +49,10 @@ install() {
 		chezmoi init --ssh 'git@codeberg.org:esperoj/dotfiles.git'
 		echo 'aria2 aria2c,rclone,restic' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}'
 		echo 'nodejs node,shfmt,shellcheck' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
-		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh zsh fzf
+		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh zsh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		pkg-install.sh INTERACTIVE install_oh_my_zsh
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
-		# Install Calibre
+    # Install Calibre
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0 xdg-utils && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
 	ln -s $(chezmoi source-path)/scripts .
