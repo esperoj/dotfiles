@@ -30,7 +30,7 @@ install() {
 	}
 	# need apt to install
 	install_with_apt_get() {
-		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip python3 sqlite3 lsb-release pip tree
+		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip sqlite3 lsb-release pip tree
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
 	}
@@ -54,7 +54,7 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		pkg-install.sh BASE apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo
+		pkg-install.sh BASE apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo python3
 		# Need for calibre
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0
 		# Need to install oh my zsh
