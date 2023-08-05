@@ -8,9 +8,11 @@ asdf_install() {
 	asdf install $1 latest
 	asdf global $1 latest
 }
+
 install_oh_my_zsh() {
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 }
+
 setup_ssh() {
 	mkdir -p "${HOME}/.ssh/sockets"
 	eval $(ssh-agent)
@@ -53,8 +55,8 @@ install() {
 		# Install Calibre
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0 xdg-utils && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
-		ln -s $(chezmoi source-path)/scripts .
-		ln -s $(command -v 7zz) ".local/bin/7z"
+	ln -s $(chezmoi source-path)/scripts .
+	ln -s $(command -v 7zz) ".local/bin/7z"
 }
 
 [[ "$1" == install ]] && {
