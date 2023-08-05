@@ -42,7 +42,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: PACKAGES=ALL
-          file: {context}/Dockerfile
+          file: "{context}/Dockerfile"
           load: true
           no-cache: false
           platforms: linux/amd64
