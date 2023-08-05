@@ -56,7 +56,7 @@ jobs:
         env:
           ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         run: |
-          docker run --env ENCRYPTION_PASSPHRASE --rm segfault:latest rclone listremotes
+          docker run --env ENCRYPTION_PASSPHRASE --rm segfault:latest info.sh
 #      -
 #        name: Build and push
 #        uses: docker/build-push-action@v4
