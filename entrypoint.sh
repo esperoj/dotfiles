@@ -1,4 +1,4 @@
 #!/bin/bash
-chezmoi init --apply
+chezmoi update
 source "${HOME}/.profile"
 $@
