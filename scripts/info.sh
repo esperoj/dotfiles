@@ -1,8 +1,10 @@
 #!/bin/bash
 set -Eeuxo pipefail
+cd ${HOME@Q}
 chezmoi status
 lsb_release -a
 uname -a
+cat .tool-versions
 rclone listremotes
 restic check
 python --version
