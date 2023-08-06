@@ -49,8 +49,8 @@ jobs:
           pull: false
           push: false
           tags: segfault:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=esperoj/personal:latest
+          cache-to: type=inline
           build-args: PACKAGES="BASE NET DEV BIG"
           file: Dockerfile
           load: true
@@ -75,7 +75,7 @@ jobs:
           file: Dockerfile
           load: false
           no-cache: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           ssh: "default=${{ env.SSH_AUTH_SOCK }}"
       -
         name: Send notification
