@@ -63,7 +63,7 @@ jobs:
           NTFY_URL: ${{ secrets.NTFY_URL }}
         if: ${{ always() }}
         run: |
-          ./scripts/notify.sh \
+          ./scripts/notify.sh "" \
           "Title: Workflow ${{ github.workflow }} of the repo ${{ github.repository }} has completed" \
           "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 #      -
