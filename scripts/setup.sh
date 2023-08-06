@@ -33,7 +33,7 @@ install() {
 		echo 'nodejs node,shfmt,shellcheck' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
 	}
 	# need apt to install
-	install_with_apt_get() {
+	install_with_apt() {
 		apt_install BASE 7zip sqlite3 lsb-release pip tree python3
 		apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		apt_install BIG ffmpeg yt-dlp
@@ -45,7 +45,7 @@ install() {
 		pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
 	}
 
-	export -f asdf_install install_with_asdf install_with_apt_get install_calibre install_oh_my_zsh apt_install
+	export -f asdf_install install_with_asdf install_with_apt install_calibre install_oh_my_zsh apt_install
 	if [[ $(uname -o) = Android ]]; then
 		apt-get update -qqy
 		apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh-client
