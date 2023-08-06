@@ -65,11 +65,12 @@ install() {
 		apt_install INTERACTIVE zsh
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		. "$HOME/.asdf/asdf.sh"
-		parallel -j0 {} <<< \
-			'install_with_asdf
-    install_with_apt
-    install_calibre
-    install_oh_my_zsh'
+		parallel -j0 {} <<<'
+		  install_with_asdf
+      install_with_apt
+      install_calibre
+      install_oh_my_zsh
+      '
 	}
 
 	# Post install
