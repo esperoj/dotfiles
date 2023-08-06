@@ -60,9 +60,9 @@ install() {
 		apt-get update -qqy
 		apt_install BASE jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo
 		# Need for calibre
-		pkg-install.sh DISABLED_ALL libegl1 libopengl0
+		apt_install DISABLED_ALL libegl1 libopengl0
 		# Need to install oh my zsh
-		pkg-install.sh INTERACTIVE zsh
+		apt_install INTERACTIVE zsh
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		. "$HOME/.asdf/asdf.sh"
 		parallel -j0 ::: <<< \
