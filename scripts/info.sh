@@ -1,7 +1,7 @@
 #!/bin/bash
 set -Eeuxo pipefail
 cd "${HOME}"
-parallel -j0 {} <<<'
+parallel -vj0 {} <<<'
 chezmoi status
 lsb_release -a
 uname -a
