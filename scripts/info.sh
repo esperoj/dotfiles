@@ -1,6 +1,7 @@
 #!/bin/bash
 set -Eeuxo pipefail
 cd "${HOME}"
+parallel -j0 {} <<<'
 chezmoi status
 lsb_release -a
 uname -a
@@ -14,3 +15,4 @@ ssh segfault "uname -a; lsb_release -a"
 ssh envs "uname -a; lsb_release -a"
 ssh serv00 "uname -a"
 ssh ct8 "uname -a"
+'
