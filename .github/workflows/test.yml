@@ -57,6 +57,13 @@ jobs:
           ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         run: |
           docker run --env ENCRYPTION_PASSPHRASE --rm segfault:latest "chezmoi update && info.sh"
+      -
+        name: Send notification
+        env:
+          NTFY_URL: ${{ secrets.NTFY_URL }}
+        if: ${{ always() }}
+        run: |
+          ./scripts/notify.sh "" ""
 #      -
 #        name: Build and push
 #        uses: docker/build-push-action@v4
