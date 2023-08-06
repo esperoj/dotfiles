@@ -1,5 +1,5 @@
 #!/bin/bash
-set -Exeo pipefail
+set -Eeo pipefail
 
 setup_ssh() {
 	mkdir -p "${HOME}/.ssh/sockets"
@@ -39,12 +39,10 @@ install() {
 		apt_install BIG ffmpeg yt-dlp
 	}
 	install_calibre() {
-		#pkg-install.sh DISABLED_BIG wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
-    echo "Install"
+		pkg-install.sh DISABLED_BIG eval 'wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"'
 	}
 	install_oh_my_zsh() {
 		pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
-    echo "Install"
 	}
 
 	export -f asdf_install install_with_asdf install_with_apt install_calibre install_oh_my_zsh apt_install

@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 export DEBIAN_FRONTEND=noninteractive
 # export PIPX_HOME=/usr
