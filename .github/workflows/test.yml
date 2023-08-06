@@ -51,7 +51,7 @@ jobs:
           tags: esperoj/personal:latest
           cache-from: type=registry,ref=esperoj/personal:buildcache
           cache-to: type=registry,ref=esperoj/personal:buildcache,mode=max
-          build-args: PACKAGES="BASE NET BIG"
+          build-args: PACKAGES="BASE DEV NET BIG"
           file: Dockerfile
           load: true
           no-cache: false
@@ -71,7 +71,7 @@ jobs:
           pull: true
           push: true
           tags: esperoj/personal:latest
-          build-args: PACKAGES="BASE NET BIG"
+          build-args: PACKAGES="BASE DEV NET BIG"
           file: Dockerfile
           load: false
           no-cache: true
