@@ -48,7 +48,7 @@ jobs:
           context: .
           pull: false
           push: false
-          tags: segfault:latest
+          tags: esperoj/personal:latest
           cache-from: type=registry,ref=esperoj/personal:latest
           cache-to: type=inline
           build-args: PACKAGES="BASE NET DEV BIG"
@@ -62,7 +62,7 @@ jobs:
         env:
           ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         run: |
-          docker run --env ENCRYPTION_PASSPHRASE --rm segfault:latest "chezmoi update && info.sh"
+          docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "chezmoi update && info.sh"
       -
         name: Build and push
         uses: docker/build-push-action@v4
