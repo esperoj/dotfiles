@@ -34,8 +34,8 @@ install() {
 	}
 	# need apt to install
 	install_with_apt() {
-		apt_install BASE 7zip sqlite3 lsb-release pip tree python3
-		#apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
+		apt_install BASE 7zip sqlite3 lsb-release pip tree
+		apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		apt_install BIG ffmpeg yt-dlp
 	}
 	install_calibre() {
@@ -43,7 +43,7 @@ install() {
     echo "Install"
 	}
 	install_oh_my_zsh() {
-		#pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
+		pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
     echo "Install"
 	}
 
@@ -60,7 +60,7 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		apt_install BASE jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo
+		apt_install BASE jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo python3
 		# Need for calibre
 		apt_install DISABLED_BIG libegl1 libopengl0
 		# Need to install oh my zsh
