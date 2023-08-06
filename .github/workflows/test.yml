@@ -66,7 +66,8 @@ jobs:
         run: |
           ./scripts/notify.sh "" \
           "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
-          "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+          | jq
 #      -
 #        name: Build and push
 #        uses: docker/build-push-action@v4
