@@ -29,8 +29,19 @@ install() {
 	# Need asdf to install
 	install_with_asdf() {
 		asdf_install chezmoi
-		echo 'aria2 aria2c,rclone,restic' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}'
-		echo 'nodejs node,shfmt,shellcheck' | tr "," "\n" | xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}'
+		# Install for NET
+		xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}' <<<'
+      aria2 aria2c
+      rclone
+      restic
+    '
+		# Install for DEV
+		xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}' <<<'
+      nodejs node
+      shfmt
+      shellcheck
+      github-cli gh
+    '
 	}
 	# need apt to install
 	install_with_apt() {
@@ -70,7 +81,7 @@ install() {
       install_with_apt
       install_calibre
       install_oh_my_zsh
-      '
+    '
 	}
 
 	# Post install
