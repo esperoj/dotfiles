@@ -39,7 +39,7 @@ install() {
 		apt_install BIG ffmpeg yt-dlp
 	}
 	install_calibre() {
-		pkg-install.sh DISABLED_ALL wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
+		pkg-install.sh DISABLED_BIG wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
 	install_oh_my_zsh() {
 		pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
@@ -60,7 +60,7 @@ install() {
 		apt-get update -qqy
 		apt_install BASE jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo
 		# Need for calibre
-		apt_install DISABLED_ALL libegl1 libopengl0
+		apt_install DISABLED_BIG libegl1 libopengl0
 		# Need to install oh my zsh
 		apt_install INTERACTIVE zsh
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
