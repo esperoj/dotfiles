@@ -61,6 +61,7 @@ jobs:
         name: Send notification
         env:
           NTFY_URL: ${{ secrets.NTFY_URL }}
+          MY_UUID: ${{ secrets.MY_UUID }}
         if: ${{ always() }}
         run: |
           ./scripts/notify.sh "" \
