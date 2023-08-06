@@ -2,8 +2,8 @@ name: Test
 run-name: Test
 on:
   workflow_dispatch:
- #   schedule:
- #   - cron: '23 0 * * *'
+    schedule:
+      - cron: '23 0 * * *'
   push:
     branches:
       - 'main'
@@ -36,7 +36,13 @@ jobs:
         with:
           platforms: linux/amd64
       -
-        name: Build
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and export to Docker
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -58,6 +64,20 @@ jobs:
         run: |
           docker run --env ENCRYPTION_PASSPHRASE --rm segfault:latest "chezmoi update && info.sh"
       -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          pull: true
+          push: true
+          tags: esperoj/personal:latest
+          build-args: PACKAGES="BASE NET DEV BIG"
+          file: Dockerfile
+          load: false
+          no-cache: true
+          platforms: linux/amd64,linux/arm64
+          ssh: "default=${{ env.SSH_AUTH_SOCK }}"
+      -
         name: Send notification
         env:
           NTFY_URL: ${{ secrets.NTFY_URL }}
@@ -68,12 +88,3 @@ jobs:
           "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
           "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           | jq
-#      -
-#        name: Build and push
-#        uses: docker/build-push-action@v4
-#        with:
-#          context: .
-#          platforms: linux/amd64,linux/arm64
-#          push: true
-#          tags: ${{ env.LATEST_TAG }}
-
