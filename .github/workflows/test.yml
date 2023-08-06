@@ -49,8 +49,8 @@ jobs:
           pull: false
           push: false
           tags: esperoj/personal:latest
-          cache-from: type=registry,ref=esperoj/personal:latest
-          cache-to: type=inline
+          cache-from: type=registry,ref=esperoj/personal:buildcache
+          cache-to: type=registry,ref=esperoj/personal:buildcache,mode=max
           build-args: PACKAGES="BASE NET DEV BIG"
           file: Dockerfile
           load: true
