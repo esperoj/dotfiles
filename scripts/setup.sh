@@ -34,7 +34,7 @@ install() {
 		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
 	}
 	install_calibre() {
-		pkg-install.sh ALL wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
+		pkg-install.sh DISABLED_ALL wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
 	install_oh_my_zsh() {
 		pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
@@ -55,7 +55,7 @@ install() {
 		apt-get update -qqy
 		pkg-install.sh BASE apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo python3
 		# Need for calibre
-		pkg-install.sh ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0
+		pkg-install.sh DISABLED_ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0
 		# Need to install oh my zsh
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends zsh
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
@@ -63,7 +63,7 @@ install() {
 		echo 'install_with_asdf
     install_with_apt_get
     install_calibre
-    install_oh_my_zsh' | parallel {}
+    install_oh_my_zsh' | parallel -j 0 {}
 	}
 
 	# Post install
