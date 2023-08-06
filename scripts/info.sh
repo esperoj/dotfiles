@@ -1,6 +1,6 @@
 #!/bin/bash
 set -Eeuxo pipefail
-cd ${HOME@Q}
+cd "${HOME}"
 chezmoi status
 lsb_release -a
 uname -a
