@@ -1,5 +1,5 @@
 FROM kalilinux/kali-rolling
-ARG PACKAGES="ALL"
+ARG PACKAGES="BASE NET DEV BIG"
 ENV MACHINE_NAME="ci"
 ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /root

@@ -29,9 +29,9 @@ install() {
 	}
 	# need apt to install
 	install_with_apt_get() {
-		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip sqlite3 lsb-release pip tree
+		pkg-install.sh BASE apt-get install -qqy --no-install-recommends 7zip sqlite3 lsb-release pip tree python3
 		pkg-install.sh INTERACTIVE apt-get install -qqy --no-install-recommends vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
-		pkg-install.sh ALL apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
+		pkg-install.sh BIG apt-get install -qqy --no-install-recommends ffmpeg yt-dlp
 	}
 	install_calibre() {
 		pkg-install.sh DISABLED_ALL wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
@@ -53,7 +53,7 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		pkg-install.sh BASE apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo python3
+		pkg-install.sh BASE apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo
 		# Need for calibre
 		pkg-install.sh DISABLED_ALL apt-get install -qqy --no-install-recommends libegl1 libopengl0
 		# Need to install oh my zsh
