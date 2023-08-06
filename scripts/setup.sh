@@ -35,14 +35,14 @@ install() {
 	# need apt to install
 	install_with_apt() {
 		apt_install BASE 7zip sqlite3 lsb-release pip tree python3
-		apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
+		#apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		apt_install BIG ffmpeg yt-dlp
 	}
 	install_calibre() {
-		pkg-install.sh DISABLED_BIG wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
+		#pkg-install.sh DISABLED_BIG wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin install_dir="${HOME}/.local" share_dir="${HOME}/.local/share" bin_dir="${HOME}/.local/bin"
 	}
 	install_oh_my_zsh() {
-		pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
+		#pkg-install.sh INTERACTIVE sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
 	}
 
 	export -f asdf_install install_with_asdf install_with_apt install_calibre install_oh_my_zsh apt_install
@@ -60,9 +60,9 @@ install() {
 		apt-get update -qqy
 		apt_install BASE jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo
 		# Need for calibre
-		apt_install DISABLED_BIG libegl1 libopengl0
+		#apt_install DISABLED_BIG libegl1 libopengl0
 		# Need to install oh my zsh
-		apt_install INTERACTIVE zsh
+		#apt_install INTERACTIVE zsh
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		. "$HOME/.asdf/asdf.sh"
 		parallel -j0 ::: <<< \
