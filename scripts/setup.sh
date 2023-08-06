@@ -14,11 +14,11 @@ setup_ssh() {
 install() {
 	cd "${HOME}"
 	mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
-  apt_install(){
-    local tag="$1"
-    shift 1
+	apt_install() {
+		local tag="$1"
+		shift 1
 		pkg-install.sh "${tag}" apt-get install -qqy --no-install-recommends "$@"
-  }
+	}
 	asdf_install() {
 		set -- "$@"
 		[[ $(command -v ${2-$1}) ]] && echo "The packages $1 is installed" && return
@@ -66,7 +66,7 @@ install() {
 		git clone --quiet --depth=1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
 		. "$HOME/.asdf/asdf.sh"
 		parallel -j0 {} <<< \
-    'install_with_asdf
+			'install_with_asdf
     install_with_apt
     install_calibre
     install_oh_my_zsh'
