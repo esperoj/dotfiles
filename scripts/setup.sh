@@ -1,5 +1,5 @@
 #!/bin/bash
-set -Eeo pipefail
+set -Exeo pipefail
 
 setup_ssh() {
 	mkdir -p "${HOME}/.ssh/sockets"
