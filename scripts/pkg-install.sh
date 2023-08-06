@@ -176,7 +176,7 @@ shift 1
 [[ -n $PACKAGES ]] && {
 	PACKAGES="${PACKAGES^^}" # Convert to upper case
 	[[ "$TAG" == *DISABLED* ]] && {
-		echo "Skipping Packages: $TAG [DISABLED]"
+		echo "Skipping Packages: $TAG"
 		exit
 	}
 	[[ "$TAG" == ALLALL ]] && {
