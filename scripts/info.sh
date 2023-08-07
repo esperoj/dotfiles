@@ -1,7 +1,7 @@
 #!/bin/bash
 set -Eeuxo pipefail
 cd "${HOME}"
-parallel -vj0 time {} <<EOL
+parallel -vj0 {} <<EOL
 chezmoi status
 lsb_release -a
 uname -a
