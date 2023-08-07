@@ -22,7 +22,7 @@ jobs:
         name: Backup
         run: |
           . "${HOME}/.asdf/asdf.sh"
-          chezmoi init --apply --force
+          chezmoi update
           ssh segfault 'bash -s' <<<'
           source "${HOME}/.profile"
           backup.sh'
