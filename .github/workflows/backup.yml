@@ -11,18 +11,16 @@ jobs:
       group: ${{ github.workflow }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
-    container:
-      image: esperoj/personal:latest
-      env:
-        ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-        MACHINE_NAME: ci
+    env:
+      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+      MACHINE_NAME: ci
     timeout-minutes: 60
     steps:
       -
         name: Backup
         run: |
-          . "${HOME}/.asdf/asdf.sh"
+          docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "
           chezmoi update
           ssh segfault 'bash -s' <<<'
-          source "${HOME}/.profile"
-          backup.sh'
+          source ${HOME}/.profile
+          backup.sh'"
