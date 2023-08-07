@@ -19,8 +19,8 @@ jobs:
       -
         name: Backup
         run: |
-          docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "
-          chezmoi update
-          ssh segfault 'bash -s' <<<'
+          backup_commands='
           source ${HOME}/.profile
-          backup.sh'"
+          backup.sh'
+          docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "chezmoi update
+          ssh segfault bash -s <<<${backup_commands@Q}"
