@@ -59,6 +59,7 @@ install() {
 	export -f asdf_install install_with_asdf install_with_apt install_calibre install_oh_my_zsh apt_install
 	if [[ $(uname -o) = Android ]]; then
 		apt-get update -qqy
+		apt-get upgrade -qqy
 		apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh-client
 		install_oh_my_zsh
 		chezmoi init --ssh 'git@codeberg.org:esperoj/dotfiles.git'

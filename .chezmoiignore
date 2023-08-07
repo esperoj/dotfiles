@@ -1,5 +1,6 @@
 .github/
 scripts/
+workflows/
 LICENSE
 README.md
 Dockerfile

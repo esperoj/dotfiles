@@ -2,17 +2,18 @@
 
 ```sh
 export ENCRYPTION_PASSPHRASE=""
-export MACHINE_NAME="ci"
-export PACKAGES="BASE NET"
+export MACHINE_NAME="segfault"
+export PACKAGES="BASE NET DEV INTERACTIVE BIG"
 
 apt-get update -qqy
+apt-get upgrade -qqy
 apt-get install -qqy curl gnupg openssh-client
-setup_ssh() {
-        mkdir -p ~/.ssh
-        curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/encrypted_private_id_ed25519.asc" | gpg --passphrase "${ENCRYPTION_PASSPHRASE}" --batch -d >~/.ssh/id_ed25519
-        chmod 600 ~/.ssh/id_ed25519
-        curl -sSfl "https://codeberg.org/esperoj/dotfiles/raw/branch/main/private_dot_ssh/private_known_hosts" >~/.ssh/known_hosts
-}
-setup_ssh
-git clone --depth=1 --quiet git@codeberg.org:esperoj/dotfiles.git .local/share/chezmoi
+cd ~
+git clone --depth=1 https://codeberg.org/esperoj/dotfiles.git 
+cd dotfiles
+export PATH="$(pwd)/scripts:$PATH"
+bash -c 'source setup.sh setup_ssh'
+bash -c 'source setup.sh install'
+. "$HOME/.asdf/asdf.sh"
+chezmoi init --apply
 ```
