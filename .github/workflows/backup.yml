@@ -3,7 +3,7 @@ run-name: Backup
 on:
   workflow_dispatch:
   schedule:
-    - cron: '23 0 * * *'
+    - cron: '30 1 * * *'
 
 jobs:
   Backup:
