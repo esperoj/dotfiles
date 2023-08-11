@@ -17,7 +17,7 @@ install() {
 	apt_install() {
 		local tag="$1"
 		shift 1
-		pkg-install.sh "${tag}" apt-get install -qqy --no-install-recommends "$@"
+		pkg-install.sh "${tag}" apt-fast install -qqy --no-install-recommends "$@"
 	}
 	asdf_install() {
 		set -- "$@"
@@ -31,7 +31,6 @@ install() {
 		asdf_install chezmoi
 		# Install for NET
 		xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}' <<<'
-      aria2 aria2c
       rclone
       restic
     '
@@ -45,7 +44,7 @@ install() {
 	}
 	# need apt to install
 	install_with_apt() {
-		apt_install BASE 7zip sqlite3 lsb-release pip tree
+		apt_install BASE 7zip sqlite3 lsb-release pip tree python3
 		apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		apt_install BIG ffmpeg yt-dlp
 	}
@@ -70,7 +69,9 @@ install() {
 	[[ $(uname -o) = *Linux* ]] && {
 		# Install packages
 		apt-get update -qqy
-		apt_install BASE jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo python3
+		apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo aria2
+    # Install apt-fast
+    /bin/bash -c "$(curl -sL https://git.io/vokNn)"
 		# Need for calibre
 		apt_install DISABLED_BIG libegl1 libopengl0
 		# Need to install oh my zsh
