@@ -17,9 +17,9 @@ install() {
 	apt_install() {
 		local tag="$1"
 		shift 1
-    export _MAXNUM=16
-    export _MAXCONPERSRV=64
-    export _SPLITCON=16
+		export _MAXNUM=16
+		export _MAXCONPERSRV=64
+		export _SPLITCON=16
 		pkg-install.sh "${tag}" apt-fast install -qqy --no-install-recommends "$@"
 	}
 	asdf_install() {
@@ -73,8 +73,8 @@ install() {
 		# Install packages
 		apt-get update -qqy
 		apt-get install -qqy --no-install-recommends jq parallel curl gnupg git xz-utils unzip bzip2 wget dirmngr openssh-client ca-certificates sudo aria2
-    # Install apt-fast
-    /bin/bash -c "$(curl -sL https://git.io/vokNn)"
+		# Install apt-fast
+		/bin/bash -c "$(curl -sL https://git.io/vokNn)"
 		# Need for calibre
 		apt_install DISABLED_BIG libegl1 libopengl0
 		# Need to install oh my zsh
