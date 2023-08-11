@@ -17,6 +17,9 @@ install() {
 	apt_install() {
 		local tag="$1"
 		shift 1
+    export _MAXNUM=10
+    export _MAXCONPERSRV=20
+    export _SPLITCON=8
 		pkg-install.sh "${tag}" apt-fast install -qqy --no-install-recommends "$@"
 	}
 	asdf_install() {
