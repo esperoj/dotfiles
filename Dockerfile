@@ -1,4 +1,5 @@
-FROM kalilinux/kali-rolling
+#FROM kalilinux/kali-rolling
+FROM ubuntu:rolling
 ARG PACKAGES="BASE NET BIG"
 ENV MACHINE_NAME="ci"
 ENV PATH="/root/.local/bin:${PATH}"
