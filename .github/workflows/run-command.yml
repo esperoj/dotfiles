@@ -19,4 +19,4 @@ jobs:
       -
         name: Run
         run: |
-          docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "${COMMAND@Q}"
+          docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest ${COMMAND@Q}
