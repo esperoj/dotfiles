@@ -1,5 +1,6 @@
 #!/bin/bash
+echo "Running entrypoint.sh"
 . ${HOME}/.asdf/asdf.sh
 chezmoi init --apply --force
-bash -c "source ${HOME}/.profile
-$@"
+source ${HOME}/.profile
+eval ${1@Q}
