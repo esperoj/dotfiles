@@ -32,11 +32,6 @@ install() {
 	# Need asdf to install
 	install_with_asdf() {
 		asdf_install chezmoi
-		# Install for NET
-		xargs -I {} bash -c 'pkg-install.sh NET asdf_install {}' <<<'
-      rclone
-      restic
-    '
 		# Install for DEV
 		xargs -I {} bash -c 'pkg-install.sh DEV asdf_install {}' <<<'
       nodejs node
@@ -47,7 +42,7 @@ install() {
 	}
 	# need apt to install
 	install_with_apt() {
-		apt_install BASE 7zip sqlite3 lsb-release pip tree python3
+		apt_install BASE 7zip sqlite3 lsb-release pip tree python3 rclone restic
 		apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		apt_install BIG ffmpeg yt-dlp
 	}
