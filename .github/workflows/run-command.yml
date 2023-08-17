@@ -1,0 +1,22 @@
+name: Run command
+run-name: Run command
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: "Run a command"
+        required: true
+        type: string
+jobs:
+  Run:
+    runs-on: ubuntu-latest
+    env:
+      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+      MACHINE_NAME: ci
+      COMMAND: ${{ inputs.command }}
+    timeout-minutes: 360
+    steps:
+      -
+        name: Run
+        run: |
+          docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest ${COMMAND@Q}
