@@ -18,6 +18,9 @@ jobs:
     timeout-minutes: 360
     steps:
       -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
         name: Run
         run: |
           docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "${COMMAND}"
