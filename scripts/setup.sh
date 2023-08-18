@@ -42,7 +42,7 @@ install() {
 	}
 	# need apt to install
 	install_with_apt() {
-		apt_install BASE 7zip sqlite3 lsb-release pip tree python3 rclone restic
+		apt_install BASE 7zip sqlite3 lsb-release pip tree python3 rclone restic time
 		apt_install INTERACTIVE vim tmux mosh fzf zsh-syntax-highlighting zsh-autosuggestions less
 		apt_install BIG ffmpeg yt-dlp
 	}
