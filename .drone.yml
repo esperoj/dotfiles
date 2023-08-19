@@ -5,6 +5,7 @@ name: Run command
 steps:
 - name: Update local cache
   image: esperoj/personal
+  pull: always
   commands:
   - echo ${BUILD_DATE}
   when:
