@@ -1,0 +1,18 @@
+kind: pipeline
+type: docker
+name: Run command
+
+steps:
+- name: Run
+  pull: if-not-exists
+  image: esperoj/personal
+  environment:
+    MACHINE_NAME: ci
+    ENCRYPTION_PASSPHRASE:
+      from_secret: ENCRYPTION_PASSPHRASE
+  commands:
+  - /root/.local/share/chezmoi/entrypoint.sh "${COMMAND}"
+
+trigger:
+  event:
+  - custom

@@ -5,6 +5,7 @@ LICENSE
 README.md
 Dockerfile
 entrypoint.sh
+.drone.yml
 
 {{- if ne .machineName "phone" }}
 .config/phone/
