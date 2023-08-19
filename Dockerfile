@@ -10,4 +10,6 @@ RUN --mount=type=ssh bash -c "source setup.sh install" \
       && apt-get autoremove -qqy \
       && rm .local/bin/setup.sh \
       && rm .local/bin/pkg-install.sh
+ARG BUILD_DATE="Today"
+ENV BUILD_DATE="${BUILD_DATE}"
 ENTRYPOINT ["/root/.local/share/chezmoi/entrypoint.sh"]

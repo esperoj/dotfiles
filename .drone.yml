@@ -3,16 +3,29 @@ type: docker
 name: Run command
 
 steps:
+- name: Update local cache
+  image: esperoj/personal
+  commands:
+  - echo ${BUILD_DATE}
+  when:
+    branch:
+    - main
 - name: Run
   pull: if-not-exists
   image: esperoj/personal
+  when:
+    event:
+    - custom
   environment:
     MACHINE_NAME: ci
     ENCRYPTION_PASSPHRASE:
       from_secret: ENCRYPTION_PASSPHRASE
   commands:
+  - echo ${BUILD_DATE}
   - /root/.local/share/chezmoi/entrypoint.sh "${COMMAND}"
 
 trigger:
+  branch:
+  - main
   event:
   - custom

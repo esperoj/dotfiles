@@ -1,6 +1,7 @@
 #!/bin/bash
 set -Eeuxo pipefail
 cd "${HOME}"
+echo $BUILD_DATE
 parallel -vj0 {} <<EOL
 chezmoi status
 lsb_release -a
