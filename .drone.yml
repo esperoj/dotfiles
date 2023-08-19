@@ -7,7 +7,8 @@ steps:
   image: esperoj/personal
   pull: always
   commands:
-  - echo ${BUILD_DATE}
+  - echo $${BUILD_DATE}
+  - env
   when:
     branch:
     - main
@@ -21,9 +22,10 @@ steps:
     MACHINE_NAME: ci
     ENCRYPTION_PASSPHRASE:
       from_secret: ENCRYPTION_PASSPHRASE
+    COMMAND: "${COMMAND}"
   commands:
-  - echo ${BUILD_DATE}
-  - /root/.local/share/chezmoi/entrypoint.sh "${COMMAND}"
+  - echo $${BUILD_DATE}
+  - /root/.local/share/chezmoi/entrypoint.sh "$${COMMAND}"
 
 trigger:
   branch:
