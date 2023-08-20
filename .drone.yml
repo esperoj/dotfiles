@@ -3,18 +3,8 @@ type: docker
 name: Run command
 
 steps:
-- name: Update local cache
-  image: esperoj/personal
-  pull: always
-  commands:
-  - echo $${BUILD_DATE}
-  when:
-    branch:
-    - main
-    event:
-    - push
 - name: Run
-  pull: if-not-exists
+  pull: always
   image: esperoj/personal
   when:
     event:
@@ -32,4 +22,3 @@ trigger:
   - main
   event:
   - custom
-  - push
