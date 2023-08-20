@@ -25,7 +25,7 @@ steps:
       from_secret: ENCRYPTION_PASSPHRASE
   commands:
   - echo $${BUILD_DATE}
-  - /root/.local/share/chezmoi/entrypoint.sh "$${COMMAND}"
+  - command time -v /root/.local/share/chezmoi/entrypoint.sh "$${COMMAND}"
 
 trigger:
   branch:
