@@ -1,5 +1,5 @@
 #!/bin/bash
-set -Eeo pipefail
+set -Eexo pipefail
 cd ~
 rclone sync -v koofr:working working
 restic backup working -o s3.connections=32 -v -H "${MACHINE_NAME}"
