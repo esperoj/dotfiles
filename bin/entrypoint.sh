@@ -1,5 +1,5 @@
 #!/bin/bash
-chezmoi init --apply --force
+"${HOME}/.local/bin/chezmoi" init --apply --force
 bash -s <<-_EOL_
 	. ~/.profile
 	${1}

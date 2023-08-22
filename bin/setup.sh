@@ -6,19 +6,19 @@ mkdir ".local/bin/"
 
 apt-get update -y
 apt-get install -y --no-install-recommends <<-_EOL_
-	7zip
-	aria2
-	ffmpeg
-	jq
-	lsb-release
-	parallel
-	rclone
-	restic
-	shfmt
-	sqlite3
-	sudo
-	time
-	yt-dlp
+7zip
+aria2
+ffmpeg
+jq
+lsb-release
+parallel
+rclone
+restic
+shfmt
+sqlite3
+sudo
+time
+yt-dlp
 _EOL_
 
 # Post setup
