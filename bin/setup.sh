@@ -4,9 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 cd "${HOME}"
 mkdir ".local/bin/"
 
-apt-get update -y
-apt-get install -y --no-install-recommends <<-_EOL_
-7zip
+packages="7zip
 aria2
 ffmpeg
 jq
@@ -18,8 +16,11 @@ shfmt
 sqlite3
 sudo
 time
-yt-dlp
-_EOL_
+xargs
+yt-dlp"
+
+apt-get update -y
+apt-get install -y --no-install-recommends $(echo "${packages}"| tr "\n" " ")
 
 # Post setup
 ln -s ".local/share/chezmoi/bin" .
