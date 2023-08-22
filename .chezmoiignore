@@ -1,11 +1,9 @@
 .github/
-scripts/
-workflows/
+bin/
+.drone.yml
+Dockerfile
 LICENSE
 README.md
-Dockerfile
-entrypoint.sh
-.drone.yml
 
 {{- if ne .machineName "phone" }}
 .config/phone/

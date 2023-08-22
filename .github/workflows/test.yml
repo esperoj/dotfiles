@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - 'main'
-  pull_request:
-    types: [opened, reopened]
 
 jobs:
   Test:
@@ -20,19 +18,19 @@ jobs:
     steps:
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        run: echo "::set-output name=date::$(date)"
       -
         name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Setup ssh
-        env:
-          ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-        run: |
-          export PATH="$(pwd)/scripts:$PATH"
-          source setup.sh setup_ssh
-          echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> "$GITHUB_ENV"
-          echo "SSH_AGENT_PID=${SSH_AGENT_PID}" >> "$GITHUB_ENV"
+          #      -
+          #        name: Setup ssh
+          #        env:
+          #          ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+          #        run: |
+          #          export PATH="$(pwd)/scripts:$PATH"
+          #          source setup.sh setup_ssh
+          #          echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> "$GITHUB_ENV"
+          #          echo "SSH_AGENT_PID=${SSH_AGENT_PID}" >> "$GITHUB_ENV"
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -52,8 +50,8 @@ jobs:
           pull: false
           push: false
           tags: esperoj/personal:latest
-          cache-from: type=registry,ref=esperoj/personal:buildcache
-          cache-to: type=registry,ref=esperoj/personal:buildcache,mode=max
+            #cache-from: type=registry,ref=esperoj/personal:buildcache
+            #cache-to: type=registry,ref=esperoj/personal:buildcache,mode=max
           build-args: |
             PACKAGES="BASE DEV NET BIG"
             BUILD_DATE=${{ steps.date.outputs.date }}
@@ -61,7 +59,7 @@ jobs:
           load: true
           no-cache: false
           platforms: linux/amd64
-          ssh: "default=${{ env.SSH_AUTH_SOCK }}"
+            #ssh: "default=${{ env.SSH_AUTH_SOCK }}"
       -
         name: Test
         env:
@@ -83,7 +81,7 @@ jobs:
           load: false
           no-cache: true
           platforms: linux/amd64
-          ssh: "default=${{ env.SSH_AUTH_SOCK }}"
+            # ssh: "default=${{ env.SSH_AUTH_SOCK }}"
       -
         name: Send notification
         env:
@@ -91,7 +89,7 @@ jobs:
           MY_UUID: ${{ secrets.MY_UUID }}
         if: ${{ always() }}
         run: |
-          ./scripts/notify.sh "" \
+          ./bin/notify.sh "" \
           "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
           "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           | jq
