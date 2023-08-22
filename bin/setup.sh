@@ -9,6 +9,7 @@ aria2
 ffmpeg
 jq
 lsb-release
+nodejs
 parallel
 rclone
 restic
