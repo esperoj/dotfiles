@@ -16,11 +16,10 @@ shfmt
 sqlite3
 sudo
 time
-xargs
 yt-dlp"
 
 apt-get update -y
-apt-get install -y --no-install-recommends $(echo "${packages}"| tr "\n" " ")
+xargs apt-get install -y --no-install-recommends <<<"${packages}"
 
 # Post setup
 ln -s ".local/share/chezmoi/bin" .
