@@ -3,9 +3,9 @@ ARG PACKAGES="BASE NET BIG"
 ARG BUILD_DATE="Today"
 ENV BUILD_DATE="${BUILD_DATE}"
 ENV MACHINE_NAME="ci"
-WORKDIR /root/.local/share/chezmoi/bin
+WORKDIR /root/.local/share/chezmoi
 RUN git clone https://codeberg.org/esperoj/dotfiles.git . \
-    && ./setup.sh \
+    && ./bin/setup.sh \
 		&& sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "/root/.local/bin" \
 		&& rm -rf /var/lib/apt/lists/*
 WORKDIR /root
