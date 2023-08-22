@@ -1,3 +1,5 @@
+#!/bin/bash
+
 transfer() {
 	local file
 	declare -a file_array
