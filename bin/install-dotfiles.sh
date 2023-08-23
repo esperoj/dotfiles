@@ -1,5 +1,5 @@
 #!/bin/bash
-set -Euxeo pipefail
+set -Eueo pipefail
 # Install chezmoi
 path="${HOME}/.local/bin"
 sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${path}"

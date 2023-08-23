@@ -2,7 +2,7 @@
 set -Euxeo pipefail
 export DEBIAN_FRONTEND=noninteractive
 cd "${HOME}"
-mkdir ".local/bin/"
+mkdir -p ".local/bin/"
 
 packages="7zip
 aria2
