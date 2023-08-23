@@ -2,7 +2,7 @@
 set -Eeuxo pipefail
 cd "${HOME}"
 echo $BUILD_DATE
-parallel -vj0 {} <<EOL
+parallel --keep-order -vj0 {} <<EOL
 chezmoi status
 lsb_release -a
 uname -a
