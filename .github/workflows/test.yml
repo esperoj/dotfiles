@@ -79,7 +79,7 @@ jobs:
             BUILD_DATE=${{ steps.date.outputs.date }}
           file: Dockerfile
           load: false
-          no-cache: true
+          no-cache: false
           platforms: linux/amd64
             # ssh: "default=${{ env.SSH_AUTH_SOCK }}"
       -
