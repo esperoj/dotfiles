@@ -4,7 +4,7 @@ ARG BUILD_DATE="Today"
 ENV BUILD_DATE="${BUILD_DATE}"
 ENV MACHINE_NAME="ci"
 WORKDIR /root/.local/share/chezmoi
-RUN ./bin/install-dotfiles.sh \
+RUN curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install-dotfiles.sh | bash \
     && ./bin/setup.sh \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
