@@ -68,8 +68,9 @@ jobs:
           PACKAGES="BASE DEV NET BIG"
           BUILD_DATE=${{ steps.date.outputs.date }}
         file: Dockerfile
-        load: false
+          #load: false
         no-cache: false
+        output: type=image,name=esperoj/personal,push=true,compression=zstd,force-compression=true
         platforms: linux/amd64
     -
       name: Send notification
