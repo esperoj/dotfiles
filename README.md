@@ -1,15 +1,18 @@
 # Install
 ```bash
 cd ~
-export MACHINE_NAME=ci
 export ENCRYPTION_PASSPHRASE=""
+export MACHINE_NAME=segfault
 curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/setup.sh | bash
+"${HOME}/.local/bin/chezmoi" init --apply --force
+. ~/.profile
 rclone copy -v koofr:working working
 ```
+
 # Cron schedule
 
-Everyday will run backup at 23:30
-Every sunday will run benchmark at 00:30 and 01:30
+- Everyday will run backup at 23:30.
+- Every sunday will run benchmark at 00:30 and 01:30.
 
 # Benchmark Results
 

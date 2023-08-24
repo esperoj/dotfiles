@@ -18,7 +18,6 @@ install-packages() {
     rclone
     restic
     shfmt
-    sqlite3
     sudo
     time
     yt-dlp
