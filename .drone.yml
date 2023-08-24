@@ -39,7 +39,8 @@ steps:
       from_secret: ENCRYPTION_PASSPHRASE
   commands:
   - echo $${BUILD_DATE}
-  - |command time -v ~/bin/entrypoint.sh "
+  - |
+    command time -v ~/bin/entrypoint.sh "
     chezmoi update
     ssh segfault bash -s <<<'
     source ~/.profile
@@ -50,7 +51,6 @@ trigger:
   - main
   event:
     - cron
-    - push
-      #  target:
-      #    include:
-      #    - backup
+  target:
+    include:
+    - backup
