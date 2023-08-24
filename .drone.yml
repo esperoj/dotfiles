@@ -51,6 +51,6 @@ trigger:
   - main
   event:
     - cron
-  target:
+  cron:
     include:
-    - backup
+    - daily-backup
