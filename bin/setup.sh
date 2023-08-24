@@ -13,6 +13,7 @@ install-packages() {
     7zip
     ffmpeg
     jq
+    libswresample4
     lsb-release
     nodejs
     rclone
@@ -38,7 +39,7 @@ post-setup() {
 
 export -f install-dotfiles install-packages install_oh_my_zsh
 
-[[ ! "${MACHINE_NAME}" == "segfault" ]] && apt-get update -y
+apt-get update -y
 # apt-get upgrade -y
 apt-get install -y --no-install-recommends \
   aria2 parallel zsh
