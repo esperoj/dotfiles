@@ -70,7 +70,7 @@ jobs:
         file: Dockerfile
           #load: false
         no-cache: false
-        output: type=image,name=esperoj/personal,push=true,compression=zstd,force-compression=true
+        outputs: type=image,name=esperoj/personal,push=true,compression=zstd,compression-level=22,force-compression=true
         platforms: linux/amd64
     -
       name: Send notification
