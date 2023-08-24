@@ -2,8 +2,8 @@ name: Backup
 run-name: Backup
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 1 * * *'
+  #schedule:
+  #  - cron: '30 1 * * *'
 
 jobs:
   Backup:
