@@ -7,9 +7,11 @@ mkdir -p ".local/bin/"
 install-dotfiles() {
   curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install-dotfiles.sh | bash
 }
+
 install-packages() {
   packages="
     7zip
+    ffmpeg
     jq
     lsb-release
     nodejs
@@ -20,7 +22,6 @@ install-packages() {
     time
     yt-dlp
   "
-  # Install later: ffmpeg
   xargs apt-fast install -y --no-install-recommends <<<"${packages}"
 }
 
@@ -37,7 +38,7 @@ post-setup() {
 
 export -f install-dotfiles install-packages install_oh_my_zsh
 
-apt-get update -y
+[[ ! "${MACHINE_NAME}" == "segfault" ]] && apt-get update -y
 # apt-get upgrade -y
 apt-get install -y --no-install-recommends \
   aria2 parallel zsh
