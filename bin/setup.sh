@@ -10,7 +10,6 @@ install-dotfiles() {
 install-packages() {
   packages="
     7zip
-    aria2
     ffmpeg
     jq
     lsb-release
@@ -21,9 +20,8 @@ install-packages() {
     sudo
     time
     yt-dlp
-    zsh
   "
-  xargs apt-get install -y --no-install-recommends <<<"${packages}"
+  xargs apt-fast install -y --no-install-recommends <<<"${packages}"
 }
 
 install_oh_my_zsh(){
@@ -41,7 +39,11 @@ export -f install-dotfiles install-packages install_oh_my_zsh
 
 apt-get update -y
 apt-get upgrade -y
-apt-get install -y --no-install-recommends parallel
+apt-get install -y --no-install-recommends \
+  aria2 parallel zsh
+
+# Install apt-fast
+/bin/bash -c "$(curl -sL https://git.io/vokNn)"
 
 parallel --keep-order -vj0 {} <<EOL
 install-dotfiles
