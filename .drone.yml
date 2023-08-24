@@ -39,12 +39,11 @@ steps:
       from_secret: ENCRYPTION_PASSPHRASE
   commands:
   - echo $${BUILD_DATE}
-  - command time -v ~/bin/entrypoint.sh "
+  - |command time -v ~/bin/entrypoint.sh "
       chezmoi update
-      ssh segfault bash -s <<EOL
+      ssh segfault bash -s <<<'
         source ~/.profile
-        backup.sh
-        EOL"
+        backup.sh'"
 
 trigger:
   branch:
