@@ -50,7 +50,7 @@ trigger:
   branch:
   - main
   event:
-    - cron
+  - cron
   cron:
     include:
     - daily-backup
