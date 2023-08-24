@@ -4,26 +4,42 @@ export DEBIAN_FRONTEND=noninteractive
 cd "${HOME}"
 mkdir -p ".local/bin/"
 
-packages="7zip
-aria2
-ffmpeg
-jq
-lsb-release
-nodejs
-parallel
-rclone
-restic
-shfmt
-sqlite3
-sudo
-time
-yt-dlp"
+install-dotfiles() {
+  curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install-dotfiles.sh | bash
+}
+install-packages() {
+  packages="
+    7zip
+    aria2
+    ffmpeg
+    jq
+    lsb-release
+    nodejs
+    parallel
+    rclone
+    restic
+    shfmt
+    sqlite3
+    sudo
+    time
+    yt-dlp
+  "
+  apt-get update -y
+  xargs apt-get install -y --no-install-recommends <<<"${packages}"
+}
 
-apt-get update -y
-xargs apt-get install -y --no-install-recommends <<<"${packages}"
+post-setup() {
+  ln -s ".local/share/chezmoi/bin" .
+  ln -s $(command -v 7zz) ".local/bin/7z"
+  ln -s $(command -v python3) ".local/bin/python"
+  mkdir -p ".ssh/sockets"
+}
 
-# Post setup
-ln -s ".local/share/chezmoi/bin" .
-ln -s $(command -v 7zz) ".local/bin/7z"
-ln -s $(command -v python3) ".local/bin/python"
-mkdir -p ".ssh/sockets"
+export -f install-dotfiles install-packages
+
+parallel --keep-order -vj0 {} <<EOL
+install-dotfiles
+install-packages
+EOL
+
+post-setup
