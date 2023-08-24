@@ -41,6 +41,7 @@ apt-get install -y --no-install-recommends parallel
 parallel --keep-order -vj0 {} <<EOL
 install-dotfiles
 install-packages
+curl -L https://github.com/harness/drone-cli/releases/latest/download/drone_linux_amd64.tar.gz | tar zx -C .local/bin
 EOL
 
 post-setup
