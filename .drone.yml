@@ -27,7 +27,7 @@ trigger:
 
 kind: pipeline
 type: docker
-name: Backup
+name: Daily Backup
 
 steps:
 - name: Backup
@@ -41,7 +41,6 @@ steps:
   - echo $${BUILD_DATE}
   - |
     command time -v ~/bin/entrypoint.sh "
-    chezmoi update
     ssh segfault bash -s <<<'
     source ~/.profile
     backup.sh'"
@@ -54,3 +53,31 @@ trigger:
   cron:
     include:
     - daily-backup
+
+---
+
+kind: pipeline
+type: docker
+name: Benchmark
+
+steps:
+- name: Benchmark
+  pull: always
+  image: esperoj/personal
+  environment:
+    MACHINE_NAME: ci
+    ENCRYPTION_PASSPHRASE:
+      from_secret: ENCRYPTION_PASSPHRASE
+  commands:
+  - echo $${BUILD_DATE}
+  - |
+    command time -v ~/bin/entrypoint.sh "benchmark.sh"
+
+trigger:
+  branch:
+  - main
+  event:
+  - cron
+  cron:
+    include:
+    - benchmark
