@@ -52,6 +52,6 @@ trigger:
   event:
     - cron
     - push
-  target:
-    include:
-    - backup
+      #  target:
+      #    include:
+      #    - backup
