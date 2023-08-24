@@ -10,7 +10,6 @@ install-dotfiles() {
 install-packages() {
   packages="
     7zip
-    ffmpeg
     jq
     lsb-release
     nodejs
@@ -21,6 +20,7 @@ install-packages() {
     time
     yt-dlp
   "
+  # Install later: ffmpeg
   xargs apt-fast install -y --no-install-recommends <<<"${packages}"
 }
 
