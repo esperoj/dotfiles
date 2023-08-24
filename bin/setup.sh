@@ -15,7 +15,6 @@ install-packages() {
     jq
     lsb-release
     nodejs
-    parallel
     rclone
     restic
     shfmt
@@ -24,7 +23,6 @@ install-packages() {
     time
     yt-dlp
   "
-  apt-get update -y
   xargs apt-get install -y --no-install-recommends <<<"${packages}"
 }
 
@@ -36,6 +34,9 @@ post-setup() {
 }
 
 export -f install-dotfiles install-packages
+
+apt-get update -y
+apt-get install -y --no-install-recommends parallel
 
 parallel --keep-order -vj0 {} <<EOL
 install-dotfiles
