@@ -40,6 +40,7 @@ post-setup() {
 export -f install-dotfiles install-packages install_oh_my_zsh
 
 apt-get update -y
+apt-get upgrade -y
 apt-get install -y --no-install-recommends parallel
 
 parallel --keep-order -vj0 {} <<EOL
