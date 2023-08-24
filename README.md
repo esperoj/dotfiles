@@ -1,3 +1,11 @@
+# Install
+```bash
+cd ~
+export MACHINE_NAME=ci
+export ENCRYPTION_PASSPHRASE=""
+curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/setup.sh | bash
+rclone copy -v koofr:working working
+```
 # Cron schedule
 
 Everyday will run backup at 23:30

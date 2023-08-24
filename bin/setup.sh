@@ -22,8 +22,13 @@ install-packages() {
     sudo
     time
     yt-dlp
+    zsh
   "
   xargs apt-get install -y --no-install-recommends <<<"${packages}"
+}
+
+install_oh_my_zsh(){
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --RUNZSH=no --CHSH=yes
 }
 
 post-setup() {
@@ -33,7 +38,7 @@ post-setup() {
   mkdir -p ".ssh/sockets"
 }
 
-export -f install-dotfiles install-packages
+export -f install-dotfiles install-packages install_oh_my_zsh
 
 apt-get update -y
 apt-get install -y --no-install-recommends parallel
@@ -41,7 +46,8 @@ apt-get install -y --no-install-recommends parallel
 parallel --keep-order -vj0 {} <<EOL
 install-dotfiles
 install-packages
-curl -L https://github.com/harness/drone-cli/releases/latest/download/drone_linux_amd64.tar.gz | tar zx -C .local/bin
+install_oh_my_zsh
+curl -fsLS https://github.com/harness/drone-cli/releases/latest/download/drone_linux_amd64.tar.gz | tar zx -C .local/bin
 EOL
 
 post-setup
