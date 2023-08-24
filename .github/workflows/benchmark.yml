@@ -3,7 +3,7 @@ run-name: Benchmark
 on:
   workflow_dispatch:
   schedule:
-  - cron: '0 0 * * 0'
+  - cron: '30 1 * * 0'
 jobs:
   Benchmark:
     runs-on: ubuntu-latest
