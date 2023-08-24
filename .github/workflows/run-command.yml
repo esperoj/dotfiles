@@ -23,7 +23,7 @@ jobs:
     -
       name: Run
       run: |
-        docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "${COMMAND}"
+        docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/personal:latest "cd $(mktemp -d) ; ${COMMAND}"
     -
       name: Send notification
       env:
