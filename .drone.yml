@@ -22,3 +22,36 @@ trigger:
   - main
   event:
   - custom
+
+---
+
+kind: pipeline
+type: docker
+name: Backup
+
+steps:
+- name: Backup
+  pull: always
+  image: esperoj/personal
+  environment:
+    MACHINE_NAME: ci
+    ENCRYPTION_PASSPHRASE:
+      from_secret: ENCRYPTION_PASSPHRASE
+  commands:
+  - echo $${BUILD_DATE}
+  - command time -v ~/bin/entrypoint.sh "
+      chezmoi update
+      ssh segfault bash -s <<EOL
+        source ~/.profile
+        backup.sh
+        EOL"
+
+trigger:
+  branch:
+  - main
+  event:
+    - cron
+    - push
+  target:
+    include:
+    - backup
