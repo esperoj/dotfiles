@@ -1,0 +1,13 @@
+when:
+- evaluate: '"WORKFLOW == "benchmark"'
+
+steps:
+  backend:
+    image: esperoj/personal
+    pull: true
+    environment:
+    - MACHINE_NAME=ci
+    secrets: [ encryption_passphrase ]
+    commands:
+    - |
+      command time -v ~/bin/entrypoint.sh "benchmark.sh"
