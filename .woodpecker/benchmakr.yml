@@ -1,5 +1,5 @@
 when:
-- evaluate: '"WORKFLOW == "benchmark"'
+- evaluate: 'WORKFLOW == "benchmark"'
 
 steps:
   backend:
