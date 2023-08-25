@@ -1,0 +1,13 @@
+when:
+- event: manual
+
+steps:
+  benchmark:
+    image: esperoj/personal
+    pull: true
+    environment:
+    - MACHINE_NAME=ci
+    secrets: [ encryption_passphrase ]
+    commands:
+    - |
+      command time -v ~/bin/entrypoint.sh "benchmark.sh"
