@@ -15,7 +15,7 @@ steps:
       from_secret: ENCRYPTION_PASSPHRASE
   commands:
   - echo $${BUILD_DATE}
-  - command time -v ~/bin/entrypoint.sh 'cd $(mktemp -d) ; $${COMMAND}'
+  - command time -v ~/bin/entrypoint.sh 'cd "$(mktemp -d)" ; eval "$${COMMAND}"'
 
 trigger:
   branch:
