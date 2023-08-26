@@ -1,5 +1,6 @@
 #!/bin/bash
 set -Eeuxo pipefail
+pwd
 curl -fLsS "https://ipwho.de"
 df -h
 # Test network speed
