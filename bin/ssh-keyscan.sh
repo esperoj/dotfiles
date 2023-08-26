@@ -9,4 +9,4 @@ scan() {
   done
 }
 
-scan "${HOME}/.config/common/ssh-hosts.txt" > "${HOME}/.ssh/known_hosts"
+scan "${HOME}/.config/common/ssh-hosts.txt" >"${HOME}/.ssh/known_hosts"
