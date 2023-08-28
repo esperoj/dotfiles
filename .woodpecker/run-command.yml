@@ -1,0 +1,12 @@
+when:
+  - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "run-command"'
+
+steps:
+  run:
+    image: esperoj/personal
+    pull: true
+    environment:
+      - MACHINE_NAME=ci
+    secrets: [ encryption_passphrase ]
+    commands:
+      - command time -v ~/bin/entrypoint.sh "$${COMMAND}"

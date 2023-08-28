@@ -1,0 +1,27 @@
+when:
+  - event: [push, tag]
+    branch: main
+
+steps:
+  test:
+    image: buildpack-deps:stable
+    pull: true
+    environment:
+      - MACHINE_NAME=ci
+    secrets: [ encryption_passphrase ]
+    commands:
+      - ./bin/setup.sh
+      - ./bin/entrypoint.sh "chezmoi update && info.sh"
+  publish:
+    image: codeberg.org/woodpecker-plugins/docker-buildx
+    settings:
+      dry-run: false
+      platforms: linux/amd64
+      auto_tag: true
+      repo: codeberg.org/${CI_REPO_OWNER}/dotfiles
+      registry: codeberg.org
+      username: esperoj
+      password:
+        from_secret: codeberg_token
+      compress: true
+      build_args: BUILD_DATE=${CI_STEP_STARTED}

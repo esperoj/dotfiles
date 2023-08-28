@@ -11,7 +11,6 @@ install-dotfiles() {
 install-packages() {
   packages="
     7zip
-    ffmpeg
     jq
     libswresample4
     lsb-release
@@ -51,7 +50,7 @@ parallel --keep-order -vj0 {} <<EOL
 install-dotfiles
 install-packages
 install_oh_my_zsh
-curl -fsLS https://github.com/harness/drone-cli/releases/latest/download/drone_linux_amd64.tar.gz | tar zx -C .local/bin
+curl -fsLs https://github.com/woodpecker-ci/woodpecker/releases/latest/download/woodpecker-cli_linux_amd64.tar.gz | tar zx -C .local/bin
 EOL
 
 post-setup
