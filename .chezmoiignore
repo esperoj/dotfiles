@@ -11,6 +11,6 @@ README.md
 {{- if ne .machineName "segfault" }}
 .config/segfault/
 {{- end }}
-{{- if ne .machineName "ci" }}
-.config/ci/
+{{- if ne .machineName "container" }}
+.config/container/
 {{- end }}

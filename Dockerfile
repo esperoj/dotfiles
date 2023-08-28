@@ -1,8 +1,5 @@
 FROM public.ecr.aws/docker/library/buildpack-deps:stable
-ARG PACKAGES="BASE NET BIG"
-ARG BUILD_DATE="Today"
-ENV BUILD_DATE="${BUILD_DATE}"
-ENV MACHINE_NAME="ci"
+ENV MACHINE_NAME="container"
 WORKDIR /root
 COPY bin/setup.sh /
 RUN /setup.sh \

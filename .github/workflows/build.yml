@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-    - name: Get current date
-      id: date
-      run: echo "date=$(date)" >> $GITHUB_OUTPUT
     -
       name: Checkout
       uses: actions/checkout@v3
@@ -40,8 +37,7 @@ jobs:
         push: false
         tags: esperoj/dotfiles:latest
         build-args: |
-          PACKAGES="BASE DEV NET BIG"
-          BUILD_DATE=${{ steps.date.outputs.date }}
+          MACHINE_NAME="container"
         file: Dockerfile
         load: true
         no-cache: false
@@ -51,7 +47,10 @@ jobs:
       env:
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
       run: |
-        docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/dotfiles:latest "chezmoi update && info.sh"
+        docker run \
+        --env ENCRYPTION_PASSPHRASE \
+        --rm esperoj/dotfiles:latest \
+        "chezmoi update && info.sh"
     -
       name: Build and push
       uses: docker/build-push-action@v4
@@ -61,8 +60,7 @@ jobs:
         push: true
         tags: esperoj/dotfiles:latest
         build-args: |
-          PACKAGES="BASE DEV NET BIG"
-          BUILD_DATE=${{ steps.date.outputs.date }}
+          MACHINE_NAME="container"
         file: Dockerfile
         no-cache: false
         platforms: linux/amd64

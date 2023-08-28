@@ -7,7 +7,7 @@ steps:
     image: public.ecr.aws/docker/library/buildpack-deps:stable
     pull: true
     environment:
-      - MACHINE_NAME=ci
+      - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
       - ./bin/setup.sh
@@ -18,10 +18,9 @@ steps:
       dry-run: false
       platforms: linux/amd64
       auto_tag: true
-      repo: codeberg.org/${CI_REPO_OWNER}/dotfiles
+      repo: codeberg.org/esperoj/dotfiles
       registry: codeberg.org
       username: esperoj
       password:
         from_secret: codeberg_token
       compress: true
-      #build_args: BUILD_DATE=${CI_STEP_STARTED}

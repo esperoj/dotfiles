@@ -6,7 +6,7 @@ steps:
     image: codeberg.org/esperoj/dotfiles
     pull: true
     environment:
-      - MACHINE_NAME=ci
+      - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
       - command time -v ~/bin/entrypoint.sh "$${COMMAND}"

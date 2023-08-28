@@ -8,10 +8,9 @@ steps:
     image: codeberg.org/esperoj/dotfiles
     pull: true
     environment:
-      - MACHINE_NAME=ci
+      - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
-      - echo $${BUILD_DATE}
       - |
         command time -v ~/bin/entrypoint.sh "
         ssh segfault bash -s <<<'

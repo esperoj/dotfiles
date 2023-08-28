@@ -13,14 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-      MACHINE_NAME: ci
     timeout-minutes: 60
     steps:
     -
       name: Backup
       run: |
-        docker run --env ENCRYPTION_PASSPHRASE --rm esperoj/dotfiles:latest '
-        chezmoi update
+        docker run \
+        --env ENCRYPTION_PASSPHRASE \
+        --rm esperoj/dotfiles:latest \
+        'chezmoi update
         ssh segfault bash -s <<EOL
         source ~/.profile
         backup.sh

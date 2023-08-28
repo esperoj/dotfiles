@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-      MACHINE_NAME: ci
       COMMAND: ${{ inputs.command }}
       MY_UUID: ${{ secrets.MY_UUID }}
     timeout-minutes: 360
@@ -23,7 +22,11 @@ jobs:
     -
       name: Run
       run: |
-        docker run --env COMMAND --env ENCRYPTION_PASSPHRASE --rm esperoj/dotfiles:latest 'cd "$(mktemp -d)" && bash -c "${COMMAND}"'
+        docker run \
+        --env COMMAND \
+        --env ENCRYPTION_PASSPHRASE \
+        --rm esperoj/dotfiles:latest \
+        'cd "$(mktemp -d)" && bash -c "${COMMAND}"'
     -
       name: Send notification
       env:
