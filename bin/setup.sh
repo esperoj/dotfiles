@@ -12,8 +12,6 @@ install-packages() {
   packages="
     7zip
     jq
-    libswresample4
-    lsb-release
     inxi
     nodejs
     npm
@@ -22,7 +20,6 @@ install-packages() {
     shfmt
     sudo
     time
-    yt-dlp
   "
   xargs apt-fast install -y --no-install-recommends <<<"${packages}"
 }
