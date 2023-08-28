@@ -24,4 +24,4 @@ steps:
       password:
         from_secret: codeberg_token
       compress: true
-      build_args: BUILD_DATE=${CI_STEP_STARTED}
+      #build_args: BUILD_DATE=${CI_STEP_STARTED}
