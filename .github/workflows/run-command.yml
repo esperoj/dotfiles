@@ -1,0 +1,36 @@
+name: Run command
+run-name: Run command
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: "Run a command"
+        required: true
+        type: string
+jobs:
+  Run:
+    runs-on: ubuntu-latest
+    env:
+      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+      MACHINE_NAME: ci
+      COMMAND: ${{ inputs.command }}
+      MY_UUID: ${{ secrets.MY_UUID }}
+    timeout-minutes: 360
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v3
+    -
+      name: Run
+      run: |
+        docker run --env COMMAND --env ENCRYPTION_PASSPHRASE --rm esperoj/dotfiles:latest 'cd "$(mktemp -d)" && bash -c "${COMMAND}"'
+    -
+      name: Send notification
+      env:
+        NTFY_URL: ${{ secrets.NTFY_URL }}
+      if: ${{ always() }}
+      run: |
+        ./bin/notify.sh "${COMMAND}" \
+        "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
+        "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+        | jq
