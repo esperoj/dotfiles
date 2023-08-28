@@ -1,0 +1,18 @@
+when:
+  - event: cron
+  - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "backup"'
+
+steps:
+  run:
+    image: codeberg.org/esperoj/dotfiles
+    pull: true
+    environment:
+      - MACHINE_NAME=ci
+    secrets: [ encryption_passphrase ]
+    commands:
+      - echo $${BUILD_DATE}
+      - |
+        command time -v ~/bin/entrypoint.sh "
+        ssh segfault bash -s <<<'
+        source ~/.profile
+        backup.sh'"

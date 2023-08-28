@@ -4,7 +4,7 @@ when:
 
 steps:
   test:
-    image: buildpack-deps:stable
+    image: public.ecr.aws/docker/library/buildpack-deps:stable
     pull: true
     environment:
       - MACHINE_NAME=ci
