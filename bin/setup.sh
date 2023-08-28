@@ -15,6 +15,7 @@ install-packages() {
     libswresample4
     lsb-release
     nodejs
+    npm
     rclone
     restic
     shfmt

@@ -1,3 +1,5 @@
+[![status-badge](https://ci.codeberg.org/api/badges/12554/status.svg)](https://ci.codeberg.org/repos/12554)
+
 # Install
 ```bash
 cd ~

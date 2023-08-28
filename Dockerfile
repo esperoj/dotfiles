@@ -6,6 +6,6 @@ ENV MACHINE_NAME="ci"
 WORKDIR /root
 COPY bin/setup.sh /
 RUN /setup.sh \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -r /var/lib/apt/lists /var/cache/apt/archives \
     && rm /setup.sh
 ENTRYPOINT ["/root/.local/share/chezmoi/bin/entrypoint.sh"]

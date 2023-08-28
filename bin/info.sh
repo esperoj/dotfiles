@@ -13,6 +13,8 @@ parallel --keep-order -vj0 {} <<-EOL
   df -h
   free -h
   lscpu
+  lspci
+  dmidecode
   uptime
   rclone listremotes
   restic check
