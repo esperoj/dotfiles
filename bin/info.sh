@@ -10,6 +10,7 @@ parallel --keep-order -vj0 {} <<-EOL
   curl -fLsS "https://ipwho.de"
   df -h
   free -h
+  uptime
   inxi -ABCDEGIJLMNPRSWdfijlmnoprstuw
   rclone listremotes
   restic check

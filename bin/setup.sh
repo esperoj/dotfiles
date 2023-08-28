@@ -14,6 +14,7 @@ install-packages() {
     7zip
     jq
     lsb-release
+    inxi
     nodejs
     npm
     rclone
