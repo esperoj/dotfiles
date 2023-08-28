@@ -10,9 +10,10 @@ install-dotfiles() {
 
 install-packages() {
   packages="
+    aria2
     7zip
     jq
-    inxi
+    lsb-release
     nodejs
     npm
     rclone
@@ -21,7 +22,7 @@ install-packages() {
     sudo
     time
   "
-  xargs apt-fast install -y --no-install-recommends <<<"${packages}"
+  xargs apt-get install -y --no-install-recommends <<<"${packages}"
 }
 
 install_oh_my_zsh() {
@@ -40,16 +41,16 @@ export -f install-dotfiles install-packages install_oh_my_zsh
 apt-get update -y
 # apt-get upgrade -y
 apt-get install -y --no-install-recommends \
-  aria2 parallel zsh
+  parallel zsh
 
 # Install apt-fast
-/bin/bash -c "$(curl -sL https://git.io/vokNn)"
+# /bin/bash -c "$(curl -sL https://git.io/vokNn)"
 
 parallel --keep-order -vj0 {} <<EOL
-install-dotfiles
-install-packages
-install_oh_my_zsh
-curl -fsLs https://github.com/woodpecker-ci/woodpecker/releases/latest/download/woodpecker-cli_linux_amd64.tar.gz | tar zx -C .local/bin
+  install-dotfiles
+  install-packages
+  install_oh_my_zsh
+  curl -fsLs https://github.com/woodpecker-ci/woodpecker/releases/latest/download/woodpecker-cli_linux_amd64.tar.gz | tar zx -C .local/bin
 EOL
 
 post-setup
