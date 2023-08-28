@@ -14,6 +14,7 @@ install-packages() {
     jq
     libswresample4
     lsb-release
+    inxi
     nodejs
     npm
     rclone

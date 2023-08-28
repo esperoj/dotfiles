@@ -6,16 +6,11 @@ cd "${HOME}"
 parallel --keep-order -vj0 {} <<-EOL
   echo "\${BUILD_DATE:-Today}"
   chezmoi status
-  lsb_release -a
-  uname -a
   pwd
   curl -fLsS "https://ipwho.de"
   df -h
   free -h
-  lscpu
-  lspci
-  dmidecode
-  uptime
+  inxi -ABCDEGIJLMNPRSWdfijlmnoprstuw
   rclone listremotes
   restic check
   python --version
