@@ -3,7 +3,7 @@ when:
 
 steps:
   run:
-    image: esperoj/personal
+    image: codeberg.org/esperoj/dotfiles
     pull: true
     environment:
       - MACHINE_NAME=ci

@@ -18,7 +18,6 @@ parallel --keep-order -vj0 {} <<-EOL
   restic check
   python --version
   node --version
-  7z b
   ssh segfault "uname -a; lsb_release -a"
   ssh envs "uname -a; lsb_release -a"
   ssh serv00 "uname -a"
