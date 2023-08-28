@@ -3,6 +3,8 @@ when:
     cron: daily-backup
   - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "daily-backup"'
 
+skip_clone: true
+
 steps:
   backup:
     image: codeberg.org/esperoj/dotfiles

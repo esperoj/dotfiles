@@ -1,6 +1,8 @@
 when:
   - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "run-command"'
 
+skip_clone: true
+
 steps:
   run:
     image: codeberg.org/esperoj/dotfiles
