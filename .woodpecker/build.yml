@@ -8,6 +8,19 @@ steps:
     secrets: [ encryption_passphrase ]
     commands:
       - bash -c 'echo "ENCRYPTION_PASSPHRASE=$${ENCRYPTION_PASSPHRASE@Q}" > env'
+  base:
+    image: plugins/docker
+    settings:
+      repo: codeberg.org/esperoj/dotfiles
+      platforms: linux/amd64
+      compress: true
+      tag: base
+      dry-run: true
+      secret: id=env,src=env
+      pull_image: true
+      target: base
+      no_cache: true
+      purge: false
   test:
     image: plugins/docker
     settings:
@@ -17,9 +30,9 @@ steps:
       tag: test
       dry-run: true
       secret: id=env,src=env
-      pull_image: true
+      pull_image: false
       target: test
-      no_cache: true
+      no_cache: false
       purge: true
   publish:
     image: plugins/docker
