@@ -21,8 +21,9 @@ jobs:
         docker run \
         --env ENCRYPTION_PASSPHRASE \
         --rm ghcr.io/esperoj/dotfiles:latest \
-        'chezmoi update
-        ssh segfault bash -s <<EOL
+        'ssh segfault bash -s <<EOL
+        . ~/.profile
+        chezmoi update
         . ~/.profile
         backup.sh
         EOL'
