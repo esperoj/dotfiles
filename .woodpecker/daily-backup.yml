@@ -15,6 +15,7 @@ steps:
     commands:
       - |
         command time -v ~/bin/entrypoint.sh "
+        chezmoi update
         ssh segfault bash -s <<<'
-        source ~/.profile
+        . ~/.profile
         backup.sh'"
