@@ -32,6 +32,7 @@ steps:
       pull_image: false
       no_cache: false
       purge: true
+      secret: id=env,src=env
       target: production
       registry: codeberg.org
       username: esperoj

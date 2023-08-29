@@ -7,9 +7,9 @@ RUN /setup.sh \
     && rm /setup.sh
 
 FROM base as test
-RUN --mount=type=secret,id=env \
-    set -a && . /run/secrets/env && set +a \
-    && ~/bin/entrypoint.sh "chezmoi update && info.sh"
+RUN --mount=type=secret,id=env ls
+#    set -a && . /run/secrets/env && set +a \
+#    && ~/bin/entrypoint.sh "chezmoi update && info.sh"
 
 FROM base as production
 ENTRYPOINT ["/root/bin/entrypoint.sh"]
