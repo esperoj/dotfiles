@@ -14,7 +14,7 @@ steps:
       repo: codeberg.org/esperoj/dotfiles
       platforms: linux/amd64
       compress: true
-      auto_tag: true
+      tag: test
       dry-run: true
       secret: id=env,src=env
       pull_image: true
@@ -32,6 +32,7 @@ steps:
       pull_image: false
       no_cache: false
       purge: true
+      target: production
       registry: codeberg.org
       username: esperoj
       password:
