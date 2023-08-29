@@ -2,7 +2,6 @@ variables:
   - &build_plugin plugins/docker
   - base_settings: &base_docker_settings
       repo: codeberg.org/esperoj/dotfiles
-      platforms: linux/amd64
       secret: id=env,src=env
       auto_tag: true
 

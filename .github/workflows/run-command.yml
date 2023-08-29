@@ -25,7 +25,7 @@ jobs:
         docker run \
         --env COMMAND \
         --env ENCRYPTION_PASSPHRASE \
-        --rm esperoj/dotfiles:latest \
+        --rm ghcr.io/esperoj/dotfiles:latest \
         'cd "$(mktemp -d)" && bash -c "${COMMAND}"'
     -
       name: Send notification

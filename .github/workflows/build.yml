@@ -46,6 +46,15 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
     -
       name: Test
       uses: docker/build-push-action@v4
@@ -54,7 +63,6 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         context: .
         file: Dockerfile
-        platforms: linux/amd64
         secret-files: |
           "env=./env"
         push: false
@@ -67,7 +75,6 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64
         file: Dockerfile
         no-cache: false
     -

@@ -16,5 +16,5 @@ jobs:
       run: |
         docker run \
         --env ENCRYPTION_PASSPHRASE \
-        --rm esperoj/dotfiles:latest \
+        --rm ghcr.io/esperoj/dotfiles:latest \
         "benchmark.sh"
