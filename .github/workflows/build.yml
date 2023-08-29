@@ -13,10 +13,15 @@ jobs:
       cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
     steps:
     -
       name: Checkout
       uses: actions/checkout@v3
+    -
+      name: Create env
+      run: echo "ENCRYPTION_PASSPHRASE=${ENCRYPTION_PASSPHRASE@Q}" > env
     -
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -29,41 +34,27 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     -
-      name: Build and export to Docker
+      name: Test
       uses: docker/build-push-action@v4
       with:
-        context: .
-        pull: false
-        push: false
         tags: esperoj/dotfiles:latest
-        build-args: |
-          MACHINE_NAME="container"
+        context: .
         file: Dockerfile
-        load: true
-        no-cache: false
         platforms: linux/amd64
-    -
-      name: Test
-      env:
-        ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-      run: |
-        docker run \
-        --env ENCRYPTION_PASSPHRASE \
-        --rm esperoj/dotfiles:latest \
-        "chezmoi update && info.sh"
+        secret-files: |
+          "env=./env"
+        push: false
+        target: test
     -
       name: Build and push
       uses: docker/build-push-action@v4
       with:
         context: .
-        pull: true
         push: true
         tags: esperoj/dotfiles:latest
-        build-args: |
-          MACHINE_NAME="container"
+        platforms: linux/amd64
         file: Dockerfile
         no-cache: false
-        platforms: linux/amd64
     -
       name: Send notification
       env:
