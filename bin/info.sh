@@ -20,4 +20,5 @@ parallel --keep-order -vj0 {} <<-EOL
   ssh envs "uname -a; lsb_release -a"
   ssh serv00 "uname -a"
   ssh ct8 "uname -a"
+  ssh hashbang "uname -a; lsb_release -a"
 EOL

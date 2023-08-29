@@ -3,24 +3,36 @@ when:
     branch: main
 
 steps:
-  test:
-    image: public.ecr.aws/docker/library/buildpack-deps:stable
-    pull: true
-    environment:
-      - MACHINE_NAME=container
+  create-env:
+    image: public.ecr.aws/docker/library/buildpack-deps:stable-curl
     secrets: [ encryption_passphrase ]
     commands:
-      - ./bin/setup.sh
-      - ./bin/entrypoint.sh "chezmoi update && info.sh"
-  publish:
-    image: codeberg.org/woodpecker-plugins/docker-buildx
+      - bash -c 'echo "ENCRYPTION_PASSPHRASE=$${ENCRYPTION_PASSPHRASE@Q}" > env'
+  test:
+    image: plugins/docker
     settings:
-      dry-run: false
-      platforms: linux/amd64
-      auto_tag: true
       repo: codeberg.org/esperoj/dotfiles
+      platforms: linux/amd64
+      compress: true
+      auto_tag: true
+      dry-run: true
+      secret: id=env,src=env
+      pull_image: true
+      target: test
+      no_cache: true
+      purge: true
+  publish:
+    image: plugins/docker
+    settings:
+      repo: codeberg.org/esperoj/dotfiles
+      platforms: linux/amd64
+      compress: true
+      auto_tag: true
+      dry-run: false
+      pull_image: false
+      no_cache: false
+      purge: true
       registry: codeberg.org
       username: esperoj
       password:
         from_secret: codeberg_token
-      compress: true
