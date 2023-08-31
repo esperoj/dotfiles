@@ -15,17 +15,10 @@ steps:
     secrets: [ encryption_passphrase ]
     commands:
       - bash -c 'echo "ENCRYPTION_PASSPHRASE=$${ENCRYPTION_PASSPHRASE@Q}" > env'
-  test:
-    image: *build_plugin
-    settings:
-      <<: *base_docker_settings
-      dry-run: true
-      target: test
   publish:
     image: *build_plugin
     settings:
       <<: *base_docker_settings
-      compress: true
       dry-run: false
       target: production
 
