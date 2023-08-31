@@ -4,6 +4,10 @@ variables:
       repo: codeberg.org/esperoj/dotfiles
       secret: id=env,src=env
       auto_tag: true
+      registry: codeberg.org
+      username: esperoj
+      password:
+        from_secret: codeberg_token
 
 steps:
   create-env:
@@ -11,12 +15,22 @@ steps:
     secrets: [ encryption_passphrase ]
     commands:
       - bash -c 'echo "ENCRYPTION_PASSPHRASE=$${ENCRYPTION_PASSPHRASE@Q}" > env'
+  base:
+    image: *build_plugin
+    settings:
+      <<: *base_docker_settings
+      dry-run: false
+      tags:
+        - base
+      auto_tag: false
+      target: base
   test:
     image: *build_plugin
     settings:
       <<: *base_docker_settings
       dry-run: true
       target: test
+      cache_from: codeberg.org/esperoj/dotfiles:base 
   publish:
     image: *build_plugin
     settings:
@@ -24,10 +38,7 @@ steps:
       compress: true
       dry-run: false
       target: production
-      registry: codeberg.org
-      username: esperoj
-      password:
-        from_secret: codeberg_token
+      cache_from: codeberg.org/esperoj/dotfiles:base 
 
 when:
   - event: [push, tag]

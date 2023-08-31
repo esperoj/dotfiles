@@ -1,10 +1,15 @@
 #!/bin/bash
 set -Eueo pipefail
+cd "${HOME}"
 # Install chezmoi
-path="${HOME}/.local/bin"
-sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${path}"
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ".local/bin"
 # Clone dotfiles
-mkdir -p "${HOME}/.local/share/chezmoi"
-cd "${HOME}/.local/share/chezmoi"
-git clone --depth=1 https://codeberg.org/esperoj/dotfiles.git .
-git remote set-url origin git@codeberg.org:esperoj/dotfiles.git
+path=".local/share/chezmoi"
+(
+  mkdir -p "${path}"
+  cd "${path}"
+  git clone --depth=1 https://codeberg.org/esperoj/dotfiles.git .
+  git remote set-url origin git@codeberg.org:esperoj/dotfiles.git
+)
+# Post setup
+ln -s "${path}/bin" .

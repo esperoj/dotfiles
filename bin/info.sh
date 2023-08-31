@@ -4,7 +4,6 @@ set -Eeuxo pipefail
 cd "${HOME}"
 
 parallel --keep-order -vj0 {} <<-EOL
-  echo "\${BUILD_DATE:-Today}"
   chezmoi status
   pwd
   curl -fLsS "https://ipwho.de"

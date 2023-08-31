@@ -1,10 +1,11 @@
 FROM public.ecr.aws/docker/library/buildpack-deps:stable as base
 ENV MACHINE_NAME="container"
 WORKDIR /root
-COPY bin/setup.sh /
-RUN /setup.sh \
+COPY bin/install-dotfiles.sh /
+RUN /install-dotfiles.sh \
+    && ~/bin/setup.sh \
     && rm -r /var/lib/apt/lists /var/cache/apt/archives \
-    && rm /setup.sh
+    && rm /install-dotfiles.sh
 
 FROM base as test
 RUN --mount=type=secret,id=env \
