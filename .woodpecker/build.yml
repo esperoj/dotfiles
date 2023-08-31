@@ -15,22 +15,12 @@ steps:
     secrets: [ encryption_passphrase ]
     commands:
       - bash -c 'echo "ENCRYPTION_PASSPHRASE=$${ENCRYPTION_PASSPHRASE@Q}" > env'
-  base:
-    image: *build_plugin
-    settings:
-      <<: *base_docker_settings
-      dry-run: false
-      tags:
-        - base
-      auto_tag: false
-      target: base
   test:
     image: *build_plugin
     settings:
       <<: *base_docker_settings
       dry-run: true
       target: test
-      cache_from: codeberg.org/esperoj/dotfiles:base 
   publish:
     image: *build_plugin
     settings:
@@ -38,7 +28,6 @@ steps:
       compress: true
       dry-run: false
       target: production
-      cache_from: codeberg.org/esperoj/dotfiles:base 
 
 when:
   - event: [push, tag]

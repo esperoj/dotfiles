@@ -6,7 +6,6 @@ cd "${HOME}"
 parallel --keep-order -vj0 {} <<-EOL
   chezmoi status
   pwd
-  curl -fLsS "https://ipwho.de"
   df -h
   free -h
   uptime
