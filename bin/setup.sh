@@ -2,6 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
+[[ $(whoami) == root ]] || alias apt='pkg-install.sh DISABLED apt'
 cmds=$(echo '
   install_7zip
   install_kopia

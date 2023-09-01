@@ -4,8 +4,7 @@ WORKDIR /root
 COPY bin/install-dotfiles.sh /
 RUN /install-dotfiles.sh \
     && ~/bin/setup.sh \
-    && rm -r /var/lib/apt/lists /var/cache/apt/archives \
-    && rm /install-dotfiles.sh
+    && rm -r /var/lib/apt/lists /var/cache/apt/archives /install-dotfiles.sh /tmp/*
 
 FROM base as test
 RUN --mount=type=secret,id=env \
