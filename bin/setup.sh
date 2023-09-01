@@ -4,7 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 cmds=$(echo '
   install_7zip
-  # install_kopia
+  #install_kopia
   install_oh_my_zsh
   install_packages
   install_rclone
