@@ -94,12 +94,7 @@ setup_linux() {
   apt update -y
   apt install -qqy --no-install-recommends \
     jq parallel zsh
-
   parallel --keep-order -vj0 ::: ${cmds}
-
-  ln -s $(command -v 7zz) ".local/bin/7z"
-  ln -s $(command -v python3) ".local/bin/python"
-  mkdir -p ".ssh/sockets"
 }
 
 export -f ${cmds}
@@ -111,3 +106,6 @@ case "${OS,,}" in
   setup_linux
   ;;
 esac
+ln -s $(command -v 7zz) ".local/bin/7z"
+ln -s $(command -v python3) ".local/bin/python"
+mkdir -p ".ssh/sockets"
