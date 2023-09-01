@@ -22,6 +22,7 @@ install_7zip() {
 }
 
 install_asdf_packages() {
+  # TODO: Update asdf version yearly
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
   . "${HOME}/.asdf/asdf.sh"
   asdf_install() {
@@ -30,7 +31,7 @@ install_asdf_packages() {
     asdf global $1 latest
   }
   export -f asdf_install
-  local packages="nodejs"
+  local packages="fzf nodejs"
   parallel --keep-order -vj1 asdf_install ::: ${packages}
 }
 
