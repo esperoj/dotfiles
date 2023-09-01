@@ -5,6 +5,7 @@ export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 [[ $(whoami) == root ]] || alias apt='pkg-install.sh DISABLED apt'
 cmds=$(echo '
   install_7zip
+  install_asdf_packages
   install_kopia
   install_oh_my_zsh
   install_packages
@@ -20,6 +21,19 @@ install_7zip() {
   pkg-install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
 }
 
+install_asdf_packages() {
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
+  . "${HOME}/.asdf/asdf.sh"
+  asdf_install() {
+    asdf plugin add $1
+    asdf install $1 latest
+    asdf global $1 latest
+  }
+  export -f asdf_install
+  local packages="nodejs"
+  parallel --keep-order -vj1 asdf_install ::: ${packages}
+}
+
 install_kopia() {
   pkg-install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
@@ -33,8 +47,6 @@ install_packages() {
     aria2
     lsb-release
     inxi
-    nodejs
-    npm
     sudo
     time
   "

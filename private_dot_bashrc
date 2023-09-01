@@ -2,3 +2,4 @@
 echo "Running ${HOME}/.bashrc"
 source "${HOME}/.profile"
 source "${HOME}/.config/${MACHINE_NAME}/bashrc"
+[[ ! -d "${HOME}/.asdf" ]] || . "${HOME}/.asdf/completions/asdf.bash"
