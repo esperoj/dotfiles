@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
-# export PIPX_HOME=/usr
-# export PIPX_BIN_DIR=/usr/bin
+export PIPX_HOME=/usr
+export PIPX_BIN_DIR="${HOME}/.local/bin"
 
 [[ -n $BESTEFFORT ]] && force_exit_code=0
 
@@ -45,7 +45,7 @@ dlx() {
   url="$1"
   asset="$2"
   dstdir="$3"
-  [[ -z $dstdir ]] && dstdir="/.local/bin"
+  [[ -z $dstdir ]] && dstdir="${HOME}/.local/bin"
 
   [[ -z "$url" ]] && {
     echo >&2 "[${asset}] URL: '$loc'"
@@ -130,7 +130,7 @@ ghlatest() {
   echo "$url"
 }
 
-# Install latest Binary from GitHub and smear it into /usr/bin
+# Install latest Binary from GitHub and smear it into ${HOME}/.local/bin
 # [<user>/<repo>] [<regex-match>] [asset]
 # Examples:
 # ghbin tomnomnom/waybackurls "linux-amd64-" waybackurls
@@ -161,21 +161,21 @@ bin() {
   local src
   src=$(dearch "$1") || exit 0
 
-  dlx "$src" "$2" "$3"
+  dlx "$src" "$2"
 }
 
 TAG="${1^^}"
 shift 1
 
-# Can not use Dockerfile 'ARG SF_PACKAGES=${SF_PACKAGES:-"BASE"}'
-# because 'make' sets SF_PACKAGES to an _empty_ string and docker thinks
+# Can not use Dockerfile 'ARG PACKAGES=${PACKAGES:-"MINI BASE NET"}'
+# because 'make' sets PACKAGES to an _empty_ string and docker thinks
 # an empty string does not warrant ':-"MINI BASE NET"' substititon.
-[[ -z $PACKAGES ]] && PACKAGES="BASE"
+[[ -z $PACKAGES ]] && PACKAGES="MINI BASE NET"
 
 [[ -n $PACKAGES ]] && {
   PACKAGES="${PACKAGES^^}" # Convert to upper case
   [[ "$TAG" == *DISABLED* ]] && {
-    echo "Skipping Packages: $TAG"
+    echo "Skipping Packages: $TAG [DISABLED]"
     exit
   }
   [[ "$TAG" == ALLALL ]] && {

@@ -13,6 +13,6 @@ RUN --mount=type=secret,id=env \
     && ~/bin/entrypoint.sh "info.sh" \
     && echo "$(date --utc)" > /root/build-date.txt
 
-FROM base as production
+FROM base as final
 COPY --from=test /root/build-date.txt .
 ENTRYPOINT ["/root/bin/entrypoint.sh"]

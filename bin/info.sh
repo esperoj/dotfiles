@@ -4,19 +4,21 @@ set -Eeuxo pipefail
 cd "${HOME}"
 
 parallel --keep-order -vj0 {} <<-EOL
+  7z
   chezmoi status
-  pwd
+  curl -fLsS "https://ipwho.de"
   df -h
   free -h
-  uptime
   inxi -ABCDEGIJLMNPRSWdfijlmnoprstuw
+  node --version
+  pwd
+  python --version
   rclone listremotes
   restic check
-  python --version
-  node --version
-  ssh segfault "uname -a; lsb_release -a"
-  ssh envs "uname -a; lsb_release -a"
-  ssh serv00 "uname -a"
   ssh ct8 "uname -a"
+  ssh envs "uname -a; lsb_release -a"
   ssh hashbang "uname -a; lsb_release -a"
+  ssh segfault "uname -a; lsb_release -a"
+  ssh serv00 "uname -a"
+  uptime
 EOL

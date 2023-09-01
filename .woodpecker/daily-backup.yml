@@ -13,6 +13,7 @@ steps:
       - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
+      - uptime
       - |
         command time -v ~/bin/entrypoint.sh "
         ssh segfault bash -s <<<'

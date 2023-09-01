@@ -20,7 +20,7 @@ steps:
     settings:
       <<: *base_docker_settings
       dry-run: false
-      target: production
+      target: final
 
 when:
   - event: [push, tag]
