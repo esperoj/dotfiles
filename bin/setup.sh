@@ -20,7 +20,7 @@ cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 
 install_7zip() {
-  pkg-install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz$" 7zz
+  pkg-install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
 }
 
 install_asdf_packages() {
