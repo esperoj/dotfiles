@@ -12,6 +12,7 @@ cmds=$(echo '
   install_rclone
   install_restic
   install_shfmt
+  install_yt_dlp
   install_woodpecker_cli
   ' | xargs)
 [[ $(whoami) == root ]] || alias apt='pkg-install.sh DISABLED apt'
@@ -19,7 +20,7 @@ cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 
 install_7zip() {
-  pkg-install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
+  pkg-install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz$" 7zz
 }
 
 install_asdf_packages() {
@@ -32,7 +33,7 @@ install_asdf_packages() {
     asdf global $1 latest
   }
   export -f asdf_install
-  local packages="fzf nodejs yt-dlp"
+  local packages="fzf nodejs"
   parallel --keep-order -vj1 asdf_install ::: ${packages}
 }
 
@@ -68,7 +69,11 @@ install_restic() {
 }
 
 install_shfmt() {
-  pkg-install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%" shfmt
+  pkg-install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
+}
+
+install_yt_dlp() {
+  pkg-install.sh BASE ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
 }
 
 install_woodpecker_cli() {
