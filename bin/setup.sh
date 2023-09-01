@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
-[[ $(whoami) == root ]] || alias apt='pkg-install.sh DISABLED apt'
+OS="$(uname -o)"
 cmds=$(echo '
   install_7zip
   install_asdf_packages
@@ -14,8 +14,9 @@ cmds=$(echo '
   install_shfmt
   install_woodpecker_cli
   ' | xargs)
-
+[[ $(whoami) == root ]] || alias apt='pkg-install.sh DISABLED apt'
 cd "${HOME}"
+mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 
 install_7zip() {
   pkg-install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
@@ -31,7 +32,7 @@ install_asdf_packages() {
     asdf global $1 latest
   }
   export -f asdf_install
-  local packages="fzf nodejs"
+  local packages="fzf nodejs yt-dlp"
   parallel --keep-order -vj1 asdf_install ::: ${packages}
 }
 
@@ -46,10 +47,14 @@ install_oh_my_zsh() {
 install_packages() {
   packages="
     aria2
-    lsb-release
+    ffmpeg
     inxi
+    lsb-release
+    sqlite3
     sudo
     time
+    tmux
+    vim
   "
   xargs apt install -qqy --no-install-recommends <<<"${packages}"
 }
@@ -70,7 +75,16 @@ install_woodpecker_cli() {
   pkg-install.sh BASE ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
 }
 
-setup() {
+setup_android() {
+  apt-get update -qqy
+  apt-get upgrade -qqy
+  apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh-client
+  install_oh_my_zsh
+  termux-setup-storage
+  termux-change-repo
+}
+
+setup_linux() {
   set -Euxeo pipefail
   apt update -y
   apt install -qqy --no-install-recommends \
@@ -84,5 +98,11 @@ setup() {
 }
 
 export -f ${cmds}
-
-setup
+case "${OS,,}" in
+*android*)
+  setup_android
+  ;;
+*linux*)
+  setup_linux
+  ;;
+esac
