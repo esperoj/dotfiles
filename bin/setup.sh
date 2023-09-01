@@ -4,7 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 cmds=$(echo '
   install_7zip
-  #install_kopia
+  install_kopia
   install_oh_my_zsh
   install_packages
   install_rclone
@@ -20,7 +20,7 @@ install_7zip() {
 }
 
 install_kopia() {
-  pkg-install.sh BASE ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
+  pkg-install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
 
 install_oh_my_zsh() {
