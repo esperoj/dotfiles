@@ -29,7 +29,6 @@ install_oh_my_zsh() {
 install_packages() {
   packages="
     aria2
-    jq
     lsb-release
     inxi
     nodejs
@@ -57,7 +56,7 @@ setup() {
   set -Euxeo pipefail
   apt update -y
   apt install -qqy --no-install-recommends \
-    parallel zsh
+    jq parallel zsh
 
   parallel --keep-order -vj0 ::: ${cmds}
 
