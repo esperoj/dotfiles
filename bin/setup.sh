@@ -11,7 +11,6 @@ cmds=$(echo '
   install_restic
   install_woodpecker_cli
   ' | xargs)
-export -f ${cmds}
 
 cd "${HOME}"
 
@@ -66,5 +65,7 @@ setup() {
   ln -s $(command -v python3) ".local/bin/python"
   mkdir -p ".ssh/sockets"
 }
+
+export -f ${cmds}
 
 setup
