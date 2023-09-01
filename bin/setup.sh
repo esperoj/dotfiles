@@ -10,6 +10,7 @@ cmds=$(echo '
   install_packages
   install_rclone
   install_restic
+  install_shfmt
   install_woodpecker_cli
   ' | xargs)
 
@@ -34,7 +35,6 @@ install_packages() {
     inxi
     nodejs
     npm
-    shfmt
     sudo
     time
   "
@@ -47,6 +47,10 @@ install_rclone() {
 
 install_restic() {
   pkg-install.sh BASE ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
+}
+
+install_shfmt() {
+  pkg-install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%" shfmt
 }
 
 install_woodpecker_cli() {
