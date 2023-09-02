@@ -48,7 +48,6 @@ install_oh_my_zsh() {
 install_packages() {
   packages="
     aria2
-    ffmpeg
     inxi
     lsb-release
     sqlite3
