@@ -12,13 +12,12 @@ steps:
       - command time -v ~/bin/entrypoint.sh "$${COMMAND}"
   notify:
     image: codeberg.org/esperoj/dotfiles
-    pull: false
     secrets: [ encryption_passphrase ]
     when:
       - status: [ success, failure ]
     commands:
       - |
-        ~/bin/entrypoint.sh 'notify.sh ""
-        "Title: Workflow $${CI_WORKFLOW_NAME} of $${CI_REPO_OWNER}/$${CI_REPO_NAME} completed."
-        "Actions: view, View log, $${CI_PIPELINE_URL}"
+        ~/bin/entrypoint.sh 'notify.sh "" \
+        "Title: Workflow $${CI_WORKFLOW_NAME} of $${CI_REPO_OWNER}/$${CI_REPO_NAME} completed." \
+        "Actions: view, View log, $${CI_PIPELINE_URL}" \
         | jq'
