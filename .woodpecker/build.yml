@@ -28,7 +28,8 @@ steps:
     when:
       - status: [ success, failure ]
     commands:
-      - ~/bin/entrypoint.sh 'notify.sh ""
+      - |
+        ~/bin/entrypoint.sh 'notify.sh ""
         "Title: Workflow $${CI_WORKFLOW_NAME} of $${CI_REPO_OWNER}/$${CI_REPO_NAME} completed."
         "Actions: view, View log, $${CI_PIPELINE_URL}"
         | jq'
