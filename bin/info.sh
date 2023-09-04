@@ -14,7 +14,7 @@ parallel --keep-order -vj0 {} <<-EOL
   pwd
   python --version
   rclone listremotes
-  restic check
+  restic version
   ssh ct8 "uname -a"
   ssh envs "uname -a; lsb_release -a"
   ssh hashbang "uname -a; lsb_release -a"

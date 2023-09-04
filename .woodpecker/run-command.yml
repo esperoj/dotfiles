@@ -1,16 +1,22 @@
+variables:
+  - conditions: &conditions
+      when:
+        - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "run-command"'
 when:
-  - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "run-command"'
+  - event: manual
 
 skip_clone: true
 
 steps:
   run:
+    <<: *conditions
     image: codeberg.org/esperoj/dotfiles
     pull: true
     secrets: [ encryption_passphrase ]
     commands:
       - command time -v ~/bin/entrypoint.sh "$${COMMAND}"
   notify:
+    <<: *conditions
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
     when:
