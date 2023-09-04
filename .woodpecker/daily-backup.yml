@@ -1,12 +1,13 @@
 when:
-  - event: cron
+  - event: [ cron, manual ]
     cron: daily-backup
-  - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "daily-backup"'
 
 skip_clone: true
 
 steps:
   backup:
+    when:
+      - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "daily-backup"'
     image: codeberg.org/esperoj/dotfiles
     pull: true
     environment:
