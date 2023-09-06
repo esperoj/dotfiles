@@ -1,6 +1,37 @@
 #!/bin/bash
 set -Exeo pipefail
-cd "/storage/emulated/0/"
-rclone sync -v ./working koofr:working --exclude ".thumbnails/"
-rclone sync -v ./ePSXe koofr:ePSXe
-rclone sync -v ./music koofr:music --exclude ".thumbnails/"
+export RCLONE_VERBOSE=1
+export RCLONE_FILTER_FROM="$(mktemp)"
+cat <<-EOL >"${RCLONE_FILTER_FROM}"
+- .thumbnails/
+- tmp/
+EOL
+
+backup_phone() {
+  cd "/storage/emulated/0/"
+  rclone sync workspace workspace:
+  rclone sync ePSXe koofr:ePSXe
+  rclone sync music koofr:music
+}
+
+backup_segfault() {
+  cd ~
+  rclone sync workspace: workspace
+  restic backup --no-scan --host "${MACHINE_NAME}" workspace
+  restic forget --keep-daily 30 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75 --prune
+  restic check
+}
+
+cleanup() {
+  rm "${RCLONE_FILTER_FROM}"
+}
+
+case "${MACHINE_NAME}" in
+phone)
+  backup_phone
+  ;;
+segfault)
+  backup_segfault
+  ;;
+esac
+cleanup

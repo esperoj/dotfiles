@@ -25,5 +25,5 @@ jobs:
         . ~/.profile
         chezmoi update
         . ~/.profile
-        backup.sh
+        daily-backup.sh
         EOL'

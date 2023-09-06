@@ -18,6 +18,6 @@ steps:
     commands:
       - |
         ~/bin/entrypoint.sh 'xargs -d "\n" notify.sh <<<"
-        Title: Workflow $${CI_WORKFLOW_NAME} of $${CI_REPO_OWNER}/$${CI_REPO_NAME} completed.
-        Actions: view, View, $${CI_PIPELINE_URL}" \
+        Title: Workflow $${CI_WORKFLOW_NAME} of $${CI_REPO} has completed.
+        Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" \
         | jq'
