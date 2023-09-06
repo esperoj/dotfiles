@@ -3,10 +3,12 @@
 # Install
 
 ```bash
+cd ~
 export ENCRYPTION_PASSPHRASE=""
 export MACHINE_NAME=segfault
 # Install dotfiles
 curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install-dotfiles.sh | bash
-~/bin/setup.sh
-~/bin/entrypoint.sh "rclone copy -v workspace: ./workspace"
+export PATH="${HOME}/bin:${PATH}"
+setup.sh
+entrypoint.sh "rclone copy -v workspace: ./workspace"
 ```
