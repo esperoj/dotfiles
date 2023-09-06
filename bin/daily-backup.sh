@@ -9,14 +9,14 @@ EOL
 
 backup_phone() {
   cd "/storage/emulated/0/"
-  rclone sync workspace workspace:
-  rclone sync ePSXe koofr:ePSXe
-  rclone sync music koofr:music
+  rclone sync ./workspace workspace:
+  rclone sync ./ePSXe koofr:ePSXe
+  rclone sync ./music koofr:music
 }
 
 backup_segfault() {
   cd ~
-  rclone sync workspace: workspace
+  rclone sync workspace: ./workspace
   restic backup --no-scan --host "${MACHINE_NAME}" workspace
   restic forget --keep-daily 30 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75 --prune
   restic check
@@ -34,4 +34,5 @@ segfault)
   backup_segfault
   ;;
 esac
+
 cleanup
