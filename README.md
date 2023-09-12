@@ -11,4 +11,5 @@ curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install-dot
 export PATH="${HOME}/bin:${PATH}"
 setup.sh
 entrypoint.sh "rclone copy -v workspace: ./workspace"
+info.sh
 ```
