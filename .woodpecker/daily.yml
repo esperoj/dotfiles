@@ -1,31 +1,23 @@
 when:
-  - event: [ cron, manual ]
-    cron: daily-backup
-    # schedule: 0 15 22 * * *
+  - event: cron
+    cron: daily
+    # schedule: 0 30 22 * * *
+  - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "daily"'
 
 skip_clone: true
 
 steps:
-  backup:
-    when:
-      - event: cron
-        cron: daily-backup
-      - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "daily-backup"'
+  run:
     image: codeberg.org/esperoj/dotfiles
     pull: true
     environment:
       - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
-      - uptime
       - |
-        command time -v ~/bin/entrypoint.sh "
-        ssh segfault bash -s <<<'
+        command time -v ~/bin/entrypoint.sh "cd ~
         uptime
-        . ~/.profile
-        chezmoi update
-        . ~/.profile
-        daily-backup.sh'"
+        daily.sh"
   notify:
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]

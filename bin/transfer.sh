@@ -103,4 +103,5 @@ transfer() {
     ;;
   esac
 }
-transfer $@
+
+transfer "$@"

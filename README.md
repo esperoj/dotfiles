@@ -13,7 +13,8 @@ cat <<-EOL >"${RCLONE_FILTER_FROM}"
 EOL
 # Install dotfiles
 curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install-dotfiles.sh | bash
-export PATH="${HOME}/bin:${PATH}"
+./.local/bin/chezmoi init --apply --force
+. ./.profile
 setup.sh
 entrypoint.sh "rclone copy -v workspace: ./workspace"
 info.sh

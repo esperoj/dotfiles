@@ -31,7 +31,9 @@ phone)
   backup_phone
   ;;
 segfault)
+  curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily-backup/start"
   backup_segfault
+  curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily-backup/${?}"
   ;;
 esac
 

@@ -15,12 +15,12 @@ cmds=$(echo '
   install_yt_dlp
   install_woodpecker_cli
   ' | xargs)
-[[ $(whoami) == root ]] || alias apt='pkg-install.sh DISABLED apt'
+[[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
 cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 
 install_7zip() {
-  pkg-install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
+  install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
 }
 
 install_asdf_packages() {
@@ -38,7 +38,7 @@ install_asdf_packages() {
 }
 
 install_kopia() {
-  pkg-install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
+  install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
 
 install_oh_my_zsh() {
@@ -60,23 +60,23 @@ install_packages() {
 }
 
 install_rclone() {
-  pkg-install.sh BASE ghbin rclone/rclone "-linux-%arch:x86_64=amd64:aarch64=arm64%.zip$" "rclone-*/rclone"
+  install.sh BASE ghbin rclone/rclone "-linux-%arch:x86_64=amd64:aarch64=arm64%.zip$" "rclone-*/rclone"
 }
 
 install_restic() {
-  pkg-install.sh BASE ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
+  install.sh BASE ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
 }
 
 install_shfmt() {
-  pkg-install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
+  install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
 }
 
 install_yt_dlp() {
-  pkg-install.sh BASE ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
+  install.sh BASE ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
 }
 
 install_woodpecker_cli() {
-  pkg-install.sh BASE ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
+  install.sh BASE ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
 }
 
 setup_android() {
