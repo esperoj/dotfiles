@@ -10,7 +10,7 @@ FROM base as test
 RUN --mount=type=secret,id=env \
     set -a && . /run/secrets/env && set +a \
     && ~/bin/entrypoint.sh "info.sh" \
-    && echo "$(date --utc)" > /root/build-date.txt
+    && echo `date --utc` > /root/build-date.txt
 
 FROM base as final
 COPY --from=test /root/build-date.txt .
