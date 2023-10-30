@@ -10,7 +10,6 @@ EOL
 backup_phone() {
   cd "/storage/emulated/0/"
   rclone sync ./workspace workspace:
-  rclone sync ./ePSXe koofr:ePSXe
   rclone sync ./music koofr:music
 }
 

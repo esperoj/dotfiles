@@ -82,7 +82,7 @@ install_woodpecker_cli() {
 setup_android() {
   apt-get update -qqy
   apt-get upgrade -qqy
-  apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf openssh-client termux-api
+  apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf termux-api
   install_oh_my_zsh
   termux-setup-storage
   termux-change-repo
