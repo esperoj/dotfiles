@@ -8,7 +8,7 @@ keep_pcloud_active() {
   rm ping.txt
 }
 
-export -f keep_pcloud_active fresh_feeds
+export -f keep_pcloud_active
 
 parallel --keep-order -vj0 {} <<-EOL
   ssh ct8 "devil info account"
