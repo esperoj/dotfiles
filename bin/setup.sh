@@ -94,8 +94,8 @@ setup_linux() {
   apt install -qqy --no-install-recommends \
     jq parallel zsh
   parallel --keep-order -vj0 ::: ${cmds}
-  python -m pip install --user pipx
-  python -m pipx install git+https://github.com/esperoj/esperoj.git
+  python3 -m pip install --user pipx
+  python3 -m pipx install git+https://github.com/esperoj/esperoj.git
 }
 
 export -f ${cmds}
