@@ -52,6 +52,7 @@ install_packages() {
     lsb-release
     sqlite3
     sudo
+    pipx
     time
     tmux
     vim
@@ -94,6 +95,7 @@ setup_linux() {
   apt install -qqy --no-install-recommends \
     jq parallel zsh
   parallel --keep-order -vj0 ::: ${cmds}
+  pipx install git+https://github.com/esperoj/esperoj.git
 }
 
 export -f ${cmds}

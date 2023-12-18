@@ -8,6 +8,7 @@ parallel --keep-order -vj0 {} <<-EOL
   chezmoi status
   curl -fLsS "https://ipwho.de"
   df -h
+  esperoj --help
   free -h
   inxi -ABCDEGIJLMNPRSWdfijlmnoprstuw
   node --version
