@@ -50,6 +50,7 @@ install_packages() {
     aria2
     inxi
     lsb-release
+    pipx
     python3-full
     python3-pip
     sqlite3
