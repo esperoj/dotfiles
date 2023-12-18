@@ -50,6 +50,7 @@ install_packages() {
     aria2
     inxi
     lsb-release
+    python3-full
     python3-pip
     sqlite3
     sudo
@@ -95,8 +96,7 @@ setup_linux() {
   apt install -qqy --no-install-recommends \
     jq parallel zsh
   parallel --keep-order -vj0 ::: ${cmds}
-  pip install pipx
-  python3 -m pipx install git+https://github.com/esperoj/esperoj.git
+  pipx install git+https://github.com/esperoj/esperoj.git
 }
 
 export -f ${cmds}
