@@ -48,6 +48,7 @@ install_oh_my_zsh() {
 install_packages() {
   packages="
     aria2
+    exiftool
     inxi
     lsb-release
     pipx
