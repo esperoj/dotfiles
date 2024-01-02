@@ -11,7 +11,7 @@ backup_phone() {
 	cd "/storage/emulated/0/"
 	echo "- joplin/" >>"${RCLONE_FILTER_FROM}"
 	rclone sync ./workspace workspace:
-	rclone sync ./music koofr:music
+	rclone sync ./music pcloud:Music
 }
 
 backup_segfault() {
