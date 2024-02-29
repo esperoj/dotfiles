@@ -11,8 +11,8 @@ keep_pcloud_active() {
 export -f keep_pcloud_active
 
 parallel --keep-order -vj0 {} <<-EOL
-  ssh ct8 "devil info account"
-  ssh serv00 "devil info account"
-  keep_pcloud_active
-  esperoj run verify  
+	  ssh ct8 "devil info account"
+	  ssh serv00 "devil info account"
+	  keep_pcloud_active
+	  esperoj run verify  
 EOL
