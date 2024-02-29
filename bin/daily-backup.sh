@@ -17,6 +17,8 @@ backup_phone() {
 backup_segfault() {
 	cd ~
 	rclone sync workspace: ./workspace
+  rclone sync ./workspace murena:
+  rclone sync music: pcloud:Music
 	restic backup --no-scan --host "${MACHINE_NAME}" workspace
 	restic forget --keep-daily 30 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75 --prune
 	restic check
