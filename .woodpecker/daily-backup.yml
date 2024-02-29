@@ -17,6 +17,8 @@ steps:
       - uptime
       - |
         command time -v ~/bin/entrypoint.sh "
+        rclone sync -v workspace: mega:workspace
+        rcloje sync -v music: mega:music
         ssh segfault bash -s <<<'
         uptime
         . ~/.profile
