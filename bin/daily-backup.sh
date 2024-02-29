@@ -16,9 +16,9 @@ backup_phone() {
 
 backup_segfault() {
 	cd ~
-	rclone sync --multi-thread-chunk-size 4m --multi-thread-cutoff 8m --multi-thread-streams 32 workspace: ./workspace
-	rclone sync ./workspace murena:
-	rclone sync --multi-thread-chunk-size 4m --multi-thread-cutoff 8m --multi-thread-streams 32 music: pcloud:Music
+	rclone sync workspace: ./workspace
+	rclone sync ./workspace mega:workspace
+	rclone sync music: mega:music
 	restic backup --no-scan --host "${MACHINE_NAME}" workspace
 	restic forget --keep-daily 30 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75 --prune
 	restic check
