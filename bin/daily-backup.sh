@@ -10,7 +10,7 @@ EOL
 backup_container() {
   parallel --keep-order -vj0 {} <<-EOL
     rclone sync pcloud: mega:
-    rclone sync pcloud: nch:
+    rclone sync --transfers 8 pcloud: nch:
 EOL
   ssh segfault bash -s <<<'
     . ~/.profile
