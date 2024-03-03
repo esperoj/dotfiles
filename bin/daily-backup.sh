@@ -8,7 +8,10 @@ cat <<-EOL >"${RCLONE_FILTER_FROM}"
 EOL
 
 backup_container() {
-  rclone sync pcloud: mega:
+  parallel --keep-order -vj0 {} <<-EOL
+    rclone sync pcloud: mega:
+    rclone sync pcloud: nch:
+EOL
   ssh segfault bash -s <<<'
     . ~/.profile
     chezmoi update
