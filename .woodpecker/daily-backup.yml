@@ -16,16 +16,7 @@ steps:
     commands:
       - uptime
       - |
-        command time -v ~/bin/entrypoint.sh "
-        set -Exeo pipefail
-        rclone sync -v workspace: mega:workspace
-        rclone sync -v music: mega:music
-        ssh segfault bash -s <<<'
-        uptime
-        . ~/.profile
-        chezmoi update
-        . ~/.profile
-        daily-backup.sh'"
+        command time -v ~/bin/entrypoint.sh "daily-backup.sh"
   notify:
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
