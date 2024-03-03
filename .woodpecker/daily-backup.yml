@@ -14,9 +14,7 @@ steps:
       - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
-      - uptime
-      - |
-        command time -v ~/bin/entrypoint.sh "daily-backup.sh"
+      - command time -v ~/bin/entrypoint.sh "daily-backup.sh"
   notify:
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
