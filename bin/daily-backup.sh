@@ -9,7 +9,11 @@ EOL
 
 backup_container() {
   rclone sync pcloud: mega:
-  ssh segfault bash -s <<<'~/bin/daily-backup.sh'
+  ssh segfault bash -s <<<'
+    . ~/.profile
+    chezmoi update
+    . ~/.profile
+    daily-backup.sh'
 }
 
 backup_phone() {
@@ -20,9 +24,6 @@ backup_phone() {
 }
 
 backup_segfault() {
-  . ~/.profile
-  chezmoi update
-  . ~/.profile
   cd ~
   rclone sync mega:workspace ./workspace
   restic backup --no-scan --host "${MACHINE_NAME}" workspace
