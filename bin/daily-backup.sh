@@ -29,9 +29,9 @@ backup_phone() {
 backup_segfault() {
   cd ~
   rclone sync mega:workspace ./workspace
-  restic backup --no-scan --host "${MACHINE_NAME}" workspace
-  restic forget --keep-daily 30 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75 --prune
-  restic check
+  # restic backup --no-scan --host "${MACHINE_NAME}" workspace
+  # restic forget --keep-daily 30 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75 --prune
+  # restic check
 }
 
 cleanup() {
