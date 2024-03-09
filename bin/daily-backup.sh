@@ -28,7 +28,8 @@ backup_phone() {
 backup_segfault() {
   cd ~
   rclone sync workspace: ./workspace
-  kopia snapshot create "${HOME}/workspace"
+  kopia snapshot create "./workspace"
+  kopia snapshot create "./.local/share/chezmoi"
 }
 
 cleanup() {

@@ -1,4 +1,6 @@
 .github/
+.kopiaignore
+.woodpecker/
 bin/
 .drone.yml
 Dockerfile
