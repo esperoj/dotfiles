@@ -38,7 +38,7 @@ install_asdf_packages() {
 }
 
 install_kopia() {
-  install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
+  install.sh BASE ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
 
 install_oh_my_zsh() {
@@ -68,7 +68,7 @@ install_rclone() {
 }
 
 install_restic() {
-  install.sh BASE ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
+  install.sh DISABLED ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
 }
 
 install_shfmt() {

@@ -11,7 +11,7 @@ backup_container() {
   parallel --keep-order -vj0 {} <<-EOL
     rclone sync --transfers 8 pcloud: nch:
 EOL
-  ssh segfault bash -s <<<'
+  ssh hashbang bash -s <<<'
     . ~/.profile
     chezmoi update
     . ~/.profile
@@ -28,9 +28,7 @@ backup_phone() {
 backup_segfault() {
   cd ~
   rclone sync workspace: ./workspace
-  # restic backup --no-scan --host "${MACHINE_NAME}" workspace
-  # restic forget --keep-daily 30 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75 --prune
-  # restic check
+  kopia snapshot create "${HOME}/workspace"
 }
 
 cleanup() {
