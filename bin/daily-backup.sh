@@ -27,9 +27,13 @@ backup_phone() {
 
 backup_segfault() {
   cd ~
+  parallel --keep-order -vj0 {} <<-EOL
   rclone sync workspace: ./workspace
+  rclone sync joplin: ./joplin
+EOL
   kopia snapshot create "./workspace"
   kopia snapshot create "./.local/share/chezmoi"
+  kopia snapshot create "./joplin"
 }
 
 cleanup() {
