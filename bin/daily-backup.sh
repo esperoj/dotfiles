@@ -34,6 +34,7 @@ EOL
   kopia snapshot create "./workspace"
   kopia snapshot create "./.local/share/chezmoi"
   kopia snapshot create "./joplin"
+  kopia maintenance run --full
 }
 
 cleanup() {
