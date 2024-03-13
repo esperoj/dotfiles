@@ -1,6 +1,6 @@
 #!/bin/bash
-rclone serve s3 \
-  --addr localhost:20711 \
-  --vfs-cache-mode writes \
-  --auth-key "esperoj,${MY_UUID}" \
-  pcloud:
+screen -dmS pcloud-public sh -c "
+  rclone serve http \
+    --addr localhost:20711 \
+    pcloud:public
+"
