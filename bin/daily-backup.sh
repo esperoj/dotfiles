@@ -8,10 +8,7 @@ cat <<-EOL >"${RCLONE_FILTER_FROM}"
 EOL
 
 backup_container() {
-  parallel --keep-order -vj0 {} <<-EOL
-    rclone sync --transfers 8 pcloud: nch:
-EOL
-  ssh hashbang bash -s <<<'
+  ssh envs bash -s <<<'
     . ~/.profile
     chezmoi update
     . ~/.profile
@@ -28,6 +25,7 @@ backup_phone() {
 backup_segfault() {
   cd ~
   parallel --keep-order -vj0 {} <<-EOL
+  rclone sync --transfers 8 pcloud: nch:
   rclone sync workspace: ./workspace
   rclone sync joplin: ./joplin
 EOL
