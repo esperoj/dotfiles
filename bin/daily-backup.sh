@@ -27,7 +27,7 @@ backup_segfault() {
       TEMP_DIR="$(mktemp -d)"
       cd "${TEMP_DIR}"
       esperoj export_database "Primary"
-      rclone copy -v . workspace:database
+      rclone copy . workspace:database
       rm -r "${TEMP_DIR}"
   )
   cd ~
