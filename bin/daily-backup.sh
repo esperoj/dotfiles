@@ -23,6 +23,13 @@ backup_phone() {
 }
 
 backup_segfault() {
+  (
+      TEMP_DIR="$(mktemp -d)"
+      cd "${TEMP_DIR}"
+      esperoj export_database "Primary"
+      rclone copy -v . workspace:database
+      rm -r "${TEMP_DIR}"
+  )
   cd ~
   parallel --keep-order -vj0 {} <<-EOL
   rclone sync --transfers 8 pcloud: nch:
