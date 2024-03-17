@@ -21,9 +21,4 @@ jobs:
         docker run \
         --env ENCRYPTION_PASSPHRASE \
         --rm ghcr.io/esperoj/dotfiles:latest \
-        'ssh segfault bash -s <<EOL
-        . ~/.profile
-        chezmoi update
-        . ~/.profile
-        daily-backup.sh
-        EOL'
+        "daily-backup.sh"

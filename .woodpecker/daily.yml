@@ -10,14 +10,10 @@ steps:
   run:
     image: codeberg.org/esperoj/dotfiles
     pull: true
-    environment:
-      - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
       - |
-        command time -v ~/bin/entrypoint.sh "cd ~
-        uptime
-        daily.sh"
+        command time -v ~/bin/entrypoint.sh "daily.sh"
   notify:
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]

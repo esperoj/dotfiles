@@ -1,6 +1,7 @@
 #!/bin/bash
 set -Exeo pipefail
 cd "${HOME}"
+uptime
 
 parallel --keep-order -vj0 {} <<-EOL
 	  ssh ct8 "devil info account"

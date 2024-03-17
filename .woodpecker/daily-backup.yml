@@ -10,8 +10,6 @@ steps:
   backup:
     image: codeberg.org/esperoj/dotfiles
     pull: true
-    environment:
-      - MACHINE_NAME=container
     secrets: [ encryption_passphrase ]
     commands:
       - command time -v ~/bin/entrypoint.sh "daily-backup.sh"
