@@ -1,7 +1,7 @@
 when:
   - event: cron
     cron: daily
-    # schedule: 0 30 22 * * *
+    # schedule: 0 15 22 * * *
   - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "daily"'
 
 skip_clone: true

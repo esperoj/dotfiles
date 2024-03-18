@@ -27,13 +27,16 @@ export -f backup_linkwarden backup_seatable
 
 backup_container() {
   parallel --keep-order -vj0 {} <<-EOL
-  ssh envs bash -s <<<'. ~/.profile && chezmoi update && . ~/.profile && daily-backup.sh'
+  ssh envs bash -s <<<'${HOME}/bin/daily-backup.sh'
   rclone sync --transfers 8 pcloud: nch:
 EOL
 }
 
 backup_segfault() {
   cd ~
+  source ./.profile
+  chezmoi update --force --no-tty
+  source ./.profile
   parallel --keep-order -vj0 {} <<-EOL
   backup_linkwarden
   backup_seatable

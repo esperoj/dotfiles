@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -Exeo pipefail
 cd "${HOME}"
 uptime
