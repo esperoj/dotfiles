@@ -10,7 +10,7 @@ EOL
 
 backup_linkwarden() {
   local TEMP_DIR="$(mktemp -d)"
-  curl -H "Authorization: Bearer ${LINKWARDEN_ACCESS_TOKEN}" \
+  curl -s -H "Authorization: Bearer ${LINKWARDEN_ACCESS_TOKEN}" \
     "https://links.adminforge.de/api/v1/migration" >"${TEMP_DIR}/linkwarden-backup.json"
   rclone move "${TEMP_DIR}" "workspace:backup/"
 }
