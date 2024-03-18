@@ -34,7 +34,6 @@ EOL
 
 backup_segfault() {
   cd ~
-  pipx upgrade esperoj
   parallel --keep-order -vj0 {} <<-EOL
   backup_linkwarden
   backup_seatable
