@@ -26,22 +26,21 @@ backup_seatable() {
 export -f backup_linkwarden backup_seatable
 
 backup_container() {
-  ssh envs bash -s <<<'
-    . ~/.profile
-    chezmoi update
-    . ~/.profile
-    daily-backup.sh'
+  parallel --keep-order -vj0 {} <<-EOL
+  ssh envs bash -s <<<'. ~/.profile && chezmoi update && . ~/.profile && daily-backup.sh'
+  rclone sync --transfers 8 pcloud: nch:
+EOL
 }
 
 backup_segfault() {
   cd ~
+  pipx upgrade esperoj
   parallel --keep-order -vj0 {} <<-EOL
   backup_linkwarden
   backup_seatable
 EOL
 
   parallel --keep-order -vj0 {} <<-EOL
-  rclone sync --transfers 8 pcloud: nch:
   rclone sync workspace: ./workspace
   rclone sync joplin: ./joplin
   kopia snapshot create "./.local/share/chezmoi"
@@ -57,6 +56,7 @@ cleanup() {
 }
 
 uptime
+date --utc
 
 case "${MACHINE_NAME}" in
 phone)
