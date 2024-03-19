@@ -28,7 +28,6 @@ export -f backup_linkwarden backup_seatable
 backup_container() {
   parallel --keep-order -vj0 {} <<-EOL
   ssh envs bash -s <<<'. ~/.profile && chezmoi update --force --no-tty && . ~/.profile && daily-backup.sh'
-  rclone sync --transfers 8 pcloud: nch:
 EOL
 }
 
@@ -43,6 +42,7 @@ EOL
   parallel --keep-order -vj0 {} <<-EOL
   rclone sync workspace: ./workspace
   rclone sync joplin: ./joplin
+  rclone sync --transfers 8 pcloud: nch:
   kopia snapshot create "./.local/share/chezmoi"
 EOL
 
