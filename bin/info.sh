@@ -7,7 +7,7 @@ parallel --keep-order -vj0 {} <<-EOL
   7z
   chezmoi status
   curl -fLsS "https://ipwho.de"
-  df -h
+  df -hT
   esperoj --help
   free -h
   inxi -ABCDEGIJLMNPRSWdfijlmnoprstuw
