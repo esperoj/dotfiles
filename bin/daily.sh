@@ -6,7 +6,7 @@ uptime
 date --utc
 
 parallel --keep-order -vj0 {} <<-EOL
-  ssh ad "~/.local/bin/chezmoi update --force --no-tty"
+  ssh alwaysdata "~/.local/bin/chezmoi update --force --no-tty"
   ssh ct8 "devil info account"
   ssh serv00 "devil info account"
   daily-backup.sh
