@@ -49,6 +49,7 @@ install_packages() {
   packages="
     aria2
     exiftool
+    ffmpeg
     inxi
     lsb-release
     pipx
