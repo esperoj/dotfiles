@@ -10,7 +10,6 @@ parallel --keep-order -vj0 {} <<-EOL
   ssh ct8 "devil info account"
   ssh serv00 "devil info account"
   daily-backup.sh
-  echo esperoj daily_archive
-  echo esperoj daily_add_metadata
-  echo esperoj daily_verify
+  esperoj daily_archive
+  esperoj daily_verify
 EOL
