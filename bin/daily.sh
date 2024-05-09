@@ -13,3 +13,4 @@ parallel --keep-order -vj0 {} <<-EOL
   esperoj daily_archive
   esperoj daily_verify
 EOL
+esperoj save_page "https://esperoj-esperoj.statichost.eu/backup.7z"

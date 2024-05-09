@@ -45,7 +45,9 @@ EOL
   rclone sync --transfers 8 pcloud: nch:
   kopia snapshot create "./.local/share/chezmoi"
 EOL
-
+  7zz a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./workspace/backup
+  rclone move -v backup.7z pcloud:public
+  [ "$(date +%A)" == "Monday" ] && curl -sL -X POST https://builder.statichost.eu/esperoj-esperoj
   kopia snapshot create "./workspace"
   kopia snapshot create "./joplin"
   kopia maintenance run --full
