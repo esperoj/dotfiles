@@ -19,7 +19,7 @@ backup_seatable() {
   local TEMP_DIR="$(mktemp -d)"
   cd "${TEMP_DIR}"
   esperoj export_database "Primary"
-  rclone copy . "workspace:database"
+  rclone copy . "workspace:backup/database"
   rm -r "${TEMP_DIR}"
 }
 
