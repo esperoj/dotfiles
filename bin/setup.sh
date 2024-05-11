@@ -49,16 +49,19 @@ install_packages() {
     aria2
     exiftool
     inxi
+    iputils-ping
     lsb-release
     openssh-server
     pipx
     python3-full
     python3-pip
+    screen
     sqlite3
     sudo
     time
     tmux
     vim
+    zstd
   "
   xargs apt install -qqy --no-install-recommends <<<"${packages}"
 }
@@ -99,6 +102,7 @@ setup_linux() {
     jq parallel zsh
   parallel --keep-order -vj0 ::: ${cmds}
   pipx install git+https://github.com/esperoj/esperoj.git
+  pipx install poetry
 }
 
 export -f ${cmds}
