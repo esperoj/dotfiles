@@ -12,7 +12,6 @@ cmds=$(echo '
   install_rclone
   install_restic
   install_shfmt
-  install_yt_dlp
   install_woodpecker_cli
   ' | xargs)
 [[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
@@ -49,9 +48,9 @@ install_packages() {
   packages="
     aria2
     exiftool
-    ffmpeg
     inxi
     lsb-release
+    openssh-server
     pipx
     python3-full
     python3-pip
