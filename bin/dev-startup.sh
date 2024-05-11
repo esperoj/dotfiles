@@ -4,6 +4,7 @@ cd ~
 file_path="${HOME}/end"
 
 start-ssh-server.sh &
+serve-home.sh
 
 rclone copy -v pcloud:public/.zsh_history .
 rclone copy -v pcloud:public/workspace.tar.zst .
@@ -16,6 +17,7 @@ while true; do
     echo "File found: $file_path"
     break
   fi
+  echo "5 seconds passed"
 done
 
 command time -v tar -I 'zstd -T$(nproc) -9' -cpf workspace.tar.zst workspace
