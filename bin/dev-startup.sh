@@ -3,7 +3,7 @@
 cd ~
 file_path="${HOME}/end"
 
-start-ssh-server.sh &
+start-ssh-server.sh
 serve-home.sh
 
 rclone copy -v pcloud:public/.zsh_history .
@@ -12,12 +12,12 @@ tar --zstd -xf workspace.tar.zst
 rm workspace.tar.zst
 
 while true; do
-  sleep 5
+  sleep 60
   if [ -f "$file_path" ]; then
     echo "File found: $file_path"
     break
   fi
-  echo "5 seconds passed"
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -J serveo.net root@serveo.esperoj.eu.org uptime
 done
 
 command time -v tar -I 'zstd -T$(nproc) -9' -cpf workspace.tar.zst workspace
