@@ -4,6 +4,7 @@
 archive/
 bin/
 .drone.yml
+.gitlab-ci.yml
 Dockerfile
 LICENSE
 README.md

@@ -1,0 +1,14 @@
+stages:
+  - main
+
+dev:
+  stage: main
+  image: ghcr.io/esperoj/dotfiles:latest
+  cache:
+    key: dev
+    paths:
+      - .cache/
+  rules:
+    - if: $WORKFLOW == "dev"
+  script:
+    - command time -v ~/bin/entrypoint.sh "dev-startup.sh"
