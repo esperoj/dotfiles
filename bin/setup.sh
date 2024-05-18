@@ -83,7 +83,7 @@ install_yt_dlp() {
 }
 
 install_woodpecker_cli() {
-  install.sh BASE ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
+  install.sh DISABLED ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
 }
 
 setup_android() {
@@ -117,3 +117,4 @@ esac
 ln -s $(command -v 7zz) ".local/bin/7z"
 ln -s $(command -v python3) ".local/bin/python"
 mkdir -p ".ssh/sockets"
+rm -rf .cache
