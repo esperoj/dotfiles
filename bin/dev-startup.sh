@@ -29,6 +29,6 @@ ssh -O exit serveo-ssh-tunnel
 
 # Upload cache and workspace
 time tar -I "zstd -T$(nproc) -9" -cpf "${archive}" workspace .cache .zsh_history
-rclone copy "${archive}" "b2:esperoj-cache/${archive}"
+rclone copy "${archive}" "b2:esperoj-cache"
 
 exit
