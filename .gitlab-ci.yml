@@ -3,7 +3,9 @@ stages:
 
 dev:
   stage: main
-  image: ghcr.io/esperoj/dotfiles:latest
+  image:
+    name: ghcr.io/esperoj/dotfiles:latest
+    entrypoint: ["/bin/bash", "-c"]
   cache:
     key: dev
     paths:
