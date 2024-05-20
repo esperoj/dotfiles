@@ -47,7 +47,7 @@ codeberg)
   ;;
 cezeri)
   server=build.cezeri.tech
-  repo_id=8
+  repo_id=9
   token="${CEZERI_WOODPECKER_TOKEN}"
   ;;
 esac
