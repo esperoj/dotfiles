@@ -1,6 +1,7 @@
 when:
   - event: [push, tag]
     branch: main
+  - evaluate: 'CI_PIPELINE_EVENT == "push" && CI_SYSTEM_HOST == "ci.codeberg.org"'
 
 variables:
   - &build_plugin plugins/docker
