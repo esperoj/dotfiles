@@ -8,14 +8,14 @@ skip_clone: true
 
 steps:
   run:
-    image: codeberg.org/esperoj/dotfiles
+    image: ghcr.io/esperoj/dotfiles
     pull: true
     secrets: [ encryption_passphrase ]
     commands:
       - |
         command time -v ~/bin/entrypoint.sh "daily.sh"
   notify:
-    image: codeberg.org/esperoj/dotfiles
+    image: ghcr.io/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
     when:
       - status: failure
