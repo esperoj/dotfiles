@@ -1,7 +1,9 @@
+#!/bin/sh
+
 echo "Running ${HOME}/.profile"
 set -a
-MACHINE_NAME={{ .machineName | quote }}
+MACHINE_NAME="segfault"
 . "${HOME}/.env"
 . "${HOME}/.config/${MACHINE_NAME}/env"
 set +a
-[[ ! -d "${HOME}/.asdf" ]] || . "$HOME/.asdf/asdf.sh"
+[ ! -d "${HOME}/.asdf" ] || . "$HOME/.asdf/asdf.sh"

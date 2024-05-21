@@ -1,16 +1,13 @@
 stages:
   - main
 
-dev:
-  stage: main
-  image:
-    name: ghcr.io/esperoj/dotfiles:latest
-    entrypoint: ["/bin/bash", "-c"]
-  cache:
-    key: dev
-    paths:
-      - .cache/
-  rules:
-    - if: $WORKFLOW == "dev"
-  script:
-    - command time -v ~/bin/entrypoint.sh "dev-startup.sh"
+include:
+  - local: .gitlab-ci/dev.yml
+    rules:
+      - if: $WORKFLOW == "dev"
+  - local: .gitlab-ci/run-command.yml
+    rules:
+      - if: $WORKFLOW == "run-command"
+  - local: .gitlab-ci/daily.yml
+    rules:
+      - if: $WORKFLOW == "daily"

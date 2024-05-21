@@ -1,0 +1,15 @@
+run:
+  stage: main
+  image:
+    name: ghcr.io/esperoj/dotfiles
+    entrypoint: [""]
+  rules:
+    - if: $WORKFLOW == "run-command"
+  script:
+    - command time -v ~/bin/entrypoint.sh "${COMMAND}"
+  after_script:
+    - |
+      ~/bin/entrypoint.sh 'xargs -d "\n" notify.sh <<<"
+      Title: Job `${CI_JOB_NAME}` of repository `${CI_PROJECT_NAME}` completed with status ${CI_JOB_STATUS}.
+      Actions: view, View Log, ${CI_JOB_URL}" \
+      | jq'
