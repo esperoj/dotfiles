@@ -1,8 +1,7 @@
 #!/bin/sh
-
 echo "Running ${HOME}/.profile"
 set -a
-MACHINE_NAME="segfault"
+MACHINE_NAME={{ .machineName | quote }}
 . "${HOME}/.env"
 . "${HOME}/.config/${MACHINE_NAME}/env"
 set +a
