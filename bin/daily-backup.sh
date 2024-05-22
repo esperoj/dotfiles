@@ -35,11 +35,11 @@ backup_container() {
 EOL
 
   parallel --keep-order -vj0 {} <<EOL
-  rclone sync workspace: ./workspace
+  rclone sync workspace:backup ./backup
   rclone sync workspace: workspace-backup:
 EOL
 
-  7zz a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./workspace/backup
+  7zz a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
   rclone move -v backup.7z pcloud:public
   if [ "$(date +%A)" == "Monday" ]; then
     curl -sL -X POST https://builder.statichost.eu/esperoj-esperoj
