@@ -11,7 +11,7 @@ parallel --keep-order -vj0 {} <<-EOL
   esperoj --help
   free -h
   inxi -ABCDEGIJLMNPRSWdfijlmnoprstuw
-  kopia --version
+  # kopia --version
   node --version
   pwd
   python --version
