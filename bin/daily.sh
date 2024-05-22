@@ -12,5 +12,5 @@ parallel --keep-order -vj0 {} <<EOL
   daily-backup.sh
   esperoj daily_archive
   esperoj daily_verify
-  [ "$(date +%A)" == "Tuesday" ] && esperoj save_page "https://esperoj-esperoj.statichost.eu/backup.7z"
+  if [ "$(date +%A)" == "Tuesday" ]; then esperoj save_page "https://esperoj-esperoj.statichost.eu/backup.7z"; fi
 EOL

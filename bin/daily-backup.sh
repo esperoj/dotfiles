@@ -41,7 +41,9 @@ EOL
 
   7zz a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./workspace/backup
   rclone move -v backup.7z pcloud:public
-  [ "$(date +%A)" == "Monday" ] && curl -sL -X POST https://builder.statichost.eu/esperoj-esperoj
+  if [ "$(date +%A)" == "Monday" ]; then
+    curl -sL -X POST https://builder.statichost.eu/esperoj-esperoj
+  fi
 }
 
 backup_segfault() {
