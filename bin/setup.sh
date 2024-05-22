@@ -37,7 +37,7 @@ install_asdf_packages() {
 }
 
 install_kopia() {
-  install.sh BASE ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
+  install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
 
 install_oh_my_zsh() {

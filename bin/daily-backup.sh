@@ -1,18 +1,19 @@
 #!/bin/bash
 
-set -Exeo pipefail
+set -Eeo pipefail
 export RCLONE_VERBOSE=1
 export RCLONE_FILTER_FROM="$(mktemp)"
-cat <<-EOL >"${RCLONE_FILTER_FROM}"
-	- .thumbnails/
-	- tmp/
+cat <<EOL >"${RCLONE_FILTER_FROM}"
+- .thumbnails/
+- tmp/
 EOL
 
 backup_linkwarden() {
   local TEMP_DIR="$(mktemp -d)"
   curl -s -H "Authorization: Bearer ${LINKWARDEN_ACCESS_TOKEN}" \
     "https://links.adminforge.de/api/v1/migration" >"${TEMP_DIR}/linkwarden-backup.json"
-  rclone move "${TEMP_DIR}" "workspace:backup/"
+  rclone move "${TEMP_DIR}" "workspace:backup"
+  rm -r "${TEMP_DIR}"
 }
 
 backup_seatable() {
@@ -26,31 +27,25 @@ backup_seatable() {
 export -f backup_linkwarden backup_seatable
 
 backup_container() {
-  parallel --keep-order -vj0 {} <<-EOL
-  ssh envs bash -s <<<'. ~/.profile && chezmoi update --force --no-tty && . ~/.profile && daily-backup.sh'
-EOL
-}
-
-backup_segfault() {
   cd ~
   pipx upgrade esperoj
-  parallel --keep-order -vj0 {} <<-EOL
+  parallel --keep-order -vj0 {} <<EOL
   backup_linkwarden
   backup_seatable
 EOL
 
-  parallel --keep-order -vj0 {} <<-EOL
+  parallel --keep-order -vj0 {} <<EOL
   rclone sync workspace: ./workspace
-  rclone sync joplin: ./joplin
-  rclone sync --transfers 8 pcloud: nch:
-  kopia snapshot create "./.local/share/chezmoi"
+  rclone sync workspace: workspace-backup:
 EOL
+
   7zz a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./workspace/backup
   rclone move -v backup.7z pcloud:public
   [ "$(date +%A)" == "Monday" ] && curl -sL -X POST https://builder.statichost.eu/esperoj-esperoj
-  kopia snapshot create "./workspace"
-  kopia snapshot create "./joplin"
-  kopia maintenance run --full
+}
+
+backup_segfault() {
+  echo backup
 }
 
 cleanup() {
@@ -65,7 +60,9 @@ phone)
   backup_phone
   ;;
 container)
+  curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily-backup/start"
   backup_container
+  curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily-backup/${?}"
   ;;
 segfault)
   curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily-backup/start"

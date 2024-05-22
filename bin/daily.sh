@@ -5,12 +5,12 @@ cd "${HOME}"
 uptime
 date --utc
 
-parallel --keep-order -vj0 {} <<-EOL
+parallel --keep-order -vj0 {} <<EOL
   ssh alwaysdata "~/.local/bin/chezmoi update --force --no-tty"
   ssh ct8 "devil info account"
   ssh serv00 "devil info account"
   daily-backup.sh
   esperoj daily_archive
   esperoj daily_verify
+  [ "$(date +%A)" == "Tuesday" ] && esperoj save_page "https://esperoj-esperoj.statichost.eu/backup.7z"
 EOL
-esperoj save_page "https://esperoj-esperoj.statichost.eu/backup.7z"
