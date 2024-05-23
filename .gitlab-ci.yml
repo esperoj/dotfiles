@@ -32,6 +32,6 @@ publish:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_SERVER_HOST == "framagit.org" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - echo -n "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"${DOCKERHUB_AUTH}\"}}}" >> /kaniko/.docker/config.json
-    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Dockerfile" --destination esperoj/dotfiles:latest
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Dockerfile" --destination docker.io/esperoj/dotfiles:latest
   after_script:
     - echo "Done"
