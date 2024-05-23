@@ -7,5 +7,5 @@ publish:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
-   - echo '{"auths":{"https://index.docker.io/v1/":{"auth":"${DOCKERHUB_AUTH}"}}}' >> /kaniko/.docker/config.json
+   - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"${DOCKERHUB_AUTH}\"}}}" >> /kaniko/.docker/config.json
    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Dockerfile" --destination esperoj/dotfiles:latest
