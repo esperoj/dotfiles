@@ -10,9 +10,9 @@ default:
     - |
       ~/bin/entrypoint.sh '
       xargs -d "\n" notify.sh <<EOL | jq
-      Job `${CI_JOB_NAME}` of repository `${CI_PROJECT_NAME}`at ${CI_PROJECT_URL} completed with status ${CI_JOB_STATUS}.
+      Job `$${CI_JOB_NAME}` of repository `$${CI_PROJECT_NAME}`at $${CI_PROJECT_URL} completed with status $${CI_JOB_STATUS}.
       Title: A job has completed
-      Actions: view, View Log, ${CI_JOB_URL}
+      Actions: view, View Log, $${CI_JOB_URL}
       EOL'
 
 include:
@@ -25,3 +25,13 @@ include:
   - local: .gitlab-ci/daily.yml
     rules:
       - if: $WORKFLOW == "daily"
+
+build:
+  stage: main
+  image: debian:stable
+  script:
+    - echo completed
+  rules:
+    - if: $WORKFLOW == "build"
+  after_script:
+    - echo Done

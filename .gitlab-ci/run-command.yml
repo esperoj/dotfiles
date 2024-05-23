@@ -3,4 +3,4 @@ run:
   rules:
     - if: $WORKFLOW == "run-command"
   script:
-    - command time -v ~/bin/entrypoint.sh "${COMMAND}"
+    - command time -v ~/bin/entrypoint.sh "$${COMMAND}"
