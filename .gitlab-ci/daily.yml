@@ -1,6 +1,3 @@
-stages:
-  - main
-
 daily:
   stage: main
   retry: 2

@@ -1,6 +1,3 @@
-stages:
-  - main
-
 dev:
   stage: main
   timeout: 3 hours
