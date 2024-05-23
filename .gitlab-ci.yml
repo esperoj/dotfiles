@@ -3,6 +3,14 @@ default:
     name: ghcr.io/esperoj/dotfiles
     entrypoint: [""]
   timeout: 3 hours
+  after_script:
+    - |
+      ~/bin/entrypoint.sh '
+      xargs -d "\n" notify.sh <<EOL | jq
+      Job "${CI_JOB_NAME}" of repository ${CI_PROJECT_URL} has completed with status ${CI_JOB_STATUS}.
+      Title: A job has completed
+      Actions: view, View Log, ${CI_JOB_URL}
+      EOL'
 
 include:
   - local: .gitlab-ci/dev.yml
@@ -14,20 +22,16 @@ include:
   - local: .gitlab-ci/daily.yml
     rules:
       - if: $WORKFLOW == "daily"
-  - local: .gitlab-ci/publish.yml
-    rules:
-      - if: $WORKFLOW == "publish"
-      - if: $CI_PIPELINE_SOURCE == "push" && $CI_SERVER_HOST == "framagit.org" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-notify:
-  stage: .post
-  timeout: 5 minutes
-  when: always
+publish:
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  rules:
+    - if: $WORKFLOW == "publish"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_SERVER_HOST == "framagit.org" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - |
-      ~/bin/entrypoint.sh '
-      xargs -d "\n" notify.sh <<EOL | jq
-      Job "${CI_JOB_NAME}" of repository ${CI_PROJECT_URL} has completed with status ${CI_JOB_STATUS}.
-      Title: A job has completed
-      Actions: view, View Log, ${CI_JOB_URL}
-      EOL'
+    - echo -n "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"${DOCKERHUB_AUTH}\"}}}" >> /kaniko/.docker/config.json
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Dockerfile" --destination esperoj/dotfiles:latest
+  after_script:
+    - echo "Done"
