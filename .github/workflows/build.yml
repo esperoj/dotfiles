@@ -16,8 +16,6 @@ jobs:
       cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    env:
-      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
     permissions:
       contents: read
       packages: write
@@ -25,9 +23,6 @@ jobs:
     -
       name: Checkout
       uses: actions/checkout@v3
-    -
-      name: Create env
-      run: echo "ENCRYPTION_PASSPHRASE=${ENCRYPTION_PASSPHRASE@Q}" > env
     -
       name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -56,18 +51,6 @@ jobs:
             type=semver,pattern={{major}}
             type=sha
     -
-      name: Test
-      uses: docker/build-push-action@v4
-      with:
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        context: .
-        file: Dockerfile
-        secret-files: |
-          "env=./env"
-        push: false
-        target: test
-    -
       name: Build and push
       uses: docker/build-push-action@v4
       with:
@@ -77,7 +60,6 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         file: Dockerfile
         no-cache: false
-        target: final
     -
       name: Send notification
       env:
