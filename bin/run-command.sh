@@ -1,15 +1,14 @@
 #!/bin/bash
 
-DEFAULT_HOST="codeberg"
+host="codeberg"
+command="${COMMAND:-uptime}"
 
 usage() {
   echo "Usage: ${0} -c <command> [-h <host>]"
   echo "  -c: Specify the command to run on the host"
-  echo "  -h: Specify the host where the command will be run (default: ${DEFAULT_HOST})"
+  echo "  -h: Specify the host where the command will be run (default: ${host})"
   exit 1
 }
-
-host="${DEFAULT_HOST}"
 
 while getopts "c:h:" opt; do
   case "${opt}" in
@@ -22,12 +21,12 @@ while getopts "c:h:" opt; do
   esac
 done
 
-if [ -z "${command}" ]; then
-  echo "Error: Command must be specified."
-  usage
-fi
-
 case "${host}" in
+
+local)
+  ~/bin/entrypoint.sh "${command}"
+  ;;
+
 codeberg | cezeri)
   content=$(
     jq -n \
@@ -62,6 +61,7 @@ codeberg | cezeri)
 
   echo "https://${server}/repos/${repo_id}/pipeline/${number}"
   ;;
+
 framagit)
   result=$(curl -sX POST \
     --fail \
@@ -73,4 +73,5 @@ framagit)
     jq .web_url)
   echo "${result}"
   ;;
+
 esac
