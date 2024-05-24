@@ -1,3 +1,12 @@
+workflow:
+  rules:
+    - if: $CI_SERVER_HOST == "framagit.org"
+      variables:
+        DEFAULT_TAG: Debian
+    - if: $CI_SERVER_HOST == "gitlab.com"
+      variables:
+        DEFAULT_TAG: saas-linux-medium-amd64
+
 stages:
   - main
 
@@ -6,6 +15,8 @@ default:
     name: ghcr.io/esperoj/dotfiles
     entrypoint: [""]
   timeout: 3 hours
+  tags:
+    - $DEFAULT_TAG
   after_script:
     - |
       ~/bin/entrypoint.sh '

@@ -62,16 +62,28 @@ codeberg | cezeri)
   echo "https://${server}/repos/${repo_id}/pipeline/${number}"
   ;;
 
-framagit)
+framagit | gitlab)
+  case "${host}" in
+  gitlab)
+    server="https://gitlab.com"
+    project_id=58158450
+    token="${GITLAB_DOTFILES_TRIGGER_TOKEN}"
+    ;;
+  framagit)
+    server="https://framagit.org"
+    repo_id=107814
+    token="${FRAMAGIT_DOTFILES_TRIGGER_TOKEN}"
+    ;;
+  esac
   result=$(curl -sX POST \
     --fail \
-    -F token="${FRAMAGIT_DOTFILES_TRIGGER_TOKEN}" \
+    -F token="${token}" \
     -F "ref=main" \
     -F "variables[WORKFLOW]=run-command" \
     -F "variables[COMMAND]=${command}" \
-    https://framagit.org/api/v4/projects/107814/trigger/pipeline |
+    "${server}/api/v4/projects/${project_id}/trigger/pipeline" |
     jq .web_url)
-  echo "${result}"
+  bash -c "echo ${result}"
   ;;
 
 esac
