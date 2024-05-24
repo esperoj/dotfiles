@@ -60,6 +60,12 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         file: Dockerfile
         no-cache: false
+    - uses: actions/delete-package-versions@v5
+      with:
+        package-name: 'dotfiles'
+        package-type: 'container'
+        min-versions-to-keep: 10
+        delete-only-untagged-versions: 'true'
     -
       name: Send notification
       env:
