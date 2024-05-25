@@ -6,12 +6,11 @@ archive="dev.tar.zst"
 export RCLONE_VERBOSE=1
 cd "${HOME}"
 
-# Start ssh tunnel and other services in background
-start-ssh-server.sh
-serve-home.sh
+# Start services
+start.sh pcloud home caddy ssh_server
 
 # Restore cache and working workspace
-rclone copy "b2:esperoj-cache/${archive}" .
+rclone copy "cache:${archive}" .
 time tar --zstd -xf "${archive}"
 rm "${archive}"
 
@@ -25,10 +24,10 @@ while true; do
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -J serveo.net root@serveo.esperoj.eu.org uptime
 done
 
-ssh -O exit serveo-ssh-tunnel
+stop.sh pcloud home caddy ssh_server
 
 # Upload cache and workspace
 time tar -I "zstd -T$(nproc) -9" -cpf "${archive}" workspace .cache .zsh_history
-rclone copy "${archive}" "b2:esperoj-cache"
+rclone copy "${archive}" "cache:"
 
 exit

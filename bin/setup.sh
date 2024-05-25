@@ -6,6 +6,7 @@ OS="$(uname -o)"
 cmds=$(echo '
   install_7zip
   install_asdf_packages
+  install_caddy
   install_kopia
   install_oh_my_zsh
   install_packages
@@ -36,6 +37,10 @@ install_asdf_packages() {
   parallel --keep-order -vj1 asdf_install ::: ${packages}
 }
 
+install_caddy() {
+  install.sh BASE ghbin caddyserver/caddy "linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" "caddy"
+}
+
 install_kopia() {
   install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
@@ -48,7 +53,6 @@ install_packages() {
   packages="
     aria2
     exiftool
-    inxi
     iputils-ping
     lsb-release
     openssh-server
@@ -56,7 +60,6 @@ install_packages() {
     python3-full
     python3-pip
     screen
-    sqlite3
     sudo
     time
     tmux
@@ -79,7 +82,7 @@ install_shfmt() {
 }
 
 install_yt_dlp() {
-  install.sh BASE ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
+  install.sh DISABLED ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
 }
 
 install_woodpecker_cli() {
@@ -116,5 +119,5 @@ case "${OS,,}" in
 esac
 ln -s $(command -v 7zz) ".local/bin/7z"
 ln -s $(command -v python3) ".local/bin/python"
-mkdir -p ".ssh/sockets"
+mkdir -p ".ssh/sockets" ".sockets"
 rm -rf .cache

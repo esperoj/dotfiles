@@ -4,14 +4,11 @@ set -Eeuxo pipefail
 cd "${HOME}"
 
 parallel --keep-order -vj0 {} <<-EOL
-  7z
   chezmoi status
   curl -fLsS "https://ipwho.de"
   df -hT
   esperoj --help
   free -h
-  inxi -ABCDEGIJLMNPRSWdfijlmnoprstuw
-  # kopia --version
   node --version
   pwd
   python --version
