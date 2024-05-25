@@ -1,17 +1,20 @@
 #!/bin/bash
 cd ~
-serve_home_command='rclone serve webdav \
+serve_home_command='
+  export RCLONE_PASS="${MY_UUID}"
+  rclone serve webdav \
   --addr "unix://${HOME}/.sockets/home.sock" \
   --dir-cache-time 0s \
   --poll-interval 0 \
-  --user esperoj --pass "${MY_UUID}" \
+  --user esperoj \
   -L .'
-serve_pcloud_command='rclone serve s3 \
+serve_pcloud_command='
+  export RCLONE_AUTH_KEY="esperoj,${MY_UUID}"
+  rclone serve s3 \
   --addr "unix://${HOME}/.sockets/pcloud.sock" \
   --dir-cache-time 0s \
   --poll-interval 0 \
   --vfs-cache-mode writes \
-  --auth-key "esperoj,${MY_UUID}" \
   pcloud:'
 
 for service in "$@"; do
