@@ -8,6 +8,9 @@ for service in "$@"; do
   pcloud)
     screen -S pcloud -X stuff "^C"
     ;;
+  esperoj)
+    screen -S esperoj -X stuff "^C"
+    ;;
   caddy)
     caddy stop
     ;;

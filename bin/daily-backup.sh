@@ -26,6 +26,7 @@ backup_seatable() {
 
 update_backup() {
   ssh ct8 "
+  set -Eeo pipefail
   . ./.profile
   chezmoi update
   . ./.profile
