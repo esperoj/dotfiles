@@ -2,12 +2,12 @@
 	auto_https disable_redirects
 }
 
-http://localhost:20711 {
+http://localhost:20711, http://localhost.esperoj.eu.org:20711 {
 	reverse_proxy unix//{$HOME}/.sockets/home.sock
 }
 
-http://localhost.esperoj.eu.org:20711 {
-	reverse_proxy unix//{$HOME}/.sockets/home.sock
+http://dev.esperoj.eu.org:20711 {
+	reverse_proxy unix//{$HOME}/.sockets/dev.sock
 }
 
 http://pcloud.esperoj.eu.org:20711 {
