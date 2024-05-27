@@ -13,6 +13,7 @@ cmds=$(echo '
   install_rclone
   install_restic
   install_shfmt
+  install_task
   install_woodpecker_cli
   ' | xargs)
 [[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
@@ -25,7 +26,7 @@ install_7zip() {
 
 install_asdf_packages() {
   # TODO: Update asdf version yearly
-  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.12.0
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
   . "${HOME}/.asdf/asdf.sh"
   asdf_install() {
     asdf plugin add $1
@@ -79,6 +80,10 @@ install_restic() {
 
 install_shfmt() {
   install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
+}
+
+install_task() {
+  sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
 }
 
 install_yt_dlp() {

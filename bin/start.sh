@@ -16,6 +16,11 @@ serve_pcloud_command='
   --poll-interval 0 \
   --vfs-cache-mode writes \
   pcloud:'
+start_esperoj_command='
+  cd ~/workspace/esperoj
+  source .venv/bin/activate
+  task start
+'
 
 for service in "$@"; do
   case "${service}" in
@@ -27,6 +32,9 @@ for service in "$@"; do
     ;;
   caddy)
     caddy start
+    ;;
+  esperoj)
+    screen -dmS esperoj bash -lc "${start_esperoj_command}"
     ;;
   ssh_server)
     service ssh start

@@ -24,7 +24,17 @@ backup_seatable() {
   rm -r "${TEMP_DIR}"
 }
 
-export -f backup_linkwarden backup_seatable
+update_backup() {
+  ssh ct8 "
+  . ./.profile
+  cd workspace/esperoj
+  source .venv/bin/activate
+  task build
+  "
+  esperoj save_page "https://esperoj.ct8.pl/backup.7z"
+}
+
+export -f backup_linkwarden backup_seatable update_backup
 
 backup_container() {
   cd ~
@@ -35,13 +45,9 @@ backup_container() {
 EOL
 
   parallel --keep-order -vj0 {} <<EOL
-  rclone sync workspace:backup ./backup
+  update_backup
   rclone sync workspace: workspace-backup:
 EOL
-
-  if [ "$(date +%A)" == "Monday" ]; then
-    curl -sL -X POST https://builder.statichost.eu/esperoj-esperoj
-  fi
 }
 
 backup_segfault() {
