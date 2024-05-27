@@ -28,7 +28,7 @@ update_backup() {
   ssh ct8 "
   . ./.profile
   chezmoi update
-  . ./profile
+  . ./.profile
   cd workspace/esperoj
   source .venv/bin/activate
   task build
