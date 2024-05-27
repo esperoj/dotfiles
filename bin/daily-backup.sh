@@ -27,6 +27,8 @@ backup_seatable() {
 update_backup() {
   ssh ct8 "
   . ./.profile
+  chezmoi update
+  . ./profile
   cd workspace/esperoj
   source .venv/bin/activate
   task build
