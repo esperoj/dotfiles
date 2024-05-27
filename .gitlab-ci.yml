@@ -3,16 +3,18 @@ workflow:
     - if: $CI_SERVER_HOST == "framagit.org"
       variables:
         DEFAULT_TAG: Debian
+        DEFAULT_IMAGE: codeberg.org/esperoj/dotfiles
     - if: $CI_SERVER_HOST == "gitlab.com"
       variables:
         DEFAULT_TAG: saas-linux-medium-amd64
+        DEFAULT_IMAGE: esperoj/dotfiles
 
 stages:
   - main
 
 default:
   image:
-    name: ghcr.io/esperoj/dotfiles
+    name: $DEFAULT_IMAGE
     entrypoint: [""]
   timeout: 3 hours
   tags:

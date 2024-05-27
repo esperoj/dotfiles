@@ -5,19 +5,21 @@ skip_clone: true
 
 steps:
   run:
-    image: ghcr.io/esperoj/dotfiles
+    image: codeberg.org/esperoj/dotfiles
     pull: true
     secrets: [ encryption_passphrase ]
     commands:
-      - command time -v ~/bin/entrypoint.sh "$${COMMAND}"
+      - command time -v ~/bin/run-command.sh -h local
   notify:
-    image: ghcr.io/esperoj/dotfiles
+    image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
     when:
       - status: [ success, failure ]
     commands:
       - |
-        ~/bin/entrypoint.sh 'xargs -d "\n" notify.sh <<<"
-        Title: Workflow $${CI_WORKFLOW_NAME} of $${CI_REPO} has completed.
-        Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" \
-        | jq'
+        ~/bin/entrypoint.sh '
+        xargs -d "\n" notify.sh <<EOL | jq
+        Workflow "$${CI_WORKFLOW_NAME}" of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}.
+        Title: A job has completed
+        Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}
+        EOL'
