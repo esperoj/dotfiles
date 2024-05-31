@@ -16,13 +16,13 @@ cmds=$(echo '
   install_task
   install_woodpecker_cli
   ' | xargs)
-[[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
+[[ $(whoami) == root ]] || alias apt='~/bin/install.sh DISABLED apt'
 
 cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 
 install_7zip() {
-  install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
+  ~/bin/install.sh BASE bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
 }
 
 install_asdf_packages() {
@@ -40,15 +40,15 @@ install_asdf_packages() {
 }
 
 install_caddy() {
-  install.sh BASE ghbin caddyserver/caddy "linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" "caddy"
+  ~/bin/install.sh BASE ghbin caddyserver/caddy "linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" "caddy"
 }
 
 install_kopia() {
-  install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
+  ~/bin/install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
 
 install_oh_my_zsh() {
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh BASE)" "" --RUNZSH=no --CHSH=no
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/~/bin/install.sh BASE)" "" --RUNZSH=no --CHSH=no
 }
 
 install_packages() {
@@ -72,27 +72,27 @@ install_packages() {
 }
 
 install_rclone() {
-  install.sh BASE ghbin rclone/rclone "-linux-%arch:x86_64=amd64:aarch64=arm64%.zip$" "rclone-*/rclone"
+  ~/bin/install.sh BASE ghbin rclone/rclone "-linux-%arch:x86_64=amd64:aarch64=arm64%.zip$" "rclone-*/rclone"
 }
 
 install_restic() {
-  install.sh DISABLED ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
+  ~/bin/install.sh DISABLED ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
 }
 
 install_shfmt() {
-  install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
+  ~/bin/install.sh BASE ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
 }
 
 install_task() {
-  sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
+  sh -c "$(curl --location https://taskfile.dev/~/bin/install.sh)" -- -d -b ~/.local/bin
 }
 
 install_yt_dlp() {
-  install.sh DISABLED ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
+  ~/bin/install.sh DISABLED ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
 }
 
 install_woodpecker_cli() {
-  install.sh DISABLED ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
+  ~/bin/install.sh DISABLED ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
 }
 
 setup_android() {
