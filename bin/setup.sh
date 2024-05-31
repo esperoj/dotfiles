@@ -16,7 +16,7 @@ cmds=$(echo '
   install_task
   install_woodpecker_cli
   ' | xargs)
-[[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
+# [[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
 cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 

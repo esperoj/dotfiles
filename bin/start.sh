@@ -25,16 +25,16 @@ start_esperoj_command='
 for service in "$@"; do
   case "${service}" in
   home)
-    screen -dmS home bash -lc "${serve_home_command}"
+    screen -dmS home sh -lc "${serve_home_command}"
     ;;
   pcloud)
-    screen -dmS pcloud bash -lc "${serve_pcloud_command}"
+    screen -dmS pcloud sh -lc "${serve_pcloud_command}"
     ;;
   caddy)
     caddy start
     ;;
   esperoj)
-    screen -dmS esperoj bash -lc "${start_esperoj_command}"
+    screen -dmS esperoj sh -lc "${start_esperoj_command}"
     ;;
   ssh_server)
     service ssh start
