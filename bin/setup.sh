@@ -16,7 +16,7 @@ cmds=$(echo '
   install_shfmt
   install_task
   install_woodpecker_cli
-  ' | xargs)
+  ')
 # [[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
 cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
@@ -52,7 +52,7 @@ install_oh_my_zsh() {
 }
 
 install_packages() {
-  packages="
+  packages=$(echo "
     aria2
     exiftool
     iputils-ping
@@ -66,8 +66,8 @@ install_packages() {
     tmux
     vim
     zstd
-  "
-  xargs sudo apt install -qqy --no-install-recommends <<<"${packages}"
+  ")
+  sudo apt install -qqy --no-install-recommends ${packages}
 }
 
 install_pipx() {
