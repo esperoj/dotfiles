@@ -1,5 +1,6 @@
 #!/bin/bash
-
+echo ~
+echo $HOME
 export DEBIAN_FRONTEND=noninteractive
 export HOME=~
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
