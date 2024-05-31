@@ -1,8 +1,6 @@
 #!/bin/bash
-echo ~
-echo $HOME
+
 export DEBIAN_FRONTEND=noninteractive
-export HOME=~
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 OS="$(uname -o)"
 cmds=$(echo '
@@ -69,7 +67,7 @@ install_packages() {
     vim
     zstd
   "
-  xargs apt install -qqy --no-install-recommends <<<"${packages}"
+  xargs sudo apt install -qqy --no-install-recommends <<<"${packages}"
 }
 
 install_rclone() {
@@ -97,9 +95,9 @@ install_woodpecker_cli() {
 }
 
 setup_android() {
-  apt-get update -qqy
-  apt-get upgrade -qqy
-  apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf termux-api
+  sudo apt-get update -qqy
+  sudo apt-get upgrade -qqy
+  sudo apt-get install -qqy 7zip aria2 chezmoi curl git jq mosh parallel rclone restic shfmt sqlite tmux vim wget gnupg zsh fzf termux-api
   install_oh_my_zsh
   termux-setup-storage
   termux-change-repo
@@ -107,8 +105,8 @@ setup_android() {
 
 setup_linux() {
   set -Euxeo pipefail
-  apt update -y
-  apt install -qqy --no-install-recommends \
+  sudo apt update -y
+  sudo apt install -qqy --no-install-recommends \
     jq parallel zsh
   parallel --keep-order -vj0 ::: ${cmds}
   pipx install git+https://github.com/esperoj/esperoj.git
