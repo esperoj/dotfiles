@@ -1,6 +1,6 @@
 #!/bin/bash
 set -Eueo pipefail
-cd "${HOME}"
+cd ~
 # Install chezmoi
 sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ".local/bin"
 # Clone dotfiles
