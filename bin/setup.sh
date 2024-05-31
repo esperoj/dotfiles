@@ -10,6 +10,7 @@ cmds=$(echo '
   install_kopia
   install_oh_my_zsh
   install_packages
+  install_pipx
   install_rclone
   install_restic
   install_shfmt
@@ -57,7 +58,6 @@ install_packages() {
     iputils-ping
     lsb-release
     openssh-server
-    pipx
     python3-full
     python3-pip
     screen
@@ -68,6 +68,12 @@ install_packages() {
     zstd
   "
   xargs sudo apt install -qqy --no-install-recommends <<<"${packages}"
+}
+
+install_pipx() {
+  install.sh BASE ghbin pypa/pipx pipx.pyz pipx
+  pipx install git+https://github.com/esperoj/esperoj.git
+  pipx install poetry
 }
 
 install_rclone() {
@@ -109,8 +115,6 @@ setup_linux() {
   sudo apt install -qqy --no-install-recommends \
     jq parallel zsh
   parallel --keep-order -vj0 ::: ${cmds}
-  pipx install git+https://github.com/esperoj/esperoj.git
-  pipx install poetry
 }
 
 export -f ${cmds}
