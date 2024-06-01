@@ -67,6 +67,8 @@ install_packages() {
     exiftool
     iputils-ping
     lsb-release
+    nodejs
+    npm
     openssh-server
     screen
     time

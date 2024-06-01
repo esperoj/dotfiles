@@ -36,7 +36,6 @@ export -f backup_linkwarden backup_seatable update_backup
 
 backup_container() {
   cd ~
-  pipx upgrade esperoj
   parallel --keep-order -vj0 {} <<EOL
   backup_linkwarden
   backup_seatable
