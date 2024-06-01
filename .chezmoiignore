@@ -3,6 +3,7 @@
 .woodpecker/
 archive/
 bin/
+esperoj-scripts/
 .drone.yml
 .gitlab-ci.yml
 Dockerfile

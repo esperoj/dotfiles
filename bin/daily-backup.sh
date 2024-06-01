@@ -25,16 +25,11 @@ backup_seatable() {
 }
 
 update_backup() {
-  ssh ct8 "
-  set -Eeo pipefail
-  . ./.profile
-  chezmoi update
-  . ./.profile
-  cd workspace/esperoj
-  source .venv/bin/activate
-  task build
-  "
-  esperoj save_page "https://esperoj.ct8.pl/backup.7z"
+  rclone copy workspace:backup ./backup
+  7z a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
+  rm -rf backup/
+  rclone move backup.7z public:
+  esperoj save_page "https://esperoj.vercel.app/backup.7z"
 }
 
 export -f backup_linkwarden backup_seatable update_backup
@@ -46,7 +41,6 @@ backup_container() {
   backup_linkwarden
   backup_seatable
 EOL
-
   parallel --keep-order -vj0 {} <<EOL
   update_backup
   rclone sync workspace: workspace-backup:
