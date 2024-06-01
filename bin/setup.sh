@@ -74,7 +74,8 @@ install_packages() {
     vim
     zstd
   ")
-  sudo apt install -qqy --no-install-recommends ${packages}
+  sudo apt-get update -qqy
+  sudo apt-get install -qqy --no-install-recommends ${packages}
 }
 
 install_pipx() {
