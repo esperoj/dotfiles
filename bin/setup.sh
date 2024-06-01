@@ -5,7 +5,6 @@ export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 OS="$(uname -o)"
 cmds=$(echo '
   install_7zip
-  echo install_asdf_packages
   install_caddy
   install_fzf
   install_esperoj
