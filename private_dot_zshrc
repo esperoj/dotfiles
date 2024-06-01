@@ -106,3 +106,4 @@ source $ZSH/oh-my-zsh.sh
 
 . "${HOME}/.profile"
 . "${HOME}/.config/${MACHINE_NAME}/bashrc"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

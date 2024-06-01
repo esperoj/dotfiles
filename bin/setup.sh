@@ -5,8 +5,9 @@ export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 OS="$(uname -o)"
 cmds=$(echo '
   install_7zip
-  install_asdf_packages
+  echo install_asdf_packages
   install_caddy
+  install_fzf
   install_esperoj
   install_kopia
   install_oh_my_zsh
@@ -44,6 +45,11 @@ install_caddy() {
   install.sh BASE ghbin caddyserver/caddy "linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" "caddy"
 }
 
+install_fzf() {
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --key-bindings --completion --no-update-rc
+}
+
 install_esperoj() {
   install.sh BASE ghbin esperoj/esperoj "^esperoj_linux_%arch:x86_64=x86_64%$" esperoj
 }
@@ -62,6 +68,7 @@ install_packages() {
     exiftool
     iputils-ping
     lsb-release
+    nodejs
     openssh-server
     screen
     time
