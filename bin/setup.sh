@@ -7,6 +7,7 @@ cmds=$(echo '
   install_7zip
   install_asdf_packages
   install_caddy
+  install_esperoj
   install_kopia
   install_oh_my_zsh
   install_packages
@@ -17,7 +18,7 @@ cmds=$(echo '
   install_task
   install_woodpecker_cli
   ')
-# [[ $(whoami) == root ]] || alias apt='install.sh DISABLED apt'
+
 cd "${HOME}"
 mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
 
@@ -43,6 +44,10 @@ install_caddy() {
   install.sh BASE ghbin caddyserver/caddy "linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" "caddy"
 }
 
+install_esperoj() {
+  install.sh BASE ghbin esperoj/esperoj "^esperoj_linux_%arch:x86_64=x86_64%$" esperoj
+}
+
 install_kopia() {
   install.sh DISABLED ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
@@ -58,10 +63,7 @@ install_packages() {
     iputils-ping
     lsb-release
     openssh-server
-    python3-full
-    python3-pip
     screen
-    sudo
     time
     tmux
     vim
@@ -72,7 +74,7 @@ install_packages() {
 
 install_pipx() {
   install.sh BASE ghbin pypa/pipx pipx.pyz pipx
-  pipx install git+https://github.com/esperoj/esperoj.git
+  # pipx install git+https://github.com/esperoj/esperoj.git
   pipx install poetry
 }
 
@@ -111,9 +113,6 @@ setup_android() {
 
 setup_linux() {
   set -Euxeo pipefail
-  sudo apt update -y
-  sudo apt install -qqy --no-install-recommends \
-    jq parallel zsh
   parallel --keep-order -vj0 ::: ${cmds}
 }
 
