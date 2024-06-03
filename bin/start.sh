@@ -16,6 +16,14 @@ serve_pcloud_command='
   --poll-interval 0 \
   --vfs-cache-mode writes \
   pcloud:'
+serve_koofr_command='
+  export RCLONE_AUTH_KEY="esperoj,${MY_UUID}"
+  rclone serve s3 \
+  --addr "unix://${HOME}/.sockets/koofr.sock" \
+  --dir-cache-time 0s \
+  --poll-interval 0 \
+  --vfs-cache-mode writes \
+  koofr:'
 start_esperoj_command='
   cd ~/workspace/esperoj
   source .venv/bin/activate
@@ -29,6 +37,9 @@ for service in "$@"; do
     ;;
   pcloud)
     screen -dmS pcloud sh -lc "${serve_pcloud_command}"
+    ;;
+  koofr)
+    screen -dmS koofr sh -lc "${serve_koofr_command}"
     ;;
   caddy)
     caddy start

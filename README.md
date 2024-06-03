@@ -6,7 +6,7 @@
 cd ~
 export MACHINE_NAME=segfault
 # Install dotfiles
-curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/instal.sh | APPLY=true bash -- dotfiles
+curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install.sh | APPLY=true bash -s -- dotfiles
 . ./.profile
 setup.sh
 ```

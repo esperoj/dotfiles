@@ -13,3 +13,7 @@ http://dev.esperoj.eu.org:20711 {
 http://pcloud.esperoj.eu.org:20711 {
 	reverse_proxy unix//{$HOME}/.sockets/pcloud.sock
 }
+
+http://koofr.esperoj.eu.org:20711 {
+	reverse_proxy unix//{$HOME}/.sockets/koofr.sock
+}

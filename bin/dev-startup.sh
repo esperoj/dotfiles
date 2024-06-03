@@ -7,7 +7,7 @@ export RCLONE_VERBOSE=1
 cd "${HOME}"
 
 # Start services
-start.sh pcloud home caddy ssh_server
+start.sh koofr home caddy ssh_server
 
 # Restore cache and working workspace
 rclone copy "cache:${archive}" .

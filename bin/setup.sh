@@ -58,8 +58,8 @@ install_packages() {
 setup_linux() {
   set -Exeo pipefail
   parallel --keep-order -vj0 {} <<EOL
-  install_apt_packages
   install_packages
+  install_apt_packages
 EOL
 }
 

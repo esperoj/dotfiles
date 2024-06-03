@@ -10,6 +10,7 @@ taskfiles/
 Dockerfile
 LICENSE
 README.md
+Taskfile.yml
 
 {{- if ne .machineName "phone" }}
 .config/phone/
