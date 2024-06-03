@@ -17,7 +17,7 @@ install_caddy() {
 
 # Install chezmoi and the dotfiles and apply if $APPLY is true
 install_dotfiles() {
-  set -Eueo pipefail
+  set -Eeo pipefail
   if [[ $- == *i* ]]; then
     if [ -z "${ENCRYPTION_PASSPHRASE}"]; then
       echo "Please enter your encryption passphrase:"
