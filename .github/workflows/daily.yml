@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   #schedule:
   #  - cron: '15 22 * * *'
+defaults:
+  run:
+    shell: bash
 
 jobs:
   Daily:

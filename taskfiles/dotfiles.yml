@@ -1,0 +1,7 @@
+version: '3'
+run: when_changed
+
+tasks:
+  setup:
+    cmds:
+      - task: :build

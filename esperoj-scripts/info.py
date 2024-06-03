@@ -11,7 +11,7 @@ def info(esperoj):
         None
     """
 
-    print(esperoj.storages["Backup Audio Storage"].upload_file("esperoj.py", "esperoj.py"))
+    print("info")
 
 
 def get_esperoj_method(esperoj):

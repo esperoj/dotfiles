@@ -4,8 +4,8 @@ set -Exeo pipefail
 cd "${HOME}"
 uptime
 date --utc
-
 start.sh pcloud caddy
+# TODO: Keep the two pcloud accounts alive
 
 parallel --keep-order -vj0 {} <<EOL
   ssh ct8 "uptime"

@@ -1,219 +1,103 @@
 #!/bin/bash
 
-export DEBIAN_FRONTEND=noninteractive
-export PIPX_HOME=/usr
-export PIPX_BIN_DIR="${HOME}/.local/bin"
+OS="$(uname -o)"
 
-[[ -n $BESTEFFORT ]] && force_exit_code=0
-
-# Substitute the string with correct architecture. E.g. we are 'x86_64'
-# but filename contains 'amd64'. Also used to SKIP packages for specific
-# architectures.
-# str='lsd_.*_%arch%.deb$'
-# str='lsd_.*_%arch:x86_64=amd64%.deb$'
-# str='lsd_.*_%arch:x86_64=SKIP%.deb$'
-# str='lsd_.*_%arch:x86_64=amd64:DEFAULT=SKIP%.deb$'
-# str='lsd_.*_%arch:x86_64=amd64%.deb$ and linux-%arch:x86_64=amd64%.dat'
-dearch() {
-  local str
-  # Convert any '%arch%' to 'x86_64'
-  str=${1//%arch%/$HOSTTYPE}
-  [[ $str =~ %arch.*% ]] && {
-    # Check if this specific architecture is set to be skipped.
-    [[ $str =~ %arch:[^%]*$HOSTTYPE=SKIP ]] && {
-      echo >&2 "Skipping. Not available for $HOSTTYPE."
-      return 255
-    }
-    # Use translation table to convert 'x86_64' to 'amd64'
-    str=$(echo "$str" | sed -e "s/%arch:[^%]*$HOSTTYPE=\([^:%]*\)[^%]*%/\1/g")
-    [[ $str =~ %arch.*DEFAULT=SKIP% ]] && {
-      echo >&2 "Skipping. Not available for $HOSTTYPE."
-      return 255
-    }
-  }
-  # ..and default is to set to ARCH value
-  str=$(echo "$str" | sed -e "s/%arch:[^%]*%/$HOSTTYPE/g")
-  echo "$str"
+install_7zip() {
+  pkg-install.sh bin "https://7-zip.org/a/7z2301-linux-%arch:x86_64=x64:aarch64=arm64%.tar.xz" 7zz
 }
 
-# Download & Extract
-# [URL] [asset] <dstdir>
-dlx() {
-  local url
-  local asset
-  local dstdir
-  url="$1"
-  asset="$2"
-  dstdir="$3"
-  [[ -z $dstdir ]] && dstdir="${HOME}/.local/bin"
+install_asdf() {
+  git clone --depth 1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
+  . "${HOME}/.asdf/asdf.sh"
+}
 
-  [[ -z "$url" ]] && {
-    echo >&2 "[${asset}] URL: '$loc'"
-    return 255
-  }
-  case $url in
-  *.zip)
-    [[ -f /tmp/pkg.zip ]] && rm -f /tmp/pkg.zip
-    curl -SsfL -o /tmp/pkg.zip "$url" || return
-    if [[ -z $asset ]]; then
-      # HERE: Directory
-      unzip /tmp/pkg.zip -d "${dstdir}" || return
-    else
-      # HERE: Single file
-      unzip -o -j /tmp/pkg.zip "$asset" -d "${dstdir}" || return
-      chmod 755 "${dstdir}/$(basename "${asset}")" || return
+install_caddy() {
+  pkg-install.sh ghbin caddyserver/caddy "linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" "caddy"
+}
+
+# Install chezmoi and the dotfiles and apply if $APPLY is true
+install_dotfiles() {
+  set -Eueo pipefail
+  if [[ $- == *i* ]]; then
+    if [ -z "${ENCRYPTION_PASSPHRASE}"]; then
+      echo "Please enter your encryption passphrase:"
+      read -s ENCRYPTION_PASSPHRASE
+      export ENCRYPTION_PASSPHRASE="${ENCRYPTION_PASSPHRASE}"
     fi
-    rm -f /tmp/pkg.zip &&
-      return 0
-    ;;
-  *.deb)
-    ### Need to force-architecture as we install x86_64 only packages on aarch64
-    curl -SsfL -o /tmp/pkg.deb "$url" &&
-      dpkg -i --force-architecture --ignore-depends=sshfs /tmp/pkg.deb &&
-      rm -rf /tmp/pkg.deb &&
-      return 0
-    ;;
-  *.tar.gz | *.tgz)
-    curl -SsfL "$url" | tar xfvz - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" &&
-      chmod 755 "${dstdir}/${asset}" &&
-      return 0
-    ;;
-  *.gz)
-    curl -SsfL "$url" | gunzip >"${dstdir}/${asset}" &&
-      chmod 755 "${dstdir}/${asset}" &&
-      return 0
-    ;;
-  *.tar.bz2)
-    curl -SsfL "$url" | tar xfvj - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" &&
-      chmod 755 "${dstdir}/${asset}" &&
-      return 0
-    ;;
-  *.bz2)
-    curl -SsfL "$url" | bunzip2 >"${dstdir}/${asset}" &&
-      chmod 755 "${dstdir}/${asset}" &&
-      return 0
-    ;;
-  *.xz)
-    curl -SsfL "$url" | tar xfvJ - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" &&
-      chmod 755 "${dstdir}/${asset}" &&
-      return 0
-    ;;
-  *)
-    curl -SsfL "$url" >"${dstdir}/${asset}" &&
-      chmod 755 "${dstdir}/${asset}" &&
-      return 0
-    ;;
-  esac
+    if [ -z "${MACHINE_NAME}"]; then
+      echo "Please enter your machine name:"
+      read -s MACHINE_NAME
+    fi
+  fi
+  export MACHINE_NAME=${MACHINE_NAME-segfault}
+  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ".local/bin"
+  chezmoi_path=".local/share/chezmoi"
+  mkdir -p "${chezmoi_path}"
+  (
+    cd "${chezmoi_path}"
+    git clone --depth=1 https://codeberg.org/esperoj/dotfiles.git .
+    git remote set-url origin git@codeberg.org:esperoj/dotfiles.git
+  )
+  ln -s "${chezmoi_path}"/{bin,esperoj-scripts,taskfiles} .
+  if [[ $APPLY == "true" ]]; then
+    ./.local/bin/chezmoi init --apply --force
+  fi
 }
 
-ghlatest() {
-  local loc
-  local regex
-  local args
-  local data
-  loc="$1"
-  regex="$2"
-
-  [[ -n $GITHUB_TOKEN ]] && args=("-H" "Authorization: Bearer $GITHUB_TOKEN")
-  loc="https://api.github.com/repos/${loc}/releases/latest"
-  data=$(curl "${args[@]}" -SsfL "$loc") || {
-    echo >&2 "Failed($?) at '$loc'"
-    [[ -z $GITHUB_TOKEN ]] && echo >&2 "Try setting GITHUB_TOKEN="
-    exit 250
-  }
-  url=$(echo "$data" | jq -r '[.assets[] | select(.name|match("'"$regex"'"))][0] | .browser_download_url | select( . != null )')
-  # url=$(curl "${args[@]}" -SsfL "$loc" | jq -r '[.assets[] | select(.name|match("'"$regex"'"))][0] | .browser_download_url | select( . != null )')
-  [[ -z $url ]] && {
-    echo >&2 "Asset '$regex' not found at '$loc'"
-    exit 251
-  }
-  echo "$url"
+install_fzf() {
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --key-bindings --completion --no-update-rc
 }
 
-# Install latest Binary from GitHub and smear it into ${HOME}/.local/bin
-# [<user>/<repo>] [<regex-match>] [asset]
-# Examples:
-# ghbin tomnomnom/waybackurls "linux-amd64-" waybackurls
-# ghbin SagerNet/sing-box "linux-amd64." sing-box
-# ghbin projectdiscovery/httpx "linux_amd64.zip$" httpx
-# ghbin Peltoche/lsd "lsd_.*_amd64.deb$"
-ghbin() {
-  local url
-  local asset
-  local src
-  src=$(dearch "$2") || exit 0
-  asset="$3"
-
-  url=$(ghlatest "$1" "$src")
-  dlx "$url" "$asset"
+install_esperoj() {
+  pkg-install.sh ghbin esperoj/esperoj "^esperoj_linux_%arch:x86_64=x86_64%$" esperoj
 }
 
-ghdir() {
-  local url
-  local src
-  src=$(dearch "$2") || exit 0
-
-  url=$(ghlatest "$1" "$src")
-  dlx "$url" "" "$3"
+install_kopia() {
+  pkg-install.sh ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
 
-bin() {
-  local src
-  src=$(dearch "$1") || exit 0
-
-  dlx "$src" "$2"
+install_oh_my_zsh() {
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/pkg-install.sh)" "" --RUNZSH=no --CHSH=yes
 }
 
-TAG="${1^^}"
-shift 1
-
-# Can not use Dockerfile 'ARG PACKAGES=${PACKAGES:-"MINI BASE NET"}'
-# because 'make' sets PACKAGES to an _empty_ string and docker thinks
-# an empty string does not warrant ':-"MINI BASE NET"' substititon.
-[[ -z $PACKAGES ]] && PACKAGES="MINI BASE NET"
-
-[[ -n $PACKAGES ]] && {
-  PACKAGES="${PACKAGES^^}" # Convert to upper case
-  [[ "$TAG" == *DISABLED* ]] && {
-    echo "Skipping Packages: $TAG [DISABLED]"
-    exit
-  }
-  [[ "$TAG" == ALLALL ]] && {
-    [[ "$PACKAGES" != *ALLALL* ]] && {
-      echo "Skipping Packages: ALLALL"
-      exit
-    }
-  }
-  [[ "$PACKAGES" != *ALL* ]] && [[ "$PACKAGES" != *"$TAG"* ]] && {
-    echo "Skipping Packages: $TAG"
-    exit
-  }
+install_pipx() {
+  pkg-install.sh ghbin pypa/pipx pipx.pyz pipx
 }
 
-[[ "$1" == ghbin ]] && {
-  shift 1
-  ghbin "$@"
-  exit "${force_exit_code:-$?}"
+install_rclone() {
+  pkg-install.sh ghbin rclone/rclone "-linux-%arch:x86_64=amd64:aarch64=arm64%.zip$" "rclone-*/rclone"
 }
 
-[[ "$1" == ghdir ]] && {
-  shift 1
-  ghdir "$@"
-  exit "${force_exit_code:-$?}"
+install_restic() {
+  install.sh ghbin restic/restic "_linux_%arch:x86_64=amd64:aarch64=arm64%.bz2$" restic
 }
 
-[[ "$1" == ghlatest ]] && {
-  shift 1
-  ghlatest "$@"
-  exit "${force_exit_code:-$?}"
+install_shfmt() {
+  pkg-install.sh ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
 }
 
-[[ "$1" == bin ]] && {
-  shift 1
-  bin "$@"
-  exit "${force_exit_code:-$?}"
+install_uv() {
+  pkg-install.sh ghbin astral-sh/uv "uv-x86_64-unknown-linux-gnu.tar.gz" uv
 }
 
-#exec "$@"
-"$@"
-exit "${force_exit_code:-$?}"
+install_task() {
+  sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
+}
+
+install_yt_dlp() {
+  pkg-install.sh ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
+}
+
+install_woodpecker_cli() {
+  pkg-install.sh ghbin woodpecker-ci/woodpecker "woodpecker-cli_linux_%arch:x86_64=amd64:aarch64=arm64%.tar.gz$" woodpecker-cli
+}
+
+cd "${HOME}"
+export -f $(compgen -A function)
+
+if [ $# -eq 1 ]; then
+  install_$1
+else
+  parallel --keep-order -vj0 install_{} ::: $@
+fi

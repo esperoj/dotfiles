@@ -4,19 +4,9 @@
 
 ```bash
 cd ~
-export ENCRYPTION_PASSPHRASE=""
 export MACHINE_NAME=segfault
-export RCLONE_FILTER_FROM="$(mktemp)"
-cat <<-EOL >"${RCLONE_FILTER_FROM}"
-- .thumbnails/
-- tmp/
-EOL
 # Install dotfiles
-curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/install-dotfiles.sh | bash
-./.local/bin/chezmoi init --apply --force
+curl -fsLS https://codeberg.org/esperoj/dotfiles/raw/branch/main/bin/instal.sh | APPLY=true bash -- dotfiles
 . ./.profile
 setup.sh
-entrypoint.sh "rclone copy -v workspace: ./workspace"
-info.sh
-rm "${RCLONE_FILTER_FROM}"
 ```

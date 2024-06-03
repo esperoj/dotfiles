@@ -8,6 +8,9 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+defaults:
+  run:
+    shell: bash
 
 jobs:
   Build:
@@ -22,15 +25,15 @@ jobs:
     steps:
     -
       name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@main
     -
       name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@master
       with:
         platforms: linux/amd64
     -
       name: Login
-      uses: docker/login-action@v2
+      uses: docker/login-action@master
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
@@ -38,7 +41,7 @@ jobs:
     -
         name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@master
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -52,7 +55,7 @@ jobs:
             type=sha
     -
       name: Build and push
-      uses: docker/build-push-action@v4
+      uses: docker/build-push-action@master
       with:
         context: .
         push: true
@@ -60,7 +63,7 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         file: Dockerfile
         no-cache: false
-    - uses: actions/delete-package-versions@v5
+    - uses: actions/delete-package-versions@main
       with:
         package-name: 'dotfiles'
         package-type: 'container'
