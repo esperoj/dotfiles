@@ -13,7 +13,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
-    runs-on: ubuntu-latest
+    runs-on: fasterci-medium
     env:
       ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
     timeout-minutes: 60
