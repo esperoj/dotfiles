@@ -10,7 +10,7 @@ defaults:
 
 jobs:
   Benchmark:
-    runs-on: fasterci-medium
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
       ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}

@@ -13,7 +13,7 @@ defaults:
 
 jobs:
   Run:
-    runs-on: fasterci-medium
+    runs-on: ubuntu-latest
     env:
       ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
       COMMAND: ${{ inputs.command }}
