@@ -58,7 +58,7 @@ install_kopia() {
 }
 
 install_oh_my_zsh() {
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/pkg-install.sh)" "" --RUNZSH=no --CHSH=yes
+  curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -s -- --RUNZSH=no --CHSH=yes
 }
 
 install_pipx() {

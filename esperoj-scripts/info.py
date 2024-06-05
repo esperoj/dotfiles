@@ -10,8 +10,7 @@ def info(esperoj):
     Returns:
         None
     """
-
-    print("info")
+    print(esperoj)
 
 
 def get_esperoj_method(esperoj):
