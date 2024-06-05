@@ -9,7 +9,6 @@ parallel --keep-order -vj0 {} <<-EOL
   df -hT
   esperoj --help
   free -h
-  node --version
   pwd
   python --version
   rclone listremotes

@@ -7,19 +7,6 @@ OS="$(uname -o)"
 cd "${HOME}"
 mkdir -p "${HOME}/.local"/{bin,share,lib,lib64}
 
-install_asdf_packages() {
-  install.sh asdf
-  . "${HOME}/.asdf/asdf.sh"
-  asdf_install() {
-    asdf plugin add $1
-    asdf install $1 latest
-    asdf global $1 latest
-  }
-  export -f asdf_install
-  local packages="nodejs"
-  parallel --keep-order -vj1 asdf_install ::: ${packages}
-}
-
 install_apt_packages() {
   local packages=$(echo "
     aria2
@@ -27,7 +14,7 @@ install_apt_packages() {
     iputils-ping
     lsb-release
     openssh-server
-    python
+    python3
     screen
     time
     tmux
@@ -56,7 +43,6 @@ setup_linux() {
   set -Exeo pipefail
   parallel --keep-order -vj0 {} <<EOL
   install_packages
-  install_asdf_packages
   install_apt_packages
 EOL
 }
