@@ -19,10 +19,9 @@ jobs:
     env:
       ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
     steps:
-    -
-      name: Benchmark
-      run: |
-        docker run \
-        --env ENCRYPTION_PASSPHRASE \
-        --rm ghcr.io/esperoj/dotfiles:latest \
-        'command time -v ~/bin/run-command.sh -h "local" -c "benchmark.sh"'
+      - name: Benchmark
+        run: |
+          docker run \
+          --env ENCRYPTION_PASSPHRASE \
+          --rm ghcr.io/esperoj/dotfiles:latest \
+          'command time -v ~/bin/run-command.sh -h "local" -c "benchmark.sh"'

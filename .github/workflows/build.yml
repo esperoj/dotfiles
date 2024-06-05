@@ -28,26 +28,22 @@ jobs:
       contents: read
       packages: write
     steps:
-    -
-      name: Checkout
-      uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
 
-    -
-      name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@master
-      with:
-        platforms: linux/amd64
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@master
+        with:
+          platforms: linux/amd64
 
-    -
-      name: Login
-      uses: docker/login-action@master
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login
+        uses: docker/login-action@master
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    -
-        name: Docker meta
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@master
         with:
@@ -62,32 +58,30 @@ jobs:
             type=semver,pattern={{major}}
             type=sha
 
-    -
-      name: Build and push
-      uses: docker/build-push-action@master
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        file: Dockerfile
-        no-cache: false
+      - name: Build and push
+        uses: docker/build-push-action@master
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          file: Dockerfile
+          no-cache: false
 
-    - uses: actions/delete-package-versions@main
-      with:
-        package-name: 'dotfiles'
-        package-type: 'container'
-        min-versions-to-keep: 10
-        delete-only-untagged-versions: 'false'
+      - uses: actions/delete-package-versions@main
+        with:
+          package-name: 'dotfiles'
+          package-type: 'container'
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: 'false'
 
-    -
-      name: Send notification
-      env:
-        NTFY_URL: ${{ secrets.NTFY_URL }}
-        MY_UUID: ${{ secrets.MY_UUID }}
-      if: ${{ always() }}
-      run: |
-        ./bin/notify.sh "" \
-        "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
-        "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-        | jq
+      - name: Send notification
+        env:
+          NTFY_URL: ${{ secrets.NTFY_URL }}
+          MY_UUID: ${{ secrets.MY_UUID }}
+        if: ${{ always() }}
+        run: |
+          ./bin/notify.sh "" \
+          "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
+          "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+          | jq

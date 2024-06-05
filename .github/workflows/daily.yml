@@ -22,10 +22,9 @@ jobs:
       ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
     timeout-minutes: 60
     steps:
-    -
-      name: Daily
-      run: |
-        docker run \
-        --env ENCRYPTION_PASSPHRASE \
-        --rm ghcr.io/esperoj/dotfiles:latest \
-        'command time -v ~/bin/run-command.sh -h "local" -c "daily.sh"'
+      - name: Daily
+        run: |
+          docker run \
+          --env ENCRYPTION_PASSPHRASE \
+          --rm ghcr.io/esperoj/dotfiles:latest \
+          'command time -v ~/bin/run-command.sh -h "local" -c "daily.sh"'

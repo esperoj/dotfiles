@@ -7,4 +7,3 @@ RUN apt-get update -qqy \
     && /install.sh dotfiles \
     && ~/bin/setup.sh \
     && rm -rf ~/.cache /var/lib/apt/lists /var/cache/apt/archives /install.sh
-ENTRYPOINT ["/root/bin/entrypoint.sh"]

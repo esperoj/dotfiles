@@ -24,27 +24,24 @@ jobs:
       MY_UUID: ${{ secrets.MY_UUID }}
     timeout-minutes: 360
     steps:
-    -
-      name: Checkout
-      uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
 
-    -
-      name: Run
-      run: |
-        docker run \
-        --env COMMAND \
-        --env ENCRYPTION_PASSPHRASE \
-        --rm ghcr.io/esperoj/dotfiles:latest \
-        'command time -v ~/bin/run-command.sh -h "local"'
+      - name: Run
+        run: |
+          docker run \
+          --env COMMAND \
+          --env ENCRYPTION_PASSPHRASE \
+          --rm ghcr.io/esperoj/dotfiles:latest \
+          'command time -v ~/bin/run-command.sh -h "local"'
 
-    -
-      name: Send notification
-      env:
-        NTFY_URL: ${{ secrets.NTFY_URL }}
-        MY_UUID: ${{ secrets.MY_UUID }}
-      if: ${{ always() }}
-      run: |
-        ./bin/notify.sh "${COMMAND}" \
-        "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
-        "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-        | jq
+      - name: Send notification
+        env:
+          NTFY_URL: ${{ secrets.NTFY_URL }}
+          MY_UUID: ${{ secrets.MY_UUID }}
+        if: ${{ always() }}
+        run: |
+          ./bin/notify.sh "${COMMAND}" \
+          "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
+          "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+          | jq

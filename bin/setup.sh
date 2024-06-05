@@ -35,6 +35,7 @@ install_packages() {
   rclone
   shfmt
   task
+  uv
   ')
   install.sh ${packages}
 }
