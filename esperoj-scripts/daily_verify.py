@@ -68,7 +68,9 @@ def daily_verify(esperoj) -> None:
         try:
             start_time = time.time()
             logger.info(f"Start verifying file `{name}`")
-            if file["Verified"]:
+            # TODO: Chinese one does not work with rclone
+            #if file["Verified"]:
+            if False:
                 size_list = [
                     esperoj.storages[storage_name].size(name) for storage_name in file["Storages"]
                 ]
