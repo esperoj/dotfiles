@@ -1,5 +1,7 @@
 name: Run command
+
 run-name: Run command
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,9 +9,11 @@ on:
         description: "Run a command"
         required: true
         type: string
+
 defaults:
   run:
     shell: bash
+
 
 jobs:
   Run:
@@ -23,6 +27,7 @@ jobs:
     -
       name: Checkout
       uses: actions/checkout@main
+
     -
       name: Run
       run: |
@@ -30,11 +35,13 @@ jobs:
         --env COMMAND \
         --env ENCRYPTION_PASSPHRASE \
         --rm ghcr.io/esperoj/dotfiles:latest \
-        'cd "$(mktemp -d)" && bash -c "${COMMAND}"'
+        'command time -v ~/bin/run-command.sh -h "local"'
+
     -
       name: Send notification
       env:
         NTFY_URL: ${{ secrets.NTFY_URL }}
+        MY_UUID: ${{ secrets.MY_UUID }}
       if: ${{ always() }}
       run: |
         ./bin/notify.sh "${COMMAND}" \

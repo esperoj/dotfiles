@@ -1,8 +1,8 @@
-when:
-  - evaluate: 'CI_PIPELINE_EVENT == "push" && CI_SYSTEM_HOST == "ci.codeberg.org"'
-
 variables:
   - &build_plugin plugins/docker
+  - base_conditions: &base_conditions
+    - event: push
+      evaluate: 'CI_SYSTEM_HOST == "ci.codeberg.org"'
   - base_settings: &base_docker_settings
       repo: codeberg.org/esperoj/dotfiles
       auto_tag: true
@@ -11,20 +11,25 @@ variables:
       password:
         from_secret: codeberg_token
 
+when: *base_conditions
+
+
 steps:
   publish:
     image: *build_plugin
     settings:
       <<: *base_docker_settings
-      dry-run: false
+    when: *base_conditions
+
   notify:
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
     when:
-      - status: [ success, failure ]
+      - event: push
+        status: [ success, failure ]
     commands:
       - |
-        ~/bin/entrypoint.sh '
+        ~/bin/run-command.sh -h local -c '
         xargs -d "\n" notify.sh <<EOL | jq
         Workflow "$${CI_WORKFLOW_NAME}" of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}.
         Title: A job has completed

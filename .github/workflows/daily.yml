@@ -1,12 +1,16 @@
 name: Daily
+
 run-name: Daily
+
 on:
   workflow_dispatch:
   #schedule:
   #  - cron: '15 22 * * *'
+
 defaults:
   run:
     shell: bash
+
 
 jobs:
   Daily:
@@ -24,4 +28,4 @@ jobs:
         docker run \
         --env ENCRYPTION_PASSPHRASE \
         --rm ghcr.io/esperoj/dotfiles:latest \
-        'cd ~ && uptime && daily.sh'
+        'command time -v ~/bin/run-command.sh -h "local" -c "daily.sh"'

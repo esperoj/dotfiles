@@ -1,7 +1,5 @@
 dev:
   stage: main
   timeout: 3 hours
-  before_script:
-    - notify.sh "Title: Dev server has started." "Actions: view, View Log, ${CI_JOB_URL}" | jq
   script:
-    - ~/bin/entrypoint.sh "dev-startup.sh"
+    - ~/bin/run-command.sh -h local -c 'notify.sh "Title: Dev server has started." "Actions: view, View Log, ${CI_JOB_URL}" | jq && dev-startup.sh'

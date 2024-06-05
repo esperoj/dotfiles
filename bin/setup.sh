@@ -5,7 +5,7 @@ export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 OS="$(uname -o)"
 
 cd "${HOME}"
-mkdir -p ${HOME}/.local/{bin,share,lib,lib64}
+mkdir -p "${HOME}/.local"/{bin,share,lib,lib64}
 
 install_asdf_packages() {
   install.sh asdf
@@ -16,7 +16,7 @@ install_asdf_packages() {
     asdf global $1 latest
   }
   export -f asdf_install
-  local packages="fzf nodejs"
+  local packages="nodejs"
   parallel --keep-order -vj1 asdf_install ::: ${packages}
 }
 
@@ -26,11 +26,8 @@ install_apt_packages() {
     exiftool
     iputils-ping
     lsb-release
-    nodejs
-    npm
     openssh-server
-    python3-full
-    python3-pip 
+    python
     screen
     time
     tmux
@@ -59,6 +56,7 @@ setup_linux() {
   set -Exeo pipefail
   parallel --keep-order -vj0 {} <<EOL
   install_packages
+  install_asdf_packages
   install_apt_packages
 EOL
 }

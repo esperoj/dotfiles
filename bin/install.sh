@@ -38,7 +38,7 @@ install_dotfiles() {
     git clone --depth=1 https://codeberg.org/esperoj/dotfiles.git .
     git remote set-url origin git@codeberg.org:esperoj/dotfiles.git
   )
-  ln -s "${chezmoi_path}"/{bin,esperoj-scripts,taskfiles} .
+  ln -s "${chezmoi_path}"/{bin,esperoj-scripts,taskfiles,Taskfile.yml} .
   if [[ $APPLY == "true" ]]; then
     ./.local/bin/chezmoi init --apply --force
   fi

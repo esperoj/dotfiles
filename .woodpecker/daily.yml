@@ -1,27 +1,33 @@
-when:
-  - event: cron
-    cron: daily
-    # schedule: 0 15 22 * * *
-  - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "daily"'
-
 skip_clone: true
+
+variables:
+  - base_conditions: &base_conditions
+    - event: cron
+      cron: daily # schedule: 0 15 22 * * *
+    - event: manual
+      evaluate: 'WORKFLOW == "daily"'
+
+when: *base_conditions
+
 
 steps:
   run:
     image: codeberg.org/esperoj/dotfiles
     pull: true
     secrets: [ encryption_passphrase ]
+    when: *base_conditions
     commands:
-      - |
-        command time -v ~/bin/entrypoint.sh "daily.sh"
+      - command time -v ~/bin/run-command.sh -h "local" -c "daily.sh"
+
   notify:
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
     when:
-      - status: failure
+      - event: [cron, manual]
+        status: failure
     commands:
       - |
-        ~/bin/entrypoint.sh '
+        ~/bin/run-command.sh -h local -c '
         xargs -d "\n" notify.sh <<EOL | jq
         Workflow "$${CI_WORKFLOW_NAME}" of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}.
         Title: A job has completed

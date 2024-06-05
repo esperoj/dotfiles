@@ -1,23 +1,31 @@
-when:
-  - evaluate: 'CI_PIPELINE_EVENT == "manual" && WORKFLOW == "run-command"'
-
 skip_clone: true
+
+variables:
+  - base_conditions: &base_conditions
+    - event: manual
+      evaluate: 'WORKFLOW == "run-command"'
+
+when: *base_conditions
+
 
 steps:
   run:
     image: codeberg.org/esperoj/dotfiles
     pull: true
     secrets: [ encryption_passphrase ]
+    when: *base_conditions
     commands:
       - command time -v ~/bin/run-command.sh -h local
+
   notify:
     image: codeberg.org/esperoj/dotfiles
     secrets: [ encryption_passphrase ]
     when:
-      - status: [ success, failure ]
+      - event: manual
+        status: [ success, failure ]
     commands:
       - |
-        ~/bin/entrypoint.sh '
+        ~/bin/run-command.sh -h local -c '
         xargs -d "\n" notify.sh <<EOL | jq
         Workflow "$${CI_WORKFLOW_NAME}" of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}.
         Title: A job has completed

@@ -1,12 +1,16 @@
 name: Benchmark
+
 run-name: Benchmark
+
 on:
   workflow_dispatch:
     #  schedule:
     #  - cron: '15 0 * * 0'
+
 defaults:
   run:
     shell: bash
+
 
 jobs:
   Benchmark:
@@ -21,4 +25,4 @@ jobs:
         docker run \
         --env ENCRYPTION_PASSPHRASE \
         --rm ghcr.io/esperoj/dotfiles:latest \
-        "benchmark.sh"
+        'command time -v ~/bin/run-command.sh -h "local" -c "benchmark.sh"'

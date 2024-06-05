@@ -1,6 +1,6 @@
 #!/bin/bash
 
-host="codeberg"
+host="local"
 command="${COMMAND:-uptime}"
 
 usage() {
@@ -23,8 +23,10 @@ done
 
 case "${host}" in
 
-local)
-  ~/bin/entrypoint.sh "${command}"
+"local")
+  chezmoi init --apply --force
+  . ~/.profile
+  ${command}
   ;;
 
 codeberg | cezeri)
@@ -71,7 +73,7 @@ framagit | gitlab)
     ;;
   framagit)
     server="https://framagit.org"
-    repo_id=107814
+    repo_id=108057
     token="${FRAMAGIT_DOTFILES_TRIGGER_TOKEN}"
     ;;
   esac
