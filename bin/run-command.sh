@@ -25,8 +25,7 @@ case "${host}" in
 
 "local")
   ~/.local/bin/chezmoi init --apply --force
-  . ~/.profile
-  ${command}
+  bash -lc "${command}"
   ;;
 
 codeberg | cezeri)
