@@ -24,7 +24,7 @@ done
 case "${host}" in
 
 "local")
-  chezmoi init --apply --force
+  ~/.local/bin/chezmoi init --apply --force
   . ~/.profile
   ${command}
   ;;
