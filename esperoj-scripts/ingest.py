@@ -59,11 +59,10 @@ def ingest(esperoj, path: Path) -> list[Record]:
             """
             if list(filter(lambda file: file["Name"] == name, files.query())) != []:
                 raise FileExistsError
-            # TODO: Loop through all storages
-            storage = esperoj.storages[storage_names[0]]
-            if storage.file_exists(name):
-                raise FileExistsError
-            storage.upload_file(str(file_path), name)
+            for storage in [esperoj.storages[storage_name] for storage_name in storage_names]:
+                if storage.file_exists(name):
+                  raise FileExistsError
+                storage.upload_file(str(file_path), name)
 
             return files.create(
                 {
