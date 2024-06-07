@@ -1,10 +1,11 @@
-from esperoj.database.database import Record
-from esperoj.utils import calculate_hash
-from pathlib import Path
-from functools import partial
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 import subprocess
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from functools import partial
+from pathlib import Path
+
+from esperoj.database.database import Record
+from esperoj.utils import calculate_hash
 
 
 def ingest(esperoj, path: Path) -> list[Record]:
@@ -34,14 +35,16 @@ def ingest(esperoj, path: Path) -> list[Record]:
         file_paths = [path]
 
     def ingest_file(file_path: Path) -> Record:
-        logger.info(f"Start to ingest file `{str(file_path)}`")
+        logger.info(f"Start to ingest file `{file_path!s}`")
 
         name = file_path.name
         size = file_path.stat().st_size
         f = file_path.open("rb")
         sha256sum = calculate_hash(f, algorithm="sha256")
         f.close()
-        metadata = json.loads(subprocess.check_output(["exiftool", "-j", str(file_path)]))[0]
+        metadata = json.loads(
+            subprocess.check_output(["exiftool", "-j", str(file_path)])
+        )[0]
         files = esperoj.databases["Primary"].get_table("Files")
         audio = esperoj.databases["Primary"].get_table("Audio")
 
@@ -59,9 +62,11 @@ def ingest(esperoj, path: Path) -> list[Record]:
             """
             if list(filter(lambda file: file["Name"] == name, files.query())) != []:
                 raise FileExistsError
-            for storage in [esperoj.storages[storage_name] for storage_name in storage_names]:
+            for storage in [
+                esperoj.storages[storage_name] for storage_name in storage_names
+            ]:
                 if storage.file_exists(name):
-                  raise FileExistsError
+                    raise FileExistsError
                 storage.upload_file(str(file_path), name)
 
             return files.create(
@@ -89,7 +94,9 @@ def ingest(esperoj, path: Path) -> list[Record]:
                         "Files": [file.record_id],
                     }
                 )
-                files.update_link("Audio", "Audio", file.record_id, [audio_record.record_id])
+                files.update_link(
+                    "Audio", "Audio", file.record_id, [audio_record.record_id]
+                )
                 url = esperoj.storages[file["Storages"][0]].get_link(file["Name"])
                 archive_url = esperoj.save_page(url)
                 file.update({"Internet Archive": archive_url})
@@ -100,7 +107,8 @@ def ingest(esperoj, path: Path) -> list[Record]:
     with ThreadPoolExecutor(max_workers=4) as executor:
         results = []
         future_to_file_path = {
-            executor.submit(ingest_file, file_path): file_path for file_path in file_paths
+            executor.submit(ingest_file, file_path): file_path
+            for file_path in file_paths
         }
         for future in as_completed(future_to_file_path):
             try:
@@ -133,7 +141,9 @@ def get_click_command():
 
     @click.command()
     @click.argument(
-        "path", type=click.Path(exists=True, dir_okay=True, path_type=Path), required=True
+        "path",
+        type=click.Path(exists=True, dir_okay=True, path_type=Path),
+        required=True,
     )
     @click.pass_obj
     def click_command(esperoj, path: Path):

@@ -4,15 +4,14 @@ import concurrent.futures
 import datetime
 import time
 from functools import partial
-from esperoj.utils import calculate_hash
+
 import requests
-import os
+
+from esperoj.utils import calculate_hash
 
 
 class VerificationError(Exception):
     """Raised when the verification of one or more files fails."""
-
-    pass
 
 
 def daily_verify(esperoj) -> None:
@@ -59,20 +58,25 @@ def daily_verify(esperoj) -> None:
 
         def calculate_hash_from_archive():
             return calculate_hash(
-                requests.get(file["Internet Archive"], stream=True, timeout=30).iter_content(2**20)
+                requests.get(
+                    file["Internet Archive"], stream=True, timeout=30
+                ).iter_content(2**20)
             )
 
         def get_size_from_archive():
-            return int(requests.head(file["Internet Archive"]).headers["content-length"])
+            return int(
+                requests.head(file["Internet Archive"]).headers["content-length"]
+            )
 
         try:
             start_time = time.time()
             logger.info(f"Start verifying file `{name}`")
             # TODO: Chinese one does not work with rclone
-            #if file["Verified"]:
+            # if file["Verified"]:
             if False:
                 size_list = [
-                    esperoj.storages[storage_name].size(name) for storage_name in file["Storages"]
+                    esperoj.storages[storage_name].size(name)
+                    for storage_name in file["Storages"]
                 ]
                 size_list.append(file["Size"])
                 size_list.append(get_size_from_archive())
@@ -81,9 +85,7 @@ def daily_verify(esperoj) -> None:
                         f"Verification failed for '{name}' with size list {size_list}"
                     )
             else:
-                with concurrent.futures.ThreadPoolExecutor(
-                    max_workers=min(os.cpu_count(), 3)
-                ) as executor:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
                     hash_list = [file["SHA256"]]
                     futures = [
                         executor.submit(calculate_hash_from_storage_name, storage_name)
@@ -108,13 +110,15 @@ def daily_verify(esperoj) -> None:
             failed_files.append(name)
             return False
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max(os.cpu_count(), 8)) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         begin = (shard_size + 1) * today if today < extra else shard_size * today
         end = begin + shard_size + (1 if today < extra else 0)
         executor.map(verify_file, files[begin:end])
 
     if failed_files:
-        logger.error(f"Verification failed for the following files: {', '.join(failed_files)}")
+        logger.error(
+            f"Verification failed for the following files: {', '.join(failed_files)}"
+        )
         raise VerificationError("Verification failed for one or more files.")
 
 

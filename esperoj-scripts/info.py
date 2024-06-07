@@ -13,7 +13,6 @@ def info(esperoj):
     storage = esperoj.storages["Backup Audio Storage"]
     r = storage.size("三寸天堂.flac")
     print(r)
-   
 
 
 def get_esperoj_method(esperoj):

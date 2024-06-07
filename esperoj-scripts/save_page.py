@@ -1,7 +1,8 @@
+import os
 import time
+
 import requests
 from requests.adapters import HTTPAdapter, Retry
-import os
 
 
 def save_page(url: str) -> str:
