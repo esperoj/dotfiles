@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Written in [Amber](https://amber-lang.com/)
+
+args=("$@")
+    host="local"
+    if [ "$HOST" != 0 ]; then
+        host="$HOST"
+fi
+    if [ "${args[0]}" != 0 ]; then
+        host="${args[0]}"
+fi
+    echo "${host}"

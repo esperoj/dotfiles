@@ -1,0 +1,10 @@
+main (args) {
+    let host = "local"
+    if "$HOST" {
+        host = "$HOST"
+    }
+    if args[0] {
+        host = args[0]
+    }
+    echo "{host}"
+}

@@ -4,6 +4,7 @@
 archive/
 bin/
 esperoj-scripts/
+scripts/
 taskfiles/
 .drone.yml
 .gitlab-ci.yml

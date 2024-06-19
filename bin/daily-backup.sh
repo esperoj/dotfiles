@@ -50,6 +50,10 @@ backup_segfault() {
   echo backup
 }
 
+backup_phone() {
+  rclone bisync workspace: /sdcard/workspace
+}
+
 cleanup() {
   rm "${RCLONE_FILTER_FROM}"
 }
