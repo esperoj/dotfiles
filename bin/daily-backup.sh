@@ -51,7 +51,10 @@ backup_segfault() {
 }
 
 backup_phone() {
-  rclone bisync workspace: /sdcard/workspace
+  cd /sdcard
+  rclone bisync workspace: ./workspace
+  rclone bisync koofr:picture ./picture
+  rclone bisync koofr:audio ./audio
 }
 
 cleanup() {
