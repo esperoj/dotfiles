@@ -55,6 +55,7 @@ backup_phone() {
   rclone bisync workspace: ./workspace
   rclone bisync koofr:picture ./picture
   rclone bisync koofr:audio ./audio
+  rclone bisync koofr:archive/book ./book
 }
 
 cleanup() {
