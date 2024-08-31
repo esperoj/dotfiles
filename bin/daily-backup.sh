@@ -30,6 +30,7 @@ update_backup() {
   rm -rf backup/
   rclone move backup.7z public:
   esperoj save_page "https://esperoj.vercel.app/backup.7z"
+  esperoj save_page "https://esperoj.vercel.app/print.html"
 }
 
 export -f backup_linkwarden backup_seatable update_backup
@@ -41,6 +42,7 @@ backup_container() {
   backup_seatable
 EOL
   parallel --keep-order -vj0 {} <<EOL
+  esperoj save_page "https://esperoj.vercel.app"
   update_backup
   rclone sync workspace: workspace-backup:
 EOL
@@ -56,6 +58,10 @@ backup_phone() {
   rclone bisync koofr:picture ./picture
   rclone bisync koofr:audio ./audio
   rclone bisync koofr:archive/book ./book
+  cd /sdcard/notebook/
+  git add -A
+  git commit -m update
+  git push
 }
 
 cleanup() {

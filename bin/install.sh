@@ -57,6 +57,10 @@ install_kopia() {
   pkg-install.sh ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
 
+install_mdbook() {
+  pkg-install.sh ghbin rust-lang/mdBook "%arch:x86_64=x86_64:aarch64=aarch64%.unknown-linux-musl.tar.gz$" mdbook
+}
+
 install_oh_my_zsh() {
   curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -s -- --RUNZSH=no --CHSH=yes
 }

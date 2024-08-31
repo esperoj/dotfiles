@@ -13,6 +13,8 @@ install_apt_packages() {
     exiftool
     iputils-ping
     lsb-release
+    nodejs
+    npm
     openssh-server
     python3
     screen
@@ -31,6 +33,7 @@ install_packages() {
   caddy
   fzf
   esperoj
+  mdbook
   oh_my_zsh
   rclone
   shfmt
