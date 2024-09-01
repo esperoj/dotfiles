@@ -10,9 +10,10 @@ def info(esperoj):
     Returns:
         None
     """
-    storage = esperoj.storages["Backup Audio Storage"]
-    r = storage.size("三寸天堂.flac")
-    print(r)
+    from esperoj.utils import share
+
+    # storage = esperoj.storages["Backup Audio Storage"]
+    print(share("README.md"))
 
 
 def get_esperoj_method(esperoj):
