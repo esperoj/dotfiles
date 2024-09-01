@@ -56,9 +56,9 @@ def replicate(esperoj, max_files: int = 50) -> None:
 
     errors = []
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         futures = {
-            executor.submit(replicate_file, file): file for file in files_to_process[:1]
+            executor.submit(replicate_file, file): file for file in files_to_process
         }
         for future in concurrent.futures.as_completed(futures):
             try:

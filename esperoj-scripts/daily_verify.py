@@ -36,91 +36,18 @@ def daily_verify(esperoj) -> None:
         key=lambda file: file["Created"],
         reverse=True,
     )
+    files = [
+        file
+        for file in files
+        if all(file.fields.get(key) for key in [*file_hosts, "Internet Archive"])
+        and file["Verified"]
+    ]
     num_shards = 28
     shard_size, extra = divmod(len(files), num_shards)
     today = datetime.datetime.now(datetime.UTC).day % num_shards
-
-    failed_files = []
-
-    def verify_file(file):
-        """Verify the integrity of a single file.
-
-        Args:
-            file (dict): A dictionary containing the file metadata.
-
-        Returns:
-            bool: True if the file verification succeeded, False otherwise.
-        """
-        name = file["Name"]
-
-        def calculate_hash_from_storage_name(storage_name):
-            return calculate_hash(esperoj.storages[storage_name].get_file(name))
-
-        def calculate_hash_from_archive():
-            return calculate_hash(
-                requests.get(
-                    file["Internet Archive"], stream=True, timeout=30
-                ).iter_content(2**20)
-            )
-
-        def get_size_from_archive():
-            return int(
-                requests.head(file["Internet Archive"]).headers["content-length"]
-            )
-
-        try:
-            start_time = time.time()
-            logger.info(f"Start verifying file `{name}`")
-            # TODO: Chinese one does not work with rclone
-            # if file["Verified"]:
-            if False:
-                size_list = [
-                    esperoj.storages[storage_name].size(name)
-                    for storage_name in file["Storages"]
-                ]
-                size_list.append(file["Size"])
-                size_list.append(get_size_from_archive())
-                if len(set(size_list)) != 1:
-                    raise VerificationError(
-                        f"Verification failed for '{name}' with size list {size_list}"
-                    )
-            else:
-                with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-                    hash_list = [file["SHA256"]]
-                    futures = [
-                        executor.submit(calculate_hash_from_storage_name, storage_name)
-                        for storage_name in file["Storages"]
-                    ]
-                    futures.append(executor.submit(calculate_hash_from_archive))
-                    for future in concurrent.futures.as_completed(futures):
-                        hash_list.append(future.result())
-                    if len(set(hash_list)) != 1:
-                        raise VerificationError(
-                            f"Verification failed for '{name}' with hash list {hash_list}"
-                        )
-                    file.update({"Verified": True})
-            logger.info(f"Verified file `{name}` in {time.time() - start_time} seconds")
-            return True
-        except VerificationError as e:
-            logger.error(f"VerificationError: {e}")
-            failed_files.append(name)
-            return False
-        except Exception as e:
-            logger.error(f"Unexpected error: {e}")
-            failed_files.append(name)
-            return False
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-        begin = (shard_size + 1) * today if today < extra else shard_size * today
-        end = begin + shard_size + (1 if today < extra else 0)
-        executor.map(verify_file, files[begin:end])
-
-    if failed_files:
-        logger.error(
-            f"Verification failed for the following files: {', '.join(failed_files)}"
-        )
-        raise VerificationError("Verification failed for one or more files.")
-
+    begin = (shard_size + 1) * today if today < extra else shard_size * today
+    end = begin + shard_size + (1 if today < extra else 0)
+    esperoj.utils.verify(esperoj, files[begin:end])
 
 def get_esperoj_method(esperoj):
     """Create a partial function with esperoj object.
