@@ -4,14 +4,13 @@ import concurrent.futures
 import time
 from functools import partial
 
-from esperoj.utils import calculate_hash, share
 import tempfile
 from pathlib import Path
 
 from esperoj.exceptions import ReplicationError, VerificationError
 
 
-def replicate(esperoj) -> None:
+def replicate(esperoj, max_files: int = 50) -> None:
     """Replicate files to file hosts and Internet Archive
 
     Args:
@@ -30,11 +29,11 @@ def replicate(esperoj) -> None:
         reverse=True,
     )
     files_to_process = [
-        d
-        for d in files
-        if not all(d.fields.get(key) for key in [*file_hosts, "Internet Archive"])
+        file
+        for file in files
+        if not all(file.fields.get(key) for key in [*file_hosts, "Internet Archive"])
     ]
-    files_to_process = files_to_process[:1]
+    files_to_process = files_to_process[:max_files]
 
     def replicate_file(file):
         name = file["Name"]
@@ -45,10 +44,10 @@ def replicate(esperoj) -> None:
             file_path = Path(temp_dir) / name
             storages[file["Storages"][0]].download_file(name, str(file_path))
             f = file_path.open("rb")
-            sha256 = calculate_hash(f, algorithm="sha256")
+            sha256 = esperoj.utils.calculate_hash(f, algorithm="sha256")
             f.close()
             if sha256 == file["SHA256"]:
-                result = share(str(file_path), name, hosts_to_upload)
+                result = esperoj.utils.share(str(file_path), name, hosts_to_upload)
                 logger.info(
                     f"Replicated file `{name}` in {time.time() - start_time} seconds"
                 )
@@ -62,13 +61,21 @@ def replicate(esperoj) -> None:
             executor.submit(replicate_file, file): file for file in files_to_process[:1]
         }
         for future in concurrent.futures.as_completed(futures):
-            results = future.result()
-            file = futures[future]
-            for host, result in results.items():
-                if isinstance(result, Exception):
-                    errors.append(result)
-                else:
-                    file[host] = result
+            try:
+                results = future.result()
+                file = futures[future]
+                for host, result in results.items():
+                    if isinstance(result, Exception):
+                        errors.append(result)
+                    else:
+                        file[host] = result
+                if file["Internet Archive"] == "https://example.com/":
+                    url = file.fields.get(file_hosts[0])
+                    if url:
+                        archive_url = esperoj.save_page(url)
+                        file.update({"Internet Archive": archive_url})
+            except Exception as e:
+                errors.append(result)
     if errors:
         logger.error(f"Replication failed with errors: {', '.join(errors)}")
         raise ReplicationError("Replication failed for one or more files.")
@@ -95,13 +102,14 @@ def get_click_command():
     import click
 
     @click.command()
+    @click.option("--max-files", "-m", type=int, default=50)
     @click.pass_obj
-    def click_command(esperoj):
+    def click_command(esperoj, max_files):
         """Execute the daily_verify function with the esperoj object.
 
         Args:
             esperoj (object): An object passed from the parent function.
         """
-        replicate(esperoj)
+        replicate(esperoj, max_files)
 
     return click_command
