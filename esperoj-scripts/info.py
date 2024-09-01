@@ -10,10 +10,14 @@ def info(esperoj):
     Returns:
         None
     """
-    from esperoj.utils import share
-
     # storage = esperoj.storages["Backup Audio Storage"]
-    print(share("README.md"))
+    files = sorted(
+        esperoj.databases["Primary"].get_table("Files").query(),
+        key=lambda file: file["Created"],
+        reverse=True,
+    )
+    files = files[:1]
+    print(esperoj.utils.verify(esperoj, files))
 
 
 def get_esperoj_method(esperoj):
