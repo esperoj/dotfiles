@@ -10,7 +10,9 @@ def info(esperoj):
     Returns:
         None
     """
-    # storage = esperoj.storages["Backup Audio Storage"]
+    storage = esperoj.storages["Backup Audio Storage"]
+    print(storage.size("King.flac"))
+    return
     files = sorted(
         esperoj.databases["Primary"].get_table("Files").query(),
         key=lambda file: file["Created"],

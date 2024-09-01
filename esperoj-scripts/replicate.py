@@ -31,7 +31,8 @@ def replicate(esperoj, max_files: int = 50) -> None:
     files_to_process = [
         file
         for file in files
-        if not all(file.fields.get(key) for key in [*file_hosts, "Internet Archive"])
+        if file["Internet Archive"] == "https://example.com/"
+        or not all(file.fields.get(key) for key in file_hosts)
     ]
     files_to_process = files_to_process[:max_files]
 

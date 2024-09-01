@@ -31,8 +31,9 @@ def daily_verify(esperoj) -> None:
     files = [
         file
         for file in files
-        if all(file.fields.get(key) for key in [*file_hosts, "Internet Archive"])
+        if all(file.fields.get(key) for key in file_hosts)
         and file["Verified"]
+        and file["Internet Archive"] != "https://example.com/"
     ]
     num_shards = 28
     shard_size, extra = divmod(len(files), num_shards)
