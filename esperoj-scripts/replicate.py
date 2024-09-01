@@ -75,7 +75,7 @@ def replicate(esperoj, max_files: int = 50) -> None:
                         archive_url = esperoj.save_page(url)
                         file.update({"Internet Archive": archive_url})
             except Exception as e:
-                errors.append(result)
+                errors.append(e)
     if errors:
         logger.error(f"Replication failed with errors: {', '.join(errors)}")
         raise ReplicationError("Replication failed for one or more files.")
