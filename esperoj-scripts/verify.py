@@ -2,6 +2,8 @@
 
 from functools import partial
 
+from esperoj.exceptions import VerificationError
+
 
 def verify(esperoj, max_files: int = 50) -> None:
     """Verify files.
@@ -25,7 +27,9 @@ def verify(esperoj, max_files: int = 50) -> None:
         and not file["Verified"]
     ]
     files_to_process = files_to_process[:max_files]
-    esperoj.utils.verify(esperoj, files_to_process)
+    results = esperoj.utils.verify(esperoj, files_to_process)
+    if not all(results):
+        raise VerificationError("Failed to verify one or more file.")
 
 
 def get_esperoj_method(esperoj):

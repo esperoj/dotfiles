@@ -1,17 +1,9 @@
 """Script to verify daily."""
 
-import concurrent.futures
 import datetime
-import time
 from functools import partial
 
-import requests
-
-from esperoj.utils import calculate_hash
-
-
-class VerificationError(Exception):
-    """Raised when the verification of one or more files fails."""
+from esperoj.exceptions import VerificationError
 
 
 def daily_verify(esperoj) -> None:
@@ -30,7 +22,7 @@ def daily_verify(esperoj) -> None:
     Raises:
         VerificationError: If the verification of one or more files fails.
     """
-    logger = esperoj.loggers["Primary"]
+    file_hosts = esperoj.config["file_hosts"]
     files = sorted(
         esperoj.databases["Primary"].get_table("Files").query(),
         key=lambda file: file["Created"],
@@ -47,7 +39,11 @@ def daily_verify(esperoj) -> None:
     today = datetime.datetime.now(datetime.UTC).day % num_shards
     begin = (shard_size + 1) * today if today < extra else shard_size * today
     end = begin + shard_size + (1 if today < extra else 0)
-    esperoj.utils.verify(esperoj, files[begin:end])
+
+    results = esperoj.utils.verify(esperoj, files[begin:end])
+    if not all(results):
+        raise VerificationError("Failed to verify one or more file.")
+
 
 def get_esperoj_method(esperoj):
     """Create a partial function with esperoj object.
