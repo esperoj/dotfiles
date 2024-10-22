@@ -12,7 +12,6 @@ on:
         options:
           - blacksmith
           - blacksmith-arm
-          - docker
           - ubuntu-latest
       command:
         description: "Run a command"
@@ -25,14 +24,40 @@ defaults:
 
 
 jobs:
-  Run:
+  run-on-github:
+    if: github.server_url == 'https://github.com'
+    runs-on: ${{ inputs.runner }}
+    container:
+      image: esperoj/dotfiles:dev
+      env:
+        ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+        COMMAND: ${{ inputs.command }}
+    timeout-minutes: 360
+    steps:
+      - name: Run
+        run: |
+          cd /root
+          export HOME=/root
+          ./bin/run-command.sh -h "local" -c "$COMMAND"
+
+      - name: Send notification
+        if: ${{ always() }}
+        run: |
+          cd /root
+          export HOME=/root
+          . ./.profile && notify.sh "$COMMAND" \
+          "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
+          "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+          | jq
+
+  run-on-git-gay:
+    if: github.server_url == 'https://git.gay'
     runs-on: docker
     container:
       image: esperoj/dotfiles:dev
       env:
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         COMMAND: ${{ inputs.command }}
-        MY_UUID: ${{ secrets.MY_UUID }}
     timeout-minutes: 360
     steps:
       - name: Run
