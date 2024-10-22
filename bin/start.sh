@@ -32,7 +32,7 @@ for service in "$@"; do
     screen -dmS esperoj sh -lc "${start_esperoj_command}"
     ;;
   esperoj_storage)
-    screen -dmS esperoj-storage sh -lc "${serve_esperoj_storage_command}"
+    screen -dmS esperoj_storage sh -lc "${serve_esperoj_storage_command}"
     ;;
   ssh_server)
     service ssh start

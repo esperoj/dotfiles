@@ -8,7 +8,7 @@ backup_linkwarden() {
   local TEMP_DIR="$(mktemp -d)"
   curl -s -H "Authorization: Bearer ${LINKWARDEN_ACCESS_TOKEN}" \
     "https://links.adminforge.de/api/v1/migration" >"${TEMP_DIR}/linkwarden-backup.json"
-  rclone move "${TEMP_DIR}" "workspace:backup"
+  rclone move "${TEMP_DIR}" "esperoj:backup-0"
   rm -r "${TEMP_DIR}"
 }
 
@@ -16,17 +16,19 @@ backup_seatable() {
   local TEMP_DIR="$(mktemp -d)"
   cd "${TEMP_DIR}"
   esperoj export_database "primary"
-  rclone sync . "workspace:backup/database"
+  rclone sync . "esperoj:backup-0/database"
   rm -r "${TEMP_DIR}"
 }
 
 update_backup() {
-  rclone copy workspace:backup ./backup
+  rclone copy esperoj:backup-0 ./backup
   7z a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
   rm -rf backup/
-  rclone move backup.7z public:
-  esperoj save_page "https://esperoj.vercel.app/backup.7z"
-  esperoj save_page "https://esperoj.vercel.app/print.html"
+  rclone move backup.7z esperoj:public
+  if [[ $(date +%w) -eq 0 || $(date +%w) -eq 4 ]]; then
+    echo esperoj save_page "https://public.esperoj.eu.org/backup.7z"
+  fi
+  echo esperoj save_page "https://esperoj.eu.org/print.html"
 }
 
 export -f backup_linkwarden backup_seatable update_backup
@@ -35,21 +37,19 @@ backup_container() {
   cd ~
   parallel --keep-order -vj0 {} <<EOL
   backup_linkwarden
-  backup_seatable
+  echo backup_seatable
 EOL
   parallel --keep-order -vj0 {} <<EOL
-  esperoj save_page "https://esperoj.vercel.app"
+  echo esperoj save_page "https://esperoj.vercel.app"
   update_backup
-  rclone sync workspace: workspace-backup:
+  rclone sync esperoj:workspace-0 esperoj:workspace-1
 EOL
 }
 
 backup_phone() {
   cd /sdcard
-  rclone bisync "${RCLONE_FLAGS}" workspace: ./workspace
-  rclone bisync "${RCLONE_FLAGS}" koofr:picture ./picture
-  rclone bisync "${RCLONE_FLAGS}" koofr:audio ./audio
-  rclone bisync "${RCLONE_FLAGS}" koofr:archive/book ./book
+  rclone bisync "${RCLONE_FLAGS}" ./workspace esperoj:workspace-0
+  rclone bisync "${RCLONE_FLAGS}" ./backup esperoj:backup-0
 }
 
 case "${MACHINE_TYPE}" in

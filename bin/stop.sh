@@ -5,11 +5,8 @@ for service in "$@"; do
   home)
     screen -S home -X stuff "^C"
     ;;
-  pcloud)
-    screen -S pcloud -X stuff "^C"
-    ;;
-  koofr)
-    screen -S koofr -X stuff "^C"
+  esperoj_storage)
+    screen -S esperoj_storage -X stuff "^C"
     ;;
   esperoj)
     screen -S esperoj -X stuff "^C"

@@ -7,7 +7,7 @@ parallel --keep-order -vj0 {} <<-EOL
   chezmoi status
   curl -sS https://ipwho.de
   df -hT
-  esperoj --help
+  echo esperoj --help
   free -h
   pwd
   python3 --version

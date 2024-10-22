@@ -126,8 +126,8 @@ termux)
     )
     rclone sync -v esperoj:workspace-0 workspace
     rclone sync -v esperoj:backup-0 backup
-    rclone bisync -v --resync workspace esperoj:workspace-0
-    rclone bisync -v --resync backup esperoj:backup-0
+    rclone bisync -v --resync ./workspace esperoj:workspace-0
+    rclone bisync -v --resync ./backup esperoj:backup-0
   )
   ;;
 esac
