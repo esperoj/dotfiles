@@ -33,6 +33,7 @@ jobs:
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         COMMAND: ${{ inputs.command }}
         MY_UUID: ${{ secrets.MY_UUID }}
+      options: "--pull=missing"
     timeout-minutes: 360
     steps:
       - name: Run

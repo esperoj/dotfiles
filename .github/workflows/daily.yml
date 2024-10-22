@@ -23,6 +23,7 @@ jobs:
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         MY_UUID: ${{ secrets.MY_UUID }}
         PING_UUID: ${{ secrets.PING_UUID }}
+      options: "--pull=missing"
     timeout-minutes: 60
     steps:
       - name: Daily
