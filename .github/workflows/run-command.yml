@@ -10,10 +10,10 @@ on:
         default: 'ubuntu-latest'
         type: choice
         options:
-          - ubuntu-latest
           - blacksmith
           - blacksmith-arm
           - docker
+          - ubuntu-latest
       command:
         description: "Run a command"
         required: true
@@ -30,7 +30,6 @@ jobs:
     container:
       image: esperoj/dotfiles:dev
       env:
-        HOME: /root
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         COMMAND: ${{ inputs.command }}
         MY_UUID: ${{ secrets.MY_UUID }}
