@@ -7,7 +7,7 @@ on:
       runner:
         description: 'The runner that will run this'
         required: true
-        default: 'ubuntu-latest'
+        default: 'docker'
         type: choice
         options:
           - blacksmith
