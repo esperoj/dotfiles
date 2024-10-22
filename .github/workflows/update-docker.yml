@@ -1,0 +1,20 @@
+name: Update Docker
+run-name: Update Docker
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+
+jobs:
+  update:
+    runs-on: ${{ vars.default_runner }}
+    timeout-minutes: 10
+    steps:
+      - name: Update
+        run: |
+          docker pull esperoj/dotfiles:main
+          docker pull esperoj/dotfiles:dev
