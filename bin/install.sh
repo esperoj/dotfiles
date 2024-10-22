@@ -39,7 +39,7 @@ install_dotfiles() {
   mkdir -p "${chezmoi_path}"
   (
     cd "${chezmoi_path}"
-    git clone --depth=1 https://codeberg.org/esperoj/dotfiles.git .
+    git clone --depth=1 https://github.com/esperoj/dotfiles.git .
     git remote set-url origin git@github.com:esperoj/dotfiles.git
     git remote set-url origin --push --add git@github.com:esperoj/dotfiles.git
     git remote set-url origin --push --add git@codeberg.org:esperoj/dotfiles.git

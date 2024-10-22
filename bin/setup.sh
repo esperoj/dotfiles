@@ -112,6 +112,23 @@ termux)
   apt-get update -y
   apt-get install -y --no-install-recommends $(echo "${termux_packages}")
   install.sh oh_my_zsh
+  chsh -s $(which zsh)
+  termux-setup-storage
+  . ~/.profile
+  (
+    cd /sdcard
+    git clone --depth=1 https://github.com/esperoj/notebook.git
+    (
+      cd notebook
+      git remote set-url origin git@github.com:esperoj/notebook.git
+      git remote set-url origin --push --add git@github.com:esperoj/notebook.git
+      git remote set-url origin --push --add git@codeberg.org:esperoj/notebook.git
+    )
+    rclone sync -v esperoj:workspace-0 workspace
+    rclone sync -v esperoj:backup-0 backup
+    rclone bisync -v --resync workspace esperoj:workspace-0
+    rclone bisync -v --resync backup esperoj:backup-0
+  )
   ;;
 esac
 after
