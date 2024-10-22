@@ -37,12 +37,17 @@ jobs:
     timeout-minutes: 360
     steps:
       - name: Run
-        run: /root/bin/run-command.sh -h "local" -c "${COMMAND}"
+        run: |
+          cd /root
+          export HOME=/root
+          ./bin/run-command.sh -h "local" -c "$COMMAND"
 
       - name: Send notification
         if: ${{ always() }}
         run: |
-          . ~/.profile && notify.sh "${COMMAND}" \
+          cd /root
+          export HOME=/root
+          . ./.profile && notify.sh "$COMMAND" \
           "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
           "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           | jq

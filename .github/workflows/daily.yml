@@ -21,10 +21,12 @@ jobs:
     container:
       image: esperoj/dotfiles:main
       env:
-        HOME: /root
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         MY_UUID: ${{ secrets.MY_UUID }}
     timeout-minutes: 60
     steps:
       - name: Daily
-        run: /root/bin/run-command.sh -h "local" -c "daily.sh"
+        run: |
+          cd /root
+          export HOME=/root
+          ./bin/run-command.sh -h "local" -c "daily.sh"
