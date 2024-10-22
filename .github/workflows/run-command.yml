@@ -27,7 +27,6 @@ defaults:
 jobs:
   Run:
     runs-on: docker
-    runs-on: ${{ inputs.runner }}
     container:
       image: esperoj/dotfiles:dev
       env:
