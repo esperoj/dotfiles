@@ -1,5 +1,4 @@
 name: Daily
-
 run-name: Daily
 
 on:
@@ -13,18 +12,17 @@ defaults:
 
 
 jobs:
-  Daily:
+  daily:
+    if: github.server_url == 'https://git.gay' && github.repository == 'esperoj/dotfiles'
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
-    runs-on: ubuntu-latest
-    env:
-      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+    runs-on: ${{ vars.default_runner }}
+    container:
+      image: esperoj/dotfiles:main
+      env:
+        ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
     timeout-minutes: 60
     steps:
       - name: Daily
-        run: |
-          docker run \
-            --env ENCRYPTION_PASSPHRASE \
-            --rm esperoj/dotfiles:main \
-            "daily.sh"
+        run: /root/bin/run-command.sh -h "local" -c "daily.sh"

@@ -1,5 +1,4 @@
 name: Run command
-
 run-name: Run command
 
 on:
@@ -27,21 +26,16 @@ defaults:
 jobs:
   Run:
     runs-on: ${{ inputs.runner }}
-    env:
-      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
-      COMMAND: ${{ inputs.command }}
-      MY_UUID: ${{ secrets.MY_UUID }}
+    container:
+      image: esperoj/dotfiles:dev
+      env:
+        ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+        COMMAND: ${{ inputs.command }}
+        MY_UUID: ${{ secrets.MY_UUID }}
     timeout-minutes: 360
     steps:
-      - name: Checkout
-        uses: actions/checkout@main
-
       - name: Run
-        run: |
-          docker run \
-            --env ENCRYPTION_PASSPHRASE \
-            --rm esperoj/dotfiles:dev \
-            "${COMMAND}"
+        run: /root/bin/run-command.sh -h "local" -c "${COMMAND}"
 
       - name: Send notification
         env:
@@ -49,7 +43,7 @@ jobs:
           MY_UUID: ${{ secrets.MY_UUID }}
         if: ${{ always() }}
         run: |
-          ./bin/notify.sh "${COMMAND}" \
+          . ~/.profile && notify.sh "${COMMAND}" \
           "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
           "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           | jq
