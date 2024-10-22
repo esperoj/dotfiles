@@ -7,7 +7,7 @@ on:
       runner:
         description: 'The runner that will run this'
         required: true
-        default: 'docker'
+        default: 'ubuntu-latest'
         type: choice
         options:
           - blacksmith
@@ -26,6 +26,7 @@ defaults:
 
 jobs:
   Run:
+    runs-on: docker
     runs-on: ${{ inputs.runner }}
     container:
       image: esperoj/dotfiles:dev
