@@ -153,7 +153,7 @@ git-gay)
 
   response=$(request)
   if [ "${response}" -eq 204 ]; then
-    echo "Succeed triggered. Visit ${server}/esperoj/dotfiles/actions/workflows/run-command.yml"
+    echo "Succeed triggered. Visit ${server}/esperoj/dotfiles/actions/?workflow=run-command.yml&actor=0&status=0"
   else
     echo "Failed with status code: ${response}"
   fi
