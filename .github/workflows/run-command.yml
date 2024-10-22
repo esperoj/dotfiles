@@ -45,9 +45,9 @@ jobs:
         if: ${{ always() }}
         run: |
           if [[ "${GITHUB_SERVER_URL}" == "https://github.com" ]]; then
-            URL="${GITHUB_SERVER_URL}/actions/runs/${GITHUB_RUN_ID}"
+            URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           else
-            URL="${GITHUB_SERVER_URL}/actions/runs/${GITHUB_RUN_NUMBER}"
+            URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_NUMBER}"
           fi
           cd /root
           export HOME=/root
