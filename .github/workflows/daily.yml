@@ -3,8 +3,8 @@ run-name: Daily
 
 on:
   workflow_dispatch:
-  #schedule:
-  #  - cron: '15 22 * * *'
+  schedule:
+    - cron: '15 22 * * *'
 
 defaults:
   run:
@@ -21,8 +21,10 @@ jobs:
     container:
       image: esperoj/dotfiles:main
       env:
+        HOME: /root
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+        MY_UUID: ${{ secrets.MY_UUID }}
     timeout-minutes: 60
     steps:
       - name: Daily
-        run: /root/bin/run-command.sh -h "local" -c "daily.sh"
+        run: "${HOME}/bin/run-command.sh" -h "local" -c "daily.sh"
