@@ -5,11 +5,11 @@ for service in "$@"; do
   home)
     screen -S home -X stuff "^C"
     ;;
-  esperoj_storage)
-    screen -S esperoj_storage -X stuff "^C"
-    ;;
   esperoj)
     screen -S esperoj -X stuff "^C"
+    ;;
+  esperoj_storage)
+    screen -S esperoj_storage -X stuff "^C"
     ;;
   caddy)
     caddy stop
