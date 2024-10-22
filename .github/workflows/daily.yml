@@ -13,7 +13,6 @@ defaults:
 
 jobs:
   daily:
-    if: github.server_url == 'https://git.gay' && github.repository == 'esperoj/dotfiles'
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
