@@ -1,0 +1,14 @@
+.github/
+.forgejo/
+.gitlab-ci/
+.kopiaignore
+.woodpecker/
+archive/
+bin/
+scripts/
+.drone.yml
+.gitlab-ci.yml
+Dockerfile
+LICENSE
+README.md
+Taskfile.yml

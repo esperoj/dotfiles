@@ -1,0 +1,19 @@
+{
+	auto_https disable_redirects
+	log {
+		output stderr
+		level ERROR
+	}
+}
+
+http://localhost.esperoj.eu.org:20711 {
+	reverse_proxy unix//{$HOME}/.sockets/home.sock
+}
+
+http://localhost:20711, http://dev.esperoj.eu.org:20711 {
+	reverse_proxy unix//{$HOME}/.sockets/dev.sock
+}
+
+http://esperoj-storage.esperoj.eu.org:20711 {
+	reverse_proxy unix//{$HOME}/.sockets/esperoj-storage.sock
+}

@@ -1,0 +1,9 @@
+[user]
+	email = esperoj@esperoj.eu.org
+	name = esperoj
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[safe]
+	directory = /storage/emulated/0/notebook

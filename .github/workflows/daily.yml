@@ -1,0 +1,30 @@
+name: Daily
+
+run-name: Daily
+
+on:
+  workflow_dispatch:
+  #schedule:
+  #  - cron: '15 22 * * *'
+
+defaults:
+  run:
+    shell: bash
+
+
+jobs:
+  Daily:
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    env:
+      ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
+    timeout-minutes: 60
+    steps:
+      - name: Daily
+        run: |
+          docker run \
+            --env ENCRYPTION_PASSPHRASE \
+            --rm esperoj/dotfiles:main \
+            "daily.sh"

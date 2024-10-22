@@ -1,0 +1,20 @@
+#!/bin/sh
+echo "Running ${HOME}/.profile"
+
+export MACHINE_TYPE={{ .machineType | quote }}
+set -a && . "${HOME}/.env" && set +a
+[ ! -d "${HOME}/.asdf" ] || . "$HOME/.asdf/asdf.sh"
+if [ "$(hostname)" = "core.envs.net" ]; then
+    export TMPDIR="/dev/shm/esperoj"
+fi
+
+(
+    cd ~
+    if [ "${MACHINE_TYPE}" = "pubnix" ]; then
+        if [ ! -d "${TMPDIR}" ]; then
+            mkdir -p "${TMPDIR}"/{.cache,.npm,tmp}
+            rm -rf .cache .npm tmp
+            ln -s "${TMPDIR}"/{.cache,.npm,tmp} .
+        fi
+    fi
+)

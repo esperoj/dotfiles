@@ -1,0 +1,35 @@
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr
+Compression yes
+ControlMaster auto
+ControlPath ~/.ssh/sockets/%r@%h:%p
+ControlPersist 60m
+
+host envs
+    User esperoj
+    HostName envs.net
+    IdentityFile ~/.ssh/id_ed25519
+host serv00
+    User esperoj
+    HostName s0.serv00.com
+    IdentityFile ~/.ssh/id_ed25519
+host ct8
+    User esperoj
+    HostName s1.ct8.pl
+    IdentityFile ~/.ssh/id_ed25519
+host alwaysdata
+    User esperoj
+    HostName ssh-esperoj.alwaysdata.net
+    IdentityFile ~/.ssh/id_ed25519
+host hashbang
+    User esperoj
+    HostName de1.hashbang.sh
+    IdentityFile ~/.ssh/id_ed25519
+host projectsegfault
+    User esperoj
+    HostName p.projectsegfau.lt
+    IdentityFile ~/.ssh/id_ed25519
+host serveo-ssh-tunnel
+    ExitOnForwardFailure yes
+    HostName serveo.net
+    RemoteForward 20711 localhost:22
+    RemoteForward serveo.esperoj.eu.org:22 localhost:22

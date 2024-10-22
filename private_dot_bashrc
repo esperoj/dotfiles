@@ -1,0 +1,5 @@
+#!/bin/bash
+[[ $- == *i* ]] || return
+echo "Running ${HOME}/.bashrc"
+source "${HOME}/.profile"
+[[ ! -d "${HOME}/.asdf" ]] || . "${HOME}/.asdf/completions/asdf.bash"

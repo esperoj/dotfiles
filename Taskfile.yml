@@ -1,0 +1,14 @@
+version: '3'
+dotenv: ['{{.HOME}}/{{.MACHINE_TYPE}}/.env', '{{.HOME}}/.env', '.env']
+run: when_changed
+
+tasks:
+  setup:
+    cmds:
+      - echo hi
+  build:
+    deps:
+      - task: setup
+        vars: { ENV: 'dev' }
+    cmds:
+      - echo build

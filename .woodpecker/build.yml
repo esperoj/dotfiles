@@ -1,0 +1,62 @@
+variables:
+  - &build_plugin woodpeckerci/plugin-docker-buildx
+  - base_conditions: &base_conditions
+    - event: push
+      evaluate: 'CI_SYSTEM_HOST == "ci.codeberg.org"'
+  - base_settings: &base_docker_settings
+      repo: codeberg.org/esperoj/dotfiles
+      auto_tag: true
+      tags:
+        - base
+      registry: codeberg.org
+      platforms: linux/amd64,linux/arm64
+      username: esperoj
+      password:
+        from_secret: codeberg_token
+
+when: *base_conditions
+
+steps:
+  publish-base:
+    when: *base_conditions
+    image: *build_plugin
+    settings:
+      <<: *base_docker_settings
+
+  publish-main:
+    image: *build_plugin
+    when: *base_conditions
+    settings:
+      <<: *base_docker_settings
+      tags:
+        - main
+      build_args:
+        - BASE_IMAGE=codeberg.org/esperoj/dotfiles:base
+        - SETUP_NAME=docker_main
+
+  publish-dev:
+    image: *build_plugin
+    when: *base_conditions
+    settings:
+      <<: *base_docker_settings
+      tags:
+        - dev
+        - latest
+      build_args:
+        - BASE_IMAGE=codeberg.org/esperoj/dotfiles:main
+        - SETUP_NAME=docker_dev
+
+  notify:
+    image: codeberg.org/esperoj/dotfiles:base
+    secrets: [ encryption_passphrase ]
+    when:
+      - event: push
+        status: [ success, failure ]
+    commands:
+      - |
+        ~/bin/run-command.sh -h local -c '
+        xargs -d "\n" notify.sh <<EOL | jq
+        Workflow "$${CI_WORKFLOW_NAME}" of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}.
+        Title: A job has completed
+        Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}
+        EOL'
