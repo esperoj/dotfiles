@@ -12,6 +12,7 @@ on:
         options:
           - blacksmith
           - blacksmith-arm
+          - docker
           - ubuntu-latest
       command:
         description: "Run a command"
@@ -24,7 +25,7 @@ defaults:
 
 
 jobs:
-  run-on-github:
+  run:
     runs-on: ${{ vars.default_runner == 'docker' && 'docker' || inputs.runner }}
     container:
       image: esperoj/dotfiles:dev
@@ -43,9 +44,14 @@ jobs:
       - name: Send notification
         if: ${{ always() }}
         run: |
+          if [[ "${GITHUB_SERVER_URL}" == "https://github.com" ]]; then
+            URL="${GITHUB_SERVER_URL}/actions/runs/${GITHUB_RUN_ID}"
+          else
+            URL="${GITHUB_SERVER_URL}/actions/runs/${GITHUB_RUN_NUMBER}"
+          fi
           cd /root
           export HOME=/root
           . ./.profile && notify.sh "$COMMAND" \
           "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
-          "Actions: view, View log, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+          "Actions: view, View log, $URL" \
           | jq

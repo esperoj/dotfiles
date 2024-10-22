@@ -120,4 +120,42 @@ framagit | gitlab)
   bash -c "echo ${result}"
   ;;
 
+git-gay)
+  case "${host}" in
+  git-gay)
+    runner="docker"
+    server="https://git.gay"
+    token="${GIT_GAY_ACCESS_TOKEN}"
+    ;;
+  esac
+  content=$(
+    jq -n \
+      --arg command "${command}" \
+      --arg runner "${runner}" \
+      '{
+       "ref": "main",
+       "inputs": {
+         "runner": $runner,
+         "command": $command
+       }
+     }'
+  )
+
+  request() {
+    curl -sLSo /dev/null -w "%{http_code}" \
+      -X POST \
+      -H "Accept: application/json" \
+      -H "Content-type: application/json" \
+      -H "Authorization: bearer ${token}" \
+      "${server}/api/v1/repos/esperoj/dotfiles/actions/workflows/run-command.yml/dispatches" \
+      -d "${content}"
+  }
+
+  response=$(request)
+  if [ "${response}" -eq 204 ]; then
+    echo "Succeed triggered. Visit ${server}/esperoj/dotfiles/actions/workflows/run-command.yml"
+  else
+    echo "Failed with status code: ${response}"
+  fi
+  ;;
 esac
