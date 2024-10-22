@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 360
     steps:
       - name: Run
-        run: "${HOME}/bin/run-command.sh" -h "local" -c "${COMMAND}"
+        run: /root/bin/run-command.sh -h "local" -c "${COMMAND}"
 
       - name: Send notification
         if: ${{ always() }}

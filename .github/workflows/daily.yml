@@ -27,4 +27,4 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Daily
-        run: "${HOME}/bin/run-command.sh" -h "local" -c "daily.sh"
+        run: /root/bin/run-command.sh -h "local" -c "daily.sh"
