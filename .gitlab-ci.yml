@@ -3,11 +3,11 @@ workflow:
     - if: $CI_SERVER_HOST == "framagit.org"
       variables:
         DEFAULT_TAG: Debian
-        DEFAULT_IMAGE: codeberg.org/esperoj/dotfiles
+        DEFAULT_IMAGE: codeberg.org/esperoj/dotfiles:main
     - if: $CI_SERVER_HOST == "gitlab.com"
       variables:
         DEFAULT_TAG: saas-linux-medium-amd64
-        DEFAULT_IMAGE: esperoj/dotfiles:dev
+        DEFAULT_IMAGE: esperoj/dotfiles:main
 
 stages:
   - main
@@ -16,7 +16,8 @@ default:
   image:
     name: $DEFAULT_IMAGE
     entrypoint: [""]
-  timeout: 3 hours
+    pull_policy: ["never", "if-not-present"]
+  timeout: 6 hours
   tags:
     - $DEFAULT_TAG
   after_script:
@@ -38,6 +39,9 @@ include:
   - local: .gitlab-ci/daily.yml
     rules:
       - if: $WORKFLOW == "daily"
+  - local: .gitlab-ci/update-docker.yml
+    rules:
+      - if: $WORKFLOW == "update-docker"
 
 publish:
   stage: main
