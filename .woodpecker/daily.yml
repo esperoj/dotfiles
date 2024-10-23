@@ -13,7 +13,7 @@ when: *base_conditions
 steps:
   run:
     image: codeberg.org/esperoj/dotfiles:main
-    pull: true
+    pull: false
     secrets: [ encryption_passphrase ]
     when: *base_conditions
     commands:
@@ -29,8 +29,7 @@ steps:
     commands:
       - |
         ~/bin/run-command.sh -h local -c '
-        notify.sh "" \
-          "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}." \
+        notify.sh "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}." \
           "Title: A job has completed" \
           "Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" \
         | jq'

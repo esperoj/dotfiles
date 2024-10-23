@@ -47,7 +47,7 @@ steps:
         - SETUP_NAME=docker_dev
 
   notify:
-    image: codeberg.org/esperoj/dotfiles:dev
+    image: codeberg.org/esperoj/dotfiles:main
     pull: true
     secrets: [ encryption_passphrase ]
     when:
