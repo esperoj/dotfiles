@@ -16,7 +16,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
-    runs-on: ${{ vars.default_runner || "ubuntu-latest" }}
+    runs-on: ${{ vars.default_runner || 'ubuntu-latest' }}
     container:
       image: esperoj/dotfiles:main
       env:
