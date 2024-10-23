@@ -27,6 +27,7 @@ steps:
     commands:
       - |
         ~/bin/run-command.sh -h local -c '
+        set -x
         notify.sh "" \
           "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed for command $${COMMAND} with status $${CI_PIPELINE_STATUS}." \
           "Title: A job has completed" \
