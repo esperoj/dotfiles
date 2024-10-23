@@ -22,6 +22,16 @@ backup_seatable() {
 
 update_backup() {
   rclone copy esperoj:backup-0 ./backup
+  (
+    mkdir -p ./backup/code
+    cd ./backup/code
+    parallel --keep-order -vj0 {} <<EOL
+      git clone --depth=1 git@github.com:esperoj/dotfiles.git
+      git clone --depth=1 git@github.com:esperoj/notebook.git
+      git clone --depth=1 git@github.com:esperoj/archive.git
+      git clone --depth=1 git@github.com:esperoj/esperoj.git
+EOL
+  )
   7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
   rm -rf backup/
   rclone move backup.7z esperoj:public
