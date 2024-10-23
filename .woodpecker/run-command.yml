@@ -26,10 +26,9 @@ steps:
         status: [ success, failure ]
     commands:
       - |
-        ~/bin/run-command.sh -h local -c '
-        set -x
+        ~/.local/bin/chezmoi init --apply --force
+        . ~/.profile
         notify.sh "" \
           "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed for command $${COMMAND} with status $${CI_PIPELINE_STATUS}." \
           "Title: A job has completed" \
-          "Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" \
-        | jq'
+          "Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" | jq
