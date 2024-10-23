@@ -17,6 +17,6 @@ jobs:
       - name: Update
         run: |
           df -hT
-          # docker pull esperoj/dotfiles:main
+          docker pull esperoj/dotfiles:main
           docker system prune --all --force
           df -hT

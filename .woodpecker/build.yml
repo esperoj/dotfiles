@@ -47,7 +47,8 @@ steps:
         - SETUP_NAME=docker_dev
 
   notify:
-    image: codeberg.org/esperoj/dotfiles:base
+    image: codeberg.org/esperoj/dotfiles:dev
+    pull: true
     secrets: [ encryption_passphrase ]
     when:
       - event: push
@@ -55,8 +56,8 @@ steps:
     commands:
       - |
         ~/bin/run-command.sh -h local -c '
-        xargs -d "\n" notify.sh <<EOL | jq
-        Workflow "$${CI_WORKFLOW_NAME}" of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}.
-        Title: A job has completed
-        Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}
-        EOL'
+        notify.sh "" \
+          "Workflow `$${CI_WORKFLOW_NAME}` of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}." \
+          "Title: A job has completed" \
+          "Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" \
+        | jq'
