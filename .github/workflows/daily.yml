@@ -29,4 +29,8 @@ jobs:
         run: |
           cd /root
           export HOME=/root
-          ./bin/run-command.sh -h "local" -c "daily.sh"
+          ./bin/run-command.sh -h "local" -c "
+            chezmoi update
+            . ./.profile
+            daily.sh
+          "

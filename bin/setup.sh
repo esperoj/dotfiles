@@ -32,25 +32,25 @@ main_packages="
   caddy
   esperoj
   exiftool
-  rclone
-"
-
-dev_packages="
-  fzf
   nodejs
   npm
-  oh_my_zsh
+  rclone
   openssh-server
   pipx
   python3
   python3-pip
-  shfmt
   task
+  zstd
+"
+
+dev_packages="
+  fzf
+  oh_my_zsh
+  shfmt
   tmux
   uv
   vim
   zsh
-  zstd
 "
 
 termux_packages="

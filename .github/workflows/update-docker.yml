@@ -16,5 +16,7 @@ jobs:
     steps:
       - name: Update
         run: |
-          docker pull esperoj/dotfiles:main
-          docker pull esperoj/dotfiles:dev
+          df -hT
+          # docker pull esperoj/dotfiles:main
+          docker system prune
+          df -hT
