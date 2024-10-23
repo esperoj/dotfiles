@@ -26,6 +26,7 @@ steps:
         status: [ success, failure ]
     commands:
       - |
+        cat ~/bin/run-command.sh
         ~/bin/run-command.sh -h local -c '
         notify.sh "" \
           "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed for command $${COMMAND} with status $${CI_PIPELINE_STATUS}." \
