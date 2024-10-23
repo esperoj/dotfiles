@@ -4,7 +4,7 @@ run-name: Daily
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 22 * * *'
+    - cron: '15 22 * * 0,2,4'
 
 defaults:
   run:

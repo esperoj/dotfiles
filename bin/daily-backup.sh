@@ -35,7 +35,7 @@ EOL
   7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
   rm -rf backup/
   rclone move backup.7z esperoj:public
-  if [[ $(date +%w) -eq 0 || $(date +%w) -eq 4 ]]; then
+  if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
     echo esperoj save_page "https://public.esperoj.eu.org/backup.7z"
   fi
   echo esperoj save_page "https://esperoj.eu.org/print.html"

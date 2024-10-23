@@ -3,7 +3,7 @@ skip_clone: true
 variables:
   - base_conditions: &base_conditions
     - event: cron
-      cron: daily # schedule: 0 15 22 * * *
+      cron: daily # schedule: 0 15 22 * * 1,3,5,6
     - event: manual
       evaluate: 'WORKFLOW == "daily"'
 
