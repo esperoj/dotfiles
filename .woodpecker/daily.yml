@@ -17,7 +17,11 @@ steps:
     secrets: [ encryption_passphrase ]
     when: *base_conditions
     commands:
-      - command time -v ~/bin/run-command.sh -h "local" -c "daily.sh"
+      - |
+        command time -v ~/bin/run-command.sh -h "local" -c "
+        chezmoi update
+        . ~/.profile
+        daily.sh"
 
   notify:
     image: codeberg.org/esperoj/dotfiles:base

@@ -22,7 +22,7 @@ backup_seatable() {
 
 update_backup() {
   rclone copy esperoj:backup-0 ./backup
-  7z a "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
+  7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
   rm -rf backup/
   rclone move backup.7z esperoj:public
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 4 ]]; then

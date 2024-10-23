@@ -49,13 +49,13 @@ github | blacksmith | blacksmith-arm)
       -H "Accept: application/vnd.github+json" \
       -H "Authorization: Bearer ${GITHUB_TOKEN}" \
       -H "X-GitHub-Api-Version: 2022-11-28" \
-      "https://api.github.com/repos/esperoj/dotfiles/actions/workflows/run-command.yml/dispatches" \
+      "https://api.github.com/repos/esperoj/dotfiles-private/actions/workflows/run-command.yml/dispatches" \
       -d "${content}"
   }
 
   response=$(request)
   if [ "${response}" -eq 204 ]; then
-    echo "Succeed triggered. Visit https://github.com/esperoj/dotfiles/actions/workflows/run-command.yml"
+    echo "Succeed triggered. Visit https://github.com/esperoj/dotfiles-private/actions/workflows/run-command.yml"
   else
     echo "Failed with status code: ${response}"
   fi

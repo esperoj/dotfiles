@@ -11,12 +11,12 @@ defaults:
 
 jobs:
   update:
-    runs-on: ${{ vars.default_runner }}
+    runs-on: ${{ vars.default_runner || "ubuntu-latest" }}
     timeout-minutes: 10
     steps:
       - name: Update
         run: |
           df -hT
-          docker pull esperoj/dotfiles:main
-          docker image prune --all --force
+          docker system prune --all --force
           df -hT
+          docker pull esperoj/dotfiles:main
