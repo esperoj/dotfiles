@@ -30,7 +30,7 @@ steps:
       - |
         ~/bin/run-command.sh -h local -c '
         notify.sh "" \
-          "Workflow `$${CI_WORKFLOW_NAME}` of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}." \
+          "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}." \
           "Title: A job has completed" \
           "Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" \
         | jq'
