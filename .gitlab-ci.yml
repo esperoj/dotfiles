@@ -16,7 +16,7 @@ default:
   image:
     name: $DEFAULT_IMAGE
     entrypoint: [""]
-    pull_policy: ["never", "if-not-present"]
+    pull_policy: "always"
   timeout: 6 hours
   tags:
     - $DEFAULT_TAG
