@@ -13,7 +13,7 @@ when: *base_conditions
 steps:
   run:
     image: codeberg.org/esperoj/dotfiles:main
-    pull: false
+    pull: true
     secrets: [ encryption_passphrase ]
     when: *base_conditions
     commands:
@@ -21,7 +21,7 @@ steps:
 
   notify:
     image: codeberg.org/esperoj/dotfiles:base
-    pull: false
+    pull: true
     secrets: [ encryption_passphrase ]
     when:
       - event: [cron, manual]
