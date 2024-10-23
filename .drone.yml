@@ -1,0 +1,42 @@
+kind: pipeline
+type: docker
+name: Daily
+
+trigger:
+  event:
+    - cron
+    - custom
+  cron:
+    - daily
+
+steps:
+  - name: run
+    image: codeberg.org/esperoj/dotfiles:main
+    environment:
+      ENCRYPTION_PASSPHRASE:
+        from_secret: encryption_passphrase
+    commands:
+      - |
+        command time -v ~/bin/run-command.sh -h "local" -c "
+        chezmoi update
+        . ~/.profile
+        daily.sh"
+
+  - name: notify
+    image: codeberg.org/esperoj/dotfiles:base
+    environment:
+      ENCRYPTION_PASSPHRASE:
+        from_secret: encryption_passphrase
+    commands:
+      - |
+        ~/bin/run-command.sh -h local -c '
+        notify.sh "Workflow $DRONE_STAGE_NAME of repository $DRONE_REPO has completed with status $DRONE_BUILD_STATUS." \
+          "Title: A job has completed" \
+          "Actions: view, View Log, $DRONE_SYSTEM_HOST/repos/$DRONE_REPO/builds/$DRONE_BUILD_NUMBER" \
+        | jq'
+    when:
+      status:
+        - failure
+      event:
+        - cron
+        - custom
