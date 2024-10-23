@@ -21,10 +21,14 @@ backup_seatable() {
 }
 
 update_backup() {
-  rclone copy esperoj:backup-0 ./backup
   (
-    mkdir -p ./backup/code
-    cd ./backup/code
+    rclone copy esperoj:public/backup.7z .
+    7z x "-p${ENCRYPTION_PASSPHRASE}" backup.7z
+    mkdir -p backup && cd ./backup
+    rm -rf code
+    rclone sync esperoj:backup-0 .
+    mkdir -p code
+    cd code
     parallel --keep-order -vj0 {} <<EOL
       git clone --depth=1 git@github.com:esperoj/dotfiles.git
       git clone --depth=1 git@github.com:esperoj/notebook.git
@@ -38,7 +42,6 @@ EOL
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
     echo esperoj save_page "https://public.esperoj.eu.org/backup.7z"
   fi
-  echo esperoj save_page "https://esperoj.eu.org/print.html"
 }
 
 export -f backup_linkwarden backup_seatable update_backup
@@ -50,7 +53,6 @@ backup_container() {
   echo backup_seatable
 EOL
   parallel --keep-order -vj0 {} <<EOL
-  echo esperoj save_page "https://esperoj.vercel.app"
   update_backup
   rclone sync esperoj:workspace-0 esperoj:workspace-1
 EOL
