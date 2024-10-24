@@ -15,7 +15,6 @@ variables:
       username: esperoj
       password:
         from_secret: codeberg_token
-      # output: 'type=registry,compression=zstd,compression-level=19,oci-mediatypes=true'
 
 when: *base_conditions
 
@@ -25,7 +24,6 @@ steps:
     image: *build_plugin
     settings:
       <<: *base_docker_settings
-      cache_images: codeberg.org/esperoj/dotfiles:base
 
   publish-main:
     image: *build_plugin
@@ -37,7 +35,6 @@ steps:
       build_args:
         - BASE_IMAGE=codeberg.org/esperoj/dotfiles:base
         - SETUP_NAME=docker_main
-      cache_images: codeberg.org/esperoj/dotfiles:main
 
   publish-dev:
     image: *build_plugin
@@ -50,7 +47,6 @@ steps:
       build_args:
         - BASE_IMAGE=codeberg.org/esperoj/dotfiles:main
         - SETUP_NAME=docker_dev
-      cache_images: codeberg.org/esperoj/dotfiles:dev
 
   notify:
     image: codeberg.org/esperoj/dotfiles:main
@@ -62,8 +58,7 @@ steps:
     commands:
       - |
         ~/bin/run-command.sh -h local -c '
-        notify.sh "" \
-          "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}." \
+        notify.sh "Workflow $${CI_WORKFLOW_NAME} of repository $${CI_REPO_URL} has completed with status $${CI_PIPELINE_STATUS}." \
           "Title: A job has completed" \
           "Actions: view, View Log, $${CI_SYSTEM_URL}/repos/$${CI_REPO}/pipeline/$${CI_PIPELINE_NUMBER}" \
         | jq'
