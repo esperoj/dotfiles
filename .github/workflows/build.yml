@@ -63,7 +63,7 @@ jobs:
           push: true
           tags: ${{ steps.meta-base.outputs.tags }}
           labels: ${{ steps.meta-base.outputs.labels }}
-          outputs: 'compression=zstd,compression-level=19,oci-mediatypes=true'
+          outputs: 'type=image,compression=zstd,compression-level=19,oci-mediatypes=true'
           cache-from: type=registry,ref=esperoj/dotfiles:base-cache,mode=max
           cache-to: type=registry,ref=esperoj/dotfiles:base-cache
 
@@ -87,7 +87,7 @@ jobs:
           push: true
           tags: ${{ steps.meta-main.outputs.tags }}
           labels: ${{ steps.meta-main.outputs.labels }}
-          outputs: 'compression=zstd,compression-level=19,oci-mediatypes=true'
+          outputs: 'type=image,compression=zstd,compression-level=19,oci-mediatypes=true'
           cache-from: type=registry,ref=esperoj/dotfiles:main-cache,mode=max
           cache-to: type=registry,ref=esperoj/dotfiles:main-cache
 
@@ -111,7 +111,7 @@ jobs:
           push: true
           tags: ${{ steps.meta-dev.outputs.tags }}
           labels: ${{ steps.meta-dev.outputs.labels }}
-          outputs: 'compression=zstd,compression-level=19,oci-mediatypes=true'
+          outputs: 'type=image,compression=zstd,compression-level=19,oci-mediatypes=true'
           cache-from: type=registry,ref=esperoj/dotfiles:dev-cache,mode=max
           cache-to: type=registry,ref=esperoj/dotfiles:dev-cache
 

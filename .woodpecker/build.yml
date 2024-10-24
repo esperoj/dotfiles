@@ -13,7 +13,7 @@ variables:
       username: esperoj
       password:
         from_secret: codeberg_token
-      outputs: 'compression=zstd,compression-level=19,oci-mediatypes=true'
+      output: 'type=image,compression=zstd,compression-level=19,oci-mediatypes=true'
 
 when: *base_conditions
 
