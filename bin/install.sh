@@ -9,6 +9,12 @@ else
   OS="unknown"
 fi
 
+if [ "$(id -u)" -eq 0 ]; then
+    export SUDO_COMMAND=""
+else
+    export SUDO_COMMAND="sudo"
+fi
+
 install_7zip() {
   pkg-install.sh ghbin ip7z/7zip "${OS}-%arch:x86_64=x64:aarch64=arm64%.tar.xz$" "7zz"
 }
@@ -136,7 +142,7 @@ main() {
       fi
     done
     parallel --keep-order -vj0 {} <<EOL
-    [[ -n "${install_using_apt_packages}" ]] && sudo apt-get install -y --no-install-recommends $(echo "${install_using_apt_packages}")
+    [[ -n "${install_using_apt_packages}" ]] && $SUDO_COMMAND apt-get install -q=2 --no-install-recommends $(echo "${install_using_apt_packages}")
     [[ -n "${install_in_parallel_packages}" ]] && parallel --keep-order -vj0 "$0" {} ::: $(echo "${install_in_parallel_packages}")
 EOL
   fi

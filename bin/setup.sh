@@ -2,6 +2,11 @@
 set -eux
 export DEBIAN_FRONTEND=noninteractive
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
+if [ "$(id -u)" -eq 0 ]; then
+    export SUDO_COMMAND=""
+else
+    export SUDO_COMMAND="sudo"
+fi
 
 packages=""
 
@@ -99,6 +104,8 @@ ct8)
   install.sh $(echo "${ct8_packages}")
   ;;
 docker_base)
+  $SUDO_COMMAND apt-get update -q=2
+  $SUDO_COMMAND apt-get install -q=2 --no-install-recommends ca-certificates curl gnupg git jq openssh-client parallel sq sudo unzip wget xz-utils
   install.sh $(echo "${base_packages}")
   ;;
 docker_main)
