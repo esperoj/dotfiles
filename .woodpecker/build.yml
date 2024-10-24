@@ -15,8 +15,7 @@ variables:
       username: esperoj
       password:
         from_secret: codeberg_token
-      cache_to: type=inline
-      output: 'type=image,compression=zstd,compression-level=19,oci-mediatypes=true'
+      output: 'type=registry,compression=zstd,compression-level=19,oci-mediatypes=true'
 
 when: *base_conditions
 
@@ -26,7 +25,7 @@ steps:
     image: *build_plugin
     settings:
       <<: *base_docker_settings
-      cache_from: type=inline,ref=codeberg.org/esperoj/dotfiles:base
+      cache_images: codeberg.org/esperoj/dotfiles:base
 
   publish-main:
     image: *build_plugin
@@ -38,7 +37,7 @@ steps:
       build_args:
         - BASE_IMAGE=codeberg.org/esperoj/dotfiles:base
         - SETUP_NAME=docker_main
-      cache_from: type=inline,ref=codeberg.org/esperoj/dotfiles:main
+      cache_images: codeberg.org/esperoj/dotfiles:main
 
   publish-dev:
     image: *build_plugin
@@ -51,7 +50,7 @@ steps:
       build_args:
         - BASE_IMAGE=codeberg.org/esperoj/dotfiles:main
         - SETUP_NAME=docker_dev
-      cache_from: type=inline,ref=codeberg.org/esperoj/dotfiles:dev
+      cache_images: codeberg.org/esperoj/dotfiles:dev
 
   notify:
     image: codeberg.org/esperoj/dotfiles:main
