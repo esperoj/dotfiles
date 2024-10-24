@@ -10,9 +10,9 @@ else
 fi
 
 if [ "$(id -u)" -eq 0 ]; then
-    export SUDO_COMMAND=""
+  export SUDO_COMMAND=""
 else
-    export SUDO_COMMAND="sudo"
+  export SUDO_COMMAND="sudo"
 fi
 
 install_7zip() {
@@ -22,6 +22,10 @@ install_7zip() {
 install_asdf() {
   git clone --depth 1 https://github.com/asdf-vm/asdf.git ~/.asdf --branch master
   . "${HOME}/.asdf/asdf.sh"
+}
+
+install_bitwarden_cli() {
+  pkg-install.sh bin "https://vault.bitwarden.com/download/?app=cli&platform=linux&name=bitwarden_cli.zip" bw
 }
 
 install_caddy() {
@@ -111,7 +115,7 @@ install_woodpecker_cli() {
 }
 
 cd "${HOME}"
-parallelable_installs=("7zip" "asdf" "caddy" "chezmoi" "dotfiles" "fzf" "esperoj" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt-dlp" "woodpecker-cli")
+parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "fzf" "esperoj" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt-dlp" "woodpecker-cli")
 is_parallelable() {
   local name="$1"
   local package

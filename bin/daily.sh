@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -Exeo pipefail
+set -Eeo pipefail
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/start"
 cd "${HOME}"
 start.sh esperoj_storage caddy

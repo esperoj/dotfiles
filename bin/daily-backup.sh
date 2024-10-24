@@ -3,31 +3,39 @@
 set -Eeo pipefail
 export RCLONE_VERBOSE=1
 export RCLONE_FLAGS="--exclude='{tmp/**,.thumbnails/**}'"
+TEMP_DIR="$(mktemp -d)"
 
-backup_linkwarden() {
-  local TEMP_DIR="$(mktemp -d)"
+cleanup() {
+  echo "Running cleanup after backup"
+  rm -rf "${TEMP_DIR}"
+}
+
+generate_linkwarden_backup() {
   curl -s -H "Authorization: Bearer ${LINKWARDEN_ACCESS_TOKEN}" \
-    "https://links.adminforge.de/api/v1/migration" >"${TEMP_DIR}/linkwarden-backup.json"
-  rclone move "${TEMP_DIR}" "esperoj:backup-0"
-  rm -r "${TEMP_DIR}"
+    "https://links.adminforge.de/api/v1/migration" >"linkwarden-backup.json"
 }
 
-backup_seatable() {
-  local TEMP_DIR="$(mktemp -d)"
-  cd "${TEMP_DIR}"
-  esperoj export_database "primary"
-  rclone sync . "esperoj:backup-0/database"
-  rm -r "${TEMP_DIR}"
-}
-
-update_backup() {
+generate_seatable_backup() {
+  mkdir -p database
   (
-    rclone copy esperoj:public/backup.7z .
-    7z x "-p${ENCRYPTION_PASSPHRASE}" backup.7z
-    mkdir -p backup && cd ./backup
-    rm -rf code
-    rclone sync esperoj:backup-0 .
-    mkdir -p code
+    cd database
+    esperoj export_database "primary"
+  )
+}
+
+generate_bitwarden_backup() {
+  install.sh bitwarden_cli
+  bw config server "${BW_SERVER}"
+  bw login --apikey
+  export BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw)
+  bw export --output bitwarden.json --format json
+  bw logout
+  7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" bitwarden.json.7z bitwarden.json
+}
+
+generate_code() {
+  mkdir -p code
+  (
     cd code
     parallel --keep-order -vj0 {} <<EOL
       git clone --depth=1 git@github.com:esperoj/dotfiles.git
@@ -36,25 +44,52 @@ update_backup() {
       git clone --depth=1 git@github.com:esperoj/esperoj.git
 EOL
   )
-  7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
-  rm -rf backup/
-  rclone move backup.7z esperoj:public
+}
+
+generate_current_backup() {
+  rclone copy esperoj:public/backup.7z .
+  7z x "-p${ENCRYPTION_PASSPHRASE}" backup.7z
+  rm backup.7z
+  (
+    cd backup
+    rm -rf code
+    rclone sync esperoj:backup-0 .
+    # rm -rf database
+  )
+}
+
+update_backup() {
+  (
+    cd "${TEMP_DIR}"
+    parallel --keep-order -vj0 {} <<EOL
+      generate_bitwarden_backup
+      generate_code
+      generate_linkwarden_backup
+      generate_current_backup
+      echo disable # generate_seatable_backup
+EOL
+    # TODO: Add database when esperoj working again
+    mv bitwarden.json.7z code linkwarden-backup.json backup
+    7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
+    rm -rf backup/code
+    parallel --keep-order -vj0 {} <<EOL
+    rclone move backup.7z esperoj:public
+    rclone sync ./backup esperoj:backup-0
+    rclone sync ./backup esperoj:backup-0
+EOL
+  )
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
     echo esperoj save_page "https://public.esperoj.eu.org/backup.7z"
   fi
 }
 
-export -f backup_linkwarden backup_seatable update_backup
+export -f generate_bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup update_backup
 
 backup_container() {
   cd ~
   parallel --keep-order -vj0 {} <<EOL
-  backup_linkwarden
-  echo backup_seatable
-EOL
-  parallel --keep-order -vj0 {} <<EOL
-  update_backup
   rclone sync esperoj:workspace-0 esperoj:workspace-1
+  update_backup
 EOL
 }
 
@@ -69,6 +104,7 @@ phone)
   backup_phone
   ;;
 container | pubnix)
+  trap cleanup EXIT
   backup_container
   ;;
 esac

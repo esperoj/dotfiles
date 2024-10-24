@@ -19,5 +19,7 @@ jobs:
           df -hT
           docker system prune --all --force
           df -hT
+          docker pull esperoj/dotfiles:base
           docker pull esperoj/dotfiles:main
+          docker pull esperoj/dotfiles:dev
           docker image ls

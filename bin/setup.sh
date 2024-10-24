@@ -3,9 +3,9 @@ set -eux
 export DEBIAN_FRONTEND=noninteractive
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 if [ "$(id -u)" -eq 0 ]; then
-    export SUDO_COMMAND=""
+  export SUDO_COMMAND=""
 else
-    export SUDO_COMMAND="sudo"
+  export SUDO_COMMAND="sudo"
 fi
 
 packages=""
