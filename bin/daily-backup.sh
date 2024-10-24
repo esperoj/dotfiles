@@ -68,7 +68,7 @@ case "${MACHINE_TYPE}" in
 phone)
   backup_phone
   ;;
-container)
+container | pubnix)
   backup_container
   ;;
 esac

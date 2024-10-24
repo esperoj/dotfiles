@@ -125,8 +125,8 @@ main() {
       sudo apt-get install -y --no-install-recommends "${1}"
     fi
   else
-    install_in_parallel_packages=""
-    install_using_apt_packages=""
+    export install_in_parallel_packages=""
+    export install_using_apt_packages=""
     local package
     for package in "$@"; do
       if is_parallelable "${package}"; then
@@ -135,12 +135,10 @@ main() {
         install_using_apt_packages+="${package} "
       fi
     done
-    if [[ -n "${install_using_apt_packages}" ]]; then
-      sudo apt-get install -y --no-install-recommends $(echo "${install_using_apt_packages}")
-    fi
-    if [[ -n "${install_in_parallel_packages}" ]]; then
-      parallel --keep-order -vj0 "$0" {} ::: $(echo "${install_in_parallel_packages}")
-    fi
+    parallel --keep-order -vj0 {} <<EOL
+    [[ -n "${install_using_apt_packages}" ]] && sudo apt-get install -y --no-install-recommends $(echo "${install_using_apt_packages}")
+    [[ -n "${install_in_parallel_packages}" ]] && parallel --keep-order -vj0 "$0" {} ::: $(echo "${install_in_parallel_packages}")
+EOL
   fi
 }
 
