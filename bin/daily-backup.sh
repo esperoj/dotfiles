@@ -10,6 +10,10 @@ cleanup() {
   rm -rf "${TEMP_DIR}"
 }
 
+run() {
+    command time --format "Command: %C\nReal Time: %E\nUser Time: %U\nSystem Time: %S\nCPU Percentage: %P" bash -c "$1"
+}
+
 generate_linkwarden_backup() {
   curl -s -H "Authorization: Bearer ${LINKWARDEN_ACCESS_TOKEN}" \
     "https://links.adminforge.de/api/v1/migration" >"linkwarden-backup.json"
@@ -29,8 +33,10 @@ generate_bitwarden_backup() {
   bw login --apikey
   export BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw)
   bw export --output bitwarden.json --format json
-  bw logout
-  7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" bitwarden.json.7z bitwarden.json
+  parallel --keep-order -vj0 {} <<EOL
+    bw logout
+    7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" bitwarden.json.7z bitwarden.json
+EOL
 }
 
 generate_code() {
@@ -62,10 +68,10 @@ update_backup() {
   (
     cd "${TEMP_DIR}"
     parallel --keep-order -vj0 {} <<EOL
-      generate_bitwarden_backup
-      generate_code
-      generate_linkwarden_backup
-      generate_current_backup
+      run generate_bitwarden_backup
+      run generate_code
+      run generate_linkwarden_backup
+      run generate_current_backup
       echo disable # generate_seatable_backup
 EOL
     # TODO: Add database when esperoj working again
@@ -73,9 +79,9 @@ EOL
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
     rm -rf backup/code
     parallel --keep-order -vj0 {} <<EOL
-      rclone move backup.7z esperoj:public
-      rclone sync ./backup esperoj:backup-0
-      rclone sync ./backup esperoj:backup-0
+      run 'rclone move backup.7z esperoj:public'
+      run 'rclone sync ./backup esperoj:backup-0'
+      run 'rclone sync ./backup esperoj:backup-0'
 EOL
   )
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
@@ -83,14 +89,14 @@ EOL
   fi
 }
 
-export -f generate_bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup update_backup
+export -f generate_bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
 
 backup_container() {
   cd ~
   parallel --keep-order -vj0 {} <<EOL
-    rclone sync esperoj:workspace-0 esperoj:workspace-1
-    rclone sync esperoj:archive-0 esperoj:archive-1
-    update_backup
+    run 'rclone sync esperoj:workspace-0 esperoj:workspace-1'
+    run 'rclone sync esperoj:archive-0 esperoj:archive-1'
+    run update_backup
 EOL
 }
 
@@ -102,7 +108,7 @@ backup_phone() {
 
 case "${MACHINE_TYPE}" in
 phone)
-  backup_phone
+  time backup_phone
   ;;
 container | pubnix)
   trap cleanup EXIT

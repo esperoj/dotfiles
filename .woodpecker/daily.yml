@@ -18,7 +18,7 @@ steps:
     when: *base_conditions
     commands:
       - |
-        time ~/bin/run-command.sh -h "local" -c "
+        ~/bin/run-command.sh -h "local" -c "
         chezmoi update
         . ~/.profile
         daily.sh"
