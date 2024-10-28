@@ -3,4 +3,4 @@ run:
   rules:
     - if: $WORKFLOW == "run-command"
   script:
-    - command time -v ~/bin/run-command.sh -h local
+    - time ~/bin/run-command.sh -h local

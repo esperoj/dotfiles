@@ -7,10 +7,10 @@ export RCLONE_VERBOSE=1
 cd "${HOME}"
 
 # Start services
-start.sh koofr home caddy ssh_server
+start.sh home esperoj_storage caddy ssh_server
 
 # Restore cache and working workspace
-rclone copy "cache:${archive}" .
+rclone copy "esperoj:cache/${archive}" .
 time tar --zstd -xf "${archive}"
 rm "${archive}"
 
@@ -24,10 +24,10 @@ while true; do
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -J serveo.net root@serveo.esperoj.eu.org uptime
 done
 
-stop.sh pcloud home caddy ssh_server
+stop.sh esperoj_storage home caddy ssh_server
 
 # Upload cache and workspace
 time tar -I "zstd -T$(nproc) -9" -cpf "${archive}" workspace .cache .zsh_history
-rclone copy "${archive}" "cache:"
+rclone copy "${archive}" "esperoj:cache"
 
 exit

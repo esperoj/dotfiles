@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=docker.io/ubuntu:rolling
+ARG BASE_IMAGE=docker.io/ubuntu:latest
 
 FROM ${BASE_IMAGE}
 ARG SETUP_NAME=docker_base

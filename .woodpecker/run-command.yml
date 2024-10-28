@@ -15,7 +15,7 @@ steps:
     secrets: [ encryption_passphrase ]
     when: *base_conditions
     commands:
-      - command time -v ~/bin/run-command.sh -h local
+      - time ~/bin/run-command.sh -h local
 
   notify:
     image: codeberg.org/esperoj/dotfiles:base

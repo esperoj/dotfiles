@@ -3,4 +3,4 @@ daily:
   retry: 2
   timeout: 3 hours
   script:
-    - command time -v ~/bin/run-command.sh -h "local" -c "daily.sh"
+    - time ~/bin/run-command.sh -h "local" -c "daily.sh"

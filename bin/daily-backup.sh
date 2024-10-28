@@ -73,9 +73,9 @@ EOL
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
     rm -rf backup/code
     parallel --keep-order -vj0 {} <<EOL
-    rclone move backup.7z esperoj:public
-    rclone sync ./backup esperoj:backup-0
-    rclone sync ./backup esperoj:backup-0
+      rclone move backup.7z esperoj:public
+      rclone sync ./backup esperoj:backup-0
+      rclone sync ./backup esperoj:backup-0
 EOL
   )
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
@@ -88,8 +88,9 @@ export -f generate_bitwarden_backup generate_code generate_linkwarden_backup gen
 backup_container() {
   cd ~
   parallel --keep-order -vj0 {} <<EOL
-  rclone sync esperoj:workspace-0 esperoj:workspace-1
-  update_backup
+    rclone sync esperoj:workspace-0 esperoj:workspace-1
+    rclone sync esperoj:archive-0 esperoj:archive-1
+    update_backup
 EOL
 }
 

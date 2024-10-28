@@ -10,6 +10,7 @@ fi
 
 packages=""
 
+# lsb-release
 base_packages="
   7zip
   ca-certificates
@@ -19,7 +20,6 @@ base_packages="
   git
   iputils-ping
   jq
-  lsb-release
   openssh-client
   parallel
   procps
@@ -90,11 +90,14 @@ ct8_packages="
 "
 
 cd "${HOME}"
+
 before() {
   mkdir -p ".local"/{bin,share,lib,lib64}
 }
+
 after() {
-  ln -s $(command -v 7zz) ".local/bin/7z"
+  ln -s $(command -v 7zz) "${HOME}/.local/bin/7z"
+  ln -s $(command -v python3) "${HOME}/.local/bin/python"
   mkdir -p ".ssh/sockets" ".sockets"
 }
 
