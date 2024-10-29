@@ -3,7 +3,10 @@
 set -Eeo pipefail
 export RCLONE_VERBOSE=1
 export RCLONE_FLAGS="--exclude='{tmp/**,.thumbnails/**}'"
-TEMP_DIR="$(mktemp -d)"
+
+before() {
+  TEMP_DIR="$(mktemp -d)"
+}
 
 cleanup() {
   echo "Running cleanup after backup"
@@ -11,7 +14,7 @@ cleanup() {
 }
 
 run() {
-    command time --format "Command: %C\nReal Time: %E\nUser Time: %U\nSystem Time: %S\nCPU Percentage: %P" bash -c "$1"
+  command time --format "Command: %C\nReal Time: %E\nUser Time: %U\nSystem Time: %S\nCPU Percentage: %P" bash -c "$1"
 }
 
 generate_linkwarden_backup() {
@@ -33,9 +36,11 @@ generate_bitwarden_backup() {
   bw login --apikey
   export BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw)
   bw export --output bitwarden.json --format json
+  bw logout
+  7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" bitwarden.json
   parallel --keep-order -vj0 {} <<EOL
-    bw logout
-    7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" bitwarden.json.7z bitwarden.json
+    run 'rclone copy bitwarden.json.7z esperoj:backup-0'
+    run 'rclone copy bitwarden.json.7z esperoj:backup-1'
 EOL
 }
 
@@ -67,26 +72,28 @@ generate_current_backup() {
 update_backup() {
   (
     cd "${TEMP_DIR}"
+    run generate_bitwarden_backup &
+    local generate_bitwarden_backup_pid=$!
     parallel --keep-order -vj0 {} <<EOL
-      run generate_bitwarden_backup
       run generate_code
       run generate_linkwarden_backup
       run generate_current_backup
       echo disable # generate_seatable_backup
 EOL
     # TODO: Add database when esperoj working again
-    mv bitwarden.json.7z code linkwarden-backup.json backup
+    mv code linkwarden-backup.json backup
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
     rm -rf backup/code
     parallel --keep-order -vj0 {} <<EOL
       run 'rclone move backup.7z esperoj:public'
-      run 'rclone sync ./backup esperoj:backup-0'
-      run 'rclone sync ./backup esperoj:backup-0'
+      run 'rclone sync --exclude='bitwarden.json.7z' ./backup esperoj:backup-0'
+      run 'rclone sync --exclude='bitwarden.json.7z' ./backup esperoj:backup-0'
 EOL
   )
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
     echo esperoj save_page "https://public.esperoj.eu.org/backup.7z"
   fi
+  wait generate_bitwarden_backup_pid
 }
 
 export -f generate_bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
@@ -111,6 +118,7 @@ phone)
   time backup_phone
   ;;
 container | pubnix)
+  before
   trap cleanup EXIT
   backup_container
   ;;
