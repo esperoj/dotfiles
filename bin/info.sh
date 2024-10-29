@@ -9,6 +9,8 @@ parallel --keep-order -vj0 {} <<-EOL
   df -hT
   echo esperoj --help
   free -h
+  lsblk
+  lscpu
   pwd
   python3 --version
   rclone listremotes
