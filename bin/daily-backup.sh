@@ -28,7 +28,7 @@ generate_seatable_backup() {
   )
 }
 
-generate_bitwarden_backup() {
+bitwarden_backup() {
   install.sh bitwarden_cli
   bw config server "${BW_SERVER}"
   bw login --apikey
@@ -90,14 +90,14 @@ EOL
   fi
 }
 
-export -f generate_bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
+export -f bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
 
 backup_container() {
   parallel --keep-order -vj0 {} <<EOL
     run 'rclone sync esperoj:workspace-0 esperoj:workspace-1'
     run 'rclone sync esperoj:archive-0 esperoj:archive-1'
     run update_backup
-    run generate_bitwarden_backup
+    run bitwarden_backup
 EOL
 }
 
