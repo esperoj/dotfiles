@@ -6,7 +6,7 @@ workflow:
     - if: $CI_SERVER_HOST == "framagit.org"
       variables:
         DEFAULT_TAG: Debian
-        DEFAULT_IMAGE: esperoj/dotfiles:main
+        DEFAULT_IMAGE: gcr.io/esperoj/dotfiles:main
     - if: $CI_SERVER_HOST == "gitlab.com"
       variables:
         DEFAULT_TAG: saas-linux-medium-amd64
