@@ -10,7 +10,7 @@ cd "${HOME}"
 start.sh home esperoj_storage caddy ssh_server
 
 # Restore cache and working workspace
-rclone copy "esperoj:cache/${archive}" .
+rclone copy "cache:${archive}" .
 time tar --zstd -xf "${archive}"
 rm "${archive}"
 
@@ -28,6 +28,6 @@ stop.sh esperoj_storage home caddy ssh_server
 
 # Upload cache and workspace
 time tar -I "zstd -T$(nproc) -9" -cpf "${archive}" workspace .cache .zsh_history
-rclone copy "${archive}" "esperoj:cache"
+rclone copy "${archive}" "cache:"
 
 exit

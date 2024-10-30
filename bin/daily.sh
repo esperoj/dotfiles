@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -Eeo pipefail
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/start"
+set -Eeuo pipefail
 cd "${HOME}"
 start.sh esperoj_storage caddy
 parallel --keep-order -vj0 {} <<EOL
