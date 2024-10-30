@@ -132,10 +132,10 @@ termux)
       git remote set-url origin --push --add git@github.com:esperoj/notebook.git
       git remote set-url origin --push --add git@codeberg.org:esperoj/notebook.git
     )
-    rclone sync -v esperoj:workspace-0 workspace
-    rclone sync -v esperoj:backup-0 backup
-    rclone bisync -v --resync ./workspace esperoj:workspace-0
-    rclone bisync -v --resync ./backup esperoj:backup-0
+    rclone sync -v workspace-0: workspace
+    rclone sync -v backup-0: backup
+    rclone bisync -v --resync ./workspace workspace-0:
+    rclone bisync -v --resync ./backup backup-0:
   )
   ;;
 esac
