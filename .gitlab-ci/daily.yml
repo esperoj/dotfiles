@@ -3,4 +3,8 @@ daily:
   retry: 2
   timeout: 3 hours
   script:
-    - time ~/bin/run-command.sh -h "local" -c "daily.sh"
+    - |
+      ~/bin/run-command.sh -h "local" -c "
+      chezmoi update
+      . ~/.profile
+      daily.sh"
