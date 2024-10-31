@@ -9,6 +9,10 @@ cd "${HOME}"
 # Start services
 start.sh home esperoj_storage caddy ssh_server
 
+notify.sh \
+  "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -J serveo.net root@serveo.esperoj.eu.org" \
+  "Title: Dev server is up."
+
 # Restore cache and working workspace
 rclone copy "cache:${archive}" .
 time tar --zstd -xf "${archive}"

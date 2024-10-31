@@ -46,12 +46,7 @@ generate_code() {
   mkdir -p code
   (
     cd code
-    parallel --keep-order -vj0 {} <<EOL
-      git clone --depth=1 git@github.com:esperoj/dotfiles.git
-      git clone --depth=1 git@github.com:esperoj/notebook.git
-      git clone --depth=1 git@github.com:esperoj/archive.git
-      git clone --depth=1 git@github.com:esperoj/esperoj.git
-EOL
+    parallel --keep-order -vj0 wget -qO {}.zip https://github.com/esperoj/{}/archive/refs/heads/main.zip ::: archive dotfiles esperoj notebook
   )
 }
 
@@ -61,9 +56,8 @@ generate_current_backup() {
   rm backup.7z
   (
     cd backup
-    rm -rf code
+    rm -rf code # database
     rclone sync backup-0: .
-    # rm -rf database
   )
 }
 
@@ -78,7 +72,7 @@ EOL
     # TODO: Add database when esperoj working again
     mv code linkwarden-backup.json backup
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
-    rm -rf backup/code
+    # rm -rf backup/code
     parallel --keep-order -vj0 {} <<EOL
       run 'rclone move backup.7z public:'
       run 'rclone sync --exclude='bitwarden.json.7z' ./backup backup-0:'

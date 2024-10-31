@@ -39,7 +39,7 @@ jobs:
         run: |
           cd /root
           export HOME=/root
-          time "$HOME/bin/run-command.sh" -h "local" -c "$COMMAND"
+          command time -v "$HOME/bin/run-command.sh"
 
       - name: Send notification
         if: ${{ always() }}
@@ -51,7 +51,8 @@ jobs:
           fi
           cd /root
           export HOME=/root
-          . ./.profile && notify.sh "$COMMAND" \
-          "Title: Workflow ${{ github.workflow }} of ${{ github.repository }} completed" \
-          "Actions: view, View log, $URL" \
-          | jq
+          source ~/.profile
+          notify.sh "${COMMAND}" \
+            "Title: Workflow ${{ github.workflow }} of ${{ github.repositoryUrl }} had completed." \
+            "Actions: view, View log, $URL" \
+            | jq

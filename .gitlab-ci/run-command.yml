@@ -1,6 +1,4 @@
 run:
   stage: main
-  rules:
-    - if: $WORKFLOW == "run-command"
   script:
-    - time ~/bin/run-command.sh -h local
+    - command time -v "${HOME}/bin/run-command.sh"

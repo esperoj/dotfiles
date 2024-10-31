@@ -34,3 +34,19 @@ jobs:
             . ./.profile
             daily.sh
           "
+
+      - name: Send notification
+        if: ${{ failure() }}
+        run: |
+          if [[ "${GITHUB_SERVER_URL}" == "https://github.com" ]]; then
+            URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          else
+            URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_NUMBER}"
+          fi
+          cd /root
+          export HOME=/root
+          . ./.profile
+          notify.sh "" \
+            "Title: Workflow ${{ github.workflow }} of ${{ github.repositoryUrl }} had failed." \
+            "Actions: view, View log, $URL" \
+            | jq

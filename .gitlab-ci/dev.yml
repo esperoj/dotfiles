@@ -1,5 +1,0 @@
-dev:
-  stage: main
-  timeout: 3 hours
-  script:
-    - ~/bin/run-command.sh -h local -c 'notify.sh "Title: Dev server has started." "Actions: view, View Log, ${CI_JOB_URL}" | jq && dev-startup.sh'
