@@ -1,4 +1,4 @@
-run:
+run-command:
   stage: main
   script:
     - command time -v "${HOME}/bin/run-command.sh"
