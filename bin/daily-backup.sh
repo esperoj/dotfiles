@@ -56,8 +56,8 @@ generate_current_backup() {
   rm backup.7z
   (
     cd backup
-    rm -rf code # database
     rclone sync backup-0: .
+    rm -rf code
   )
 }
 
@@ -72,7 +72,6 @@ EOL
     # TODO: Add database when esperoj working again
     mv code linkwarden-backup.json backup
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
-    # rm -rf backup/code
     parallel --keep-order -vj0 {} <<EOL
       run 'rclone move backup.7z public:'
       run 'rclone sync --exclude='bitwarden.json.7z' ./backup backup-0:'
@@ -80,7 +79,7 @@ EOL
 EOL
   )
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
-    echo esperoj save_page "https://public.esperoj.eu.org/backup.7z"
+    esperoj save_page "https://public.esperoj.eu.org/backup.7z"
   fi
 }
 
