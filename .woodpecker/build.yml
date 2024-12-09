@@ -51,7 +51,9 @@ steps:
   notify:
     image: codeberg.org/esperoj/dotfiles:main
     pull: true
-    secrets: [ encryption_passphrase ]
+    environment:
+      ENCRYPTION_PASSPHRASE:
+        from_secret: encryption_passphrase
     when:
       - event: push
         status: [ success, failure ]

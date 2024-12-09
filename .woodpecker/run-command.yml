@@ -12,7 +12,9 @@ steps:
   run:
     image: codeberg.org/esperoj/dotfiles:main
     pull: false
-    secrets: [ encryption_passphrase ]
+    environment:
+      ENCRYPTION_PASSPHRASE:
+        from_secret: encryption_passphrase
     when: *base_conditions
     commands:
       - time ~/bin/run-command.sh -h local
@@ -20,7 +22,9 @@ steps:
   notify:
     image: codeberg.org/esperoj/dotfiles:base
     pull: true
-    secrets: [ encryption_passphrase ]
+    environment:
+      ENCRYPTION_PASSPHRASE:
+        from_secret: encryption_passphrase
     when:
       - event: manual
         status: [ success, failure ]
