@@ -70,6 +70,10 @@ install_esperoj() {
   pkg-install.sh ghbin esperoj/esperoj "^esperoj_linux_%arch:x86_64=x86_64:aarch64=aarch64%$" esperoj
 }
 
+install_gallery_dl() {
+  pipx install gallery-dl
+}
+
 install_kopia() {
   pkg-install.sh ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
