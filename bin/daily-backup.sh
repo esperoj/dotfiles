@@ -72,11 +72,8 @@ EOL
     # TODO: Add database when esperoj working again
     mv code linkwarden-backup.json backup
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
-    parallel --keep-order -vj0 {} <<EOL
-      run 'rclone move backup.7z public:'
-      run 'rclone sync --exclude='bitwarden.json.7z' ./backup backup-0:'
-      run 'rclone sync --exclude='bitwarden.json.7z' ./backup backup-0:'
-EOL
+    rclone move backup.7z public:
+    parallel --keep-order -vj0 rclone sync --exclude='bitwarden.json.7z' ./backup "{}" ::: "backup-0:" "backup-1:" "mega:esperoj/backup"
   )
   if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
     esperoj save_page "https://public.esperoj.eu.org/backup.7z"
@@ -92,6 +89,9 @@ backup_container() {
     run update_backup
     run bitwarden_backup
 EOL
+  parallel --keep-order -vj1 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {} 'parallel --keep-order -vj0 "
+  rclone sync -v megadisk:esperoj jottacloud:esperoj
+  rclone sync -v megadisk:esperoj nch:esperoj"' ::: serv00 envs hashbang
 }
 
 backup_phone() {
