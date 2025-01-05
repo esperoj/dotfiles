@@ -98,8 +98,8 @@ EOL
 
 backup_phone() {
   cd /sdcard
-  rclone bisync --password-command "echo $RCLONE_CONFIG_PASS" "${RCLONE_FLAGS}" ./workspace workspace-0:
-  rclone bisync --password-command "echo $RCLONE_CONFIG_PASS" "${RCLONE_FLAGS}" ./backup backup-0:
+  rclone bisync --no-check-certificate --password-command "echo $RCLONE_CONFIG_PASS" "${RCLONE_FLAGS}" ./workspace workspace-0:
+  rclone bisync --no-check-certificate --password-command "echo $RCLONE_CONFIG_PASS" "${RCLONE_FLAGS}" ./backup backup-0:
 }
 
 case "${MACHINE_TYPE}" in
