@@ -89,9 +89,12 @@ backup_container() {
     run update_backup
     run bitwarden_backup
 EOL
-  parallel --keep-order -vj1 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {} 'parallel --keep-order -vj0 "
-  rclone sync -v megadisk:esperoj jottacloud:esperoj
-  rclone sync -v megadisk:esperoj nch:esperoj"' ::: serv00 envs hashbang
+  parallel --keep-order -vj1 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {} '
+  chezmoi update;
+  . ~/.profile ;
+  parallel --keep-order -vj0 "
+    rclone sync -v megadisk:esperoj jottacloud:esperoj
+    rclone sync -v megadisk:esperoj nch:esperoj"' ::: serv00 envs hashbang
 }
 
 backup_phone() {
