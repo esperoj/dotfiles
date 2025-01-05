@@ -92,14 +92,14 @@ EOL
   parallel --keep-order -vj1 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null {} '
   chezmoi update;
   . ~/.profile ;
-  rclone sync -v megadisk:esperoj jottacloud:esperoj ;
-  rclone sync -v megadisk:esperoj nch:esperoj ;' ::: serv00 envs hashbang
+  rclone sync megadisk:esperoj jottacloud:esperoj ;
+  rclone sync megadisk:esperoj nch:esperoj ;' ::: serv00 envs hashbang
 }
 
 backup_phone() {
   cd /sdcard
-  rclone bisync "${RCLONE_FLAGS}" ./workspace workspace-0:
-  rclone bisync "${RCLONE_FLAGS}" ./backup backup-0:
+  rclone bisync --password-command "echo $RCLONE_CONFIG_PASS" "${RCLONE_FLAGS}" ./workspace workspace-0:
+  rclone bisync --password-command "echo $RCLONE_CONFIG_PASS" "${RCLONE_FLAGS}" ./backup backup-0:
 }
 
 case "${MACHINE_TYPE}" in
