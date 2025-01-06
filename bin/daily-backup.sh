@@ -36,10 +36,7 @@ bitwarden_backup() {
   bw export --output bitwarden.json --format json
   bw logout
   7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" bitwarden.json.7z bitwarden.json
-  parallel --keep-order -vj0 {} <<EOL
-    rclone copy bitwarden.json.7z backup-0:
-    rclone copy bitwarden.json.7z backup-1:
-EOL
+  parallel --keep-order -vj0 rclone copy bitwarden.json.7z "{}" ::: "backup-0:" "backup-1:" "mega:esperoj/backup"
 }
 
 generate_code() {
@@ -83,12 +80,7 @@ EOL
 export -f bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
 
 backup_container() {
-  parallel --keep-order -vj0 {} <<EOL
-    run 'rclone sync workspace-0: workspace-1:'
-    run 'rclone sync archive-0: archive-1:'
-    run update_backup
-    run bitwarden_backup
-EOL
+  parallel --keep-order -vj0 run '{}' ::: 'rclone sync workspace-0: workspace-1:' 'rclone sync archive-0: archive-1:' 'update_backup' 'bitwarden_backup'
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
   . ~/.profile ;
   chezmoi update ;
