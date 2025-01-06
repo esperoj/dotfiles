@@ -90,9 +90,10 @@ backup_container() {
     run bitwarden_backup
 EOL
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
+  . ~/.profile ;
   chezmoi update ;
   . ~/.profile ;
-  parallel --keep-order -vj0 rclone sync megadisk:esperoj {}:esperoj ::: jottacloud nch
+  parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
   '
 }
 
