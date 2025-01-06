@@ -3,11 +3,11 @@ workflow:
     - if: $CI_SERVER_HOST == "framagit.org"
       variables:
         DEFAULT_TAG: Debian
-        DEFAULT_IMAGE: ghcr.io/esperoj/dotfiles:main
+        DEFAULT_IMAGE: esperoj/dotfiles:main
     - if: $CI_SERVER_HOST == "gitlab.com"
       variables:
         DEFAULT_TAG: saas-linux-medium-amd64
-        DEFAULT_IMAGE: ghcr.io/esperoj/dotfiles:main
+        DEFAULT_IMAGE: esperoj/dotfiles:main
 
 stages:
   - main

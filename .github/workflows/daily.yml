@@ -16,9 +16,9 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
-    runs-on: ${{ vars.default_runner || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     container:
-      image: esperoj/dotfiles:main
+      image: ghcr.io/esperoj/dotfiles:main
       env:
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         MY_UUID: ${{ secrets.MY_UUID }}
