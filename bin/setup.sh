@@ -43,6 +43,7 @@ main_packages="
   openssh-server
   pipx
   python3
+  python3-venv
   python3-pip
   task
   zstd
