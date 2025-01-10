@@ -18,7 +18,7 @@ def export_database(name):
         data = [record.model_dump() for record in db.get_table(table_name).query()]
         with open(f"{table_name}.json", "w") as f:
             json.dump(data, f)
-    with open("Metadata.json", "w") as f:
+    with open("metadata.json", "w") as f:
         json.dump(metadata, f)
 
 

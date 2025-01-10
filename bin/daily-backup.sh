@@ -21,10 +21,10 @@ generate_linkwarden_backup() {
 }
 
 generate_seatable_backup() {
-  mkdir -p database
+  mkdir database
   (
     cd database
-    esperoj export_database "primary"
+    esperoj export_database primary
   )
 }
 
@@ -54,7 +54,7 @@ generate_current_backup() {
   (
     cd backup
     rclone sync backup-0: .
-    rm -rf code
+    rm -rf code database
   )
 }
 
@@ -64,17 +64,14 @@ update_backup() {
       run generate_code
       run generate_linkwarden_backup
       run generate_current_backup
-      echo generate_seatable_backup
+      run generate_seatable_backup
 EOL
-    # TODO: Add database when esperoj working again
-    mv code linkwarden-backup.json backup
+    mv database code linkwarden-backup.json backup
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
     rclone move backup.7z public:
     parallel --keep-order -vj0 rclone sync --exclude='bitwarden.json.7z' ./backup "{}" ::: "backup-0:" "backup-1:" "mega:esperoj/backup"
   )
-  if [[ $(date +%w) -eq 0 || $(date +%w) -eq 3 ]]; then
-    esperoj save_page "https://public.esperoj.eu.org/backup.7z"
-  fi
+  esperoj save_page "https://public.esperoj.eu.org/backup.7z"
 }
 
 export -f bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
