@@ -1,11 +1,11 @@
-import os
+from os import getenv
 import time
 
 import requests
 from requests.adapters import HTTPAdapter, Retry
+from esperoj.logging import getLogger
 
-
-def save_page(url: str) -> str:
+def save_page(url: str, capture_outlinks: int = 0) -> str:
     """Archive a URL using the Save Page Now 2 (SPN2) API.
 
     Args:
@@ -17,8 +17,9 @@ def save_page(url: str) -> str:
     Raises:
         RuntimeError: If the URL cannot be archived or if a timeout occurs.
     """
-    api_key = os.environ.get("INTERNET_ARCHIVE_ACCESS_KEY")
-    api_secret = os.environ.get("INTERNET_ARCHIVE_SECRET_KEY")
+    logger = getLogger(__name__)
+    api_key = getenv("INTERNET_ARCHIVE_ACCESS_KEY")
+    api_secret = getenv("INTERNET_ARCHIVE_SECRET_KEY")
 
     headers = {
         "Accept": "application/json",
@@ -28,7 +29,7 @@ def save_page(url: str) -> str:
     params = {
         "url": url,
         "capture_all": 0,
-        "capture_outlinks": 0,
+        "capture_outlinks": capture_outlinks,
         "capture_screenshot": 0,
         "delay_wb_availability": 0,
         "force_get": 0,
@@ -50,6 +51,7 @@ def save_page(url: str) -> str:
     session.mount("http://", adapter)
     session.mount("https://", adapter)
 
+    logger.info(f"Start to save url '{url}'")
     response = session.post(
         "https://web.archive.org/save", headers=headers, data=params, timeout=12
     )
@@ -61,6 +63,7 @@ def save_page(url: str) -> str:
     timeout = 60 * 15
 
     while True:
+        logger.info(f"Check job_id '{job_id}'")
         if time.time() - start_time > timeout:
             raise RuntimeError("Error: Archiving process timed out.")
         response = session.get(
@@ -78,7 +81,7 @@ def save_page(url: str) -> str:
                 raise RuntimeError(f"Error: {response.text}")
 
 
-def get_esperoj_method(esperoj):
+def get_esperoj_method():
     """Get the method to archive URLs using the Save Page Now 2 (SPN2) API.
 
     Args:
@@ -100,12 +103,13 @@ def get_click_command():
 
     @click.command()
     @click.argument("url", type=click.STRING, required=True)
-    def click_command(url):
+    @click.option('--capture-outlinks', required=False, type=int, default=0)
+    def click_command(url, capture_outlinks):
         """Archive a URL using the Save Page Now 2 (SPN2) API.
 
         Args:
             url (str): The URL to archive.
         """
-        print(save_page(url))
+        print(save_page(url, capture_outlinks))
 
     return click_command

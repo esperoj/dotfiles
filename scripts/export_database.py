@@ -1,8 +1,7 @@
 import json
-from functools import partial
+from esperoj.database import getDatabase
 
-
-def export_database(esperoj, name):
+def export_database(name):
     """Export the data and metadata of a database to JSON files.
 
     Args:
@@ -12,18 +11,18 @@ def export_database(esperoj, name):
     Returns:
         None
     """
-    db = esperoj.databases[name]
+    db = getDatabase(name)
     metadata = db.metadata
     for table in metadata["tables"]:
         table_name = table["name"]
-        data = [record.to_dict() for record in db.get_table(table_name).query()]
+        data = [record.model_dump() for record in db.get_table(table_name).query()]
         with open(f"{table_name}.json", "w") as f:
             json.dump(data, f)
     with open("Metadata.json", "w") as f:
         json.dump(metadata, f)
 
 
-def get_esperoj_method(esperoj):
+def get_esperoj_method():
     """Create a partial function with esperoj object.
 
     Args:
@@ -32,7 +31,7 @@ def get_esperoj_method(esperoj):
     Returns:
         functools.partial: A partial function with esperoj object bound to it.
     """
-    return partial(export_database, esperoj)
+    return export_database
 
 
 def get_click_command():
@@ -45,14 +44,13 @@ def get_click_command():
 
     @click.command()
     @click.argument("name", type=click.STRING, required=True)
-    @click.pass_obj
-    def click_command(esperoj, name):
+    def click_command(name):
         """Execute the export_database function with the esperoj object and database name.
 
         Args:
             esperoj (object): An object passed from the parent function.
             name (str): The name of the database to export.
         """
-        export_database(esperoj, name)
+        export_database(name)
 
     return click_command
