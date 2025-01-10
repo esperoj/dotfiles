@@ -4,7 +4,7 @@ echo "Running ${HOME}/.profile"
 export MACHINE_TYPE={{ .machineType | quote }}
 set -a && . "${HOME}/.env" && set +a
 [ ! -d "${HOME}/.asdf" ] || . "$HOME/.asdf/asdf.sh"
-if [ "$(hostname)" = "core.envs.net" || "$(hostname)" = "de1" ]; then
+if [[ "$(hostname)" = "core.envs.net" || "$(hostname)" = "de1" ]]; then
     export TMPDIR="/dev/shm/esperoj"
 fi
 
