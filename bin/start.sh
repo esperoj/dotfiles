@@ -11,13 +11,16 @@ serve_home_command='
 serve_esperoj_storage_command='
   export RCLONE_AUTH_KEY="esperoj,${MY_UUID}"
   rclone serve s3 \
-  --addr "unix://${HOME}/.sockets/pcloud.sock" \
+  --addr "unix://${HOME}/.sockets/esperoj-storage.sock" \
   --dir-cache-time 0s \
   --poll-interval 0 \
   --vfs-cache-mode writes \
   esperoj:'
 start_esperoj_command='
   esperoj start
+'
+serve_filen_command='
+filen webdav --w-user esperoj --w-password $MY_UUID --webdav-port 20712 --w-port 20712 --w-threads 4
 '
 
 for service in "$@"; do
@@ -33,6 +36,9 @@ for service in "$@"; do
     ;;
   esperoj_storage)
     screen -dmS esperoj_storage sh -lc "${serve_esperoj_storage_command}"
+    ;;
+  filen)
+    screen -dmS filen sh -lc "${serve_filen_command}"
     ;;
   ssh_server)
     service ssh start

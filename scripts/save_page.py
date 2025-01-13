@@ -3,7 +3,10 @@ import time
 
 import requests
 from requests.adapters import HTTPAdapter, Retry
-from esperoj.logging import getLogger
+from esperoj.logging import get_logger
+
+logger = get_logger(__name__)
+
 
 def save_page(url: str, capture_outlinks: int = 0) -> str:
     """Archive a URL using the Save Page Now 2 (SPN2) API.
@@ -17,7 +20,6 @@ def save_page(url: str, capture_outlinks: int = 0) -> str:
     Raises:
         RuntimeError: If the URL cannot be archived or if a timeout occurs.
     """
-    logger = getLogger(__name__)
     api_key = getenv("INTERNET_ARCHIVE_ACCESS_KEY")
     api_secret = getenv("INTERNET_ARCHIVE_SECRET_KEY")
 
@@ -103,7 +105,7 @@ def get_click_command():
 
     @click.command()
     @click.argument("url", type=click.STRING, required=True)
-    @click.option('--capture-outlinks', required=False, type=int, default=0)
+    @click.option("--capture-outlinks", required=False, type=int, default=0)
     def click_command(url, capture_outlinks):
         """Archive a URL using the Save Page Now 2 (SPN2) API.
 

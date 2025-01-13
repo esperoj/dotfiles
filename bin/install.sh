@@ -61,6 +61,10 @@ install_dotfiles() {
   fi
 }
 
+install_filen() {
+  pkg-install.sh ghbin FilenCloudDienste/filen-cli "linux-%arch:x86_64=x64:aarch64=arm64%$" filen
+}
+
 install_fzf() {
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --key-bindings --completion --no-update-rc
@@ -119,7 +123,7 @@ install_woodpecker_cli() {
 }
 
 cd "${HOME}"
-parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "fzf" "esperoj" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt-dlp" "woodpecker-cli")
+parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt-dlp" "woodpecker-cli")
 is_parallelable() {
   local name="$1"
   local package

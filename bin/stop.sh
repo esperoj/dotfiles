@@ -11,6 +11,9 @@ for service in "$@"; do
   esperoj_storage)
     screen -S esperoj_storage -X stuff "^C"
     ;;
+  filen)
+    screen -S filen -X stuff "^C"
+    ;;
   caddy)
     caddy stop
     ;;

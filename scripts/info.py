@@ -11,8 +11,9 @@ def info(esperoj):
         None
     """
     import json
+
     exit()
-    from esperoj.database.models import File
+
     files = json.load(open("files.json", "r"))
     records = []
     for file in files:

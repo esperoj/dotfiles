@@ -1,20 +1,24 @@
 from internetarchive import get_item
-from esperoj.database import getDatabase
-from esperoj.logging import getLogger
+from esperoj.database import get_database
+from esperoj.logging import get_logger
 
-logger = getLogger(__name__)
+logger = get_logger(__name__)
+
 
 def ingest_comic(identifier):
     item = get_item(identifier)
-    metadata = item.item_metadata['metadata']
+    metadata = item.item_metadata["metadata"]
     logger.info(f"Ingesting {metadata["title"]}")
     if metadata.get("contributor"):
         metadata["contributor"] = metadata["contributor"].split("; ")
     if type(metadata.get("subject")) is str:
         metadata["subject"] = metadata["subject"].split(";")
     metadata["include_reg"] = "^.*\\.cbz$"
-    comics = getDatabase("primary").get_table("comics")
+    comics = get_database("primary").get_table("comics")
     record = comics.create(metadata)
+    if record:
+        logger.info("Successed ingest record '%s'", record.id)
+
 
 def get_esperoj_method():
     """Create a partial function with esperoj object.

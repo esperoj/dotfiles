@@ -35,19 +35,19 @@ base_packages="
 main_packages="
   aria2
   caddy
-  esperoj
   exiftool
   nodejs
   npm
   rclone
   openssh-server
-  pipx
   python3
-  python3-venv
-  python3-pip
   task
+  uv
   zstd
 "
+
+# python3-venv
+# python3-pip
 
 dev_packages="
   fzf
@@ -113,6 +113,7 @@ docker_base)
   ;;
 docker_main)
   install.sh $(echo "${main_packages}")
+  ~/.local/bin/uv tool install "esperoj[cli] @ git+https://github.com/esperoj/esperoj.git@main#egg=esperoj&subdirectory=projects/esperoj"
   ;;
 docker_dev)
   install.sh $(echo "${dev_packages}")

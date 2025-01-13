@@ -84,6 +84,10 @@ backup_container() {
   . ~/.profile ;
   parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
   '
+  install.sh filen
+  start.sh filen
+  rclone sync megadisk:esperoj zoho:esperoj
+  rclone sync pcloud-0:esperoj filen:
 }
 
 backup_phone() {

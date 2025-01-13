@@ -1,5 +1,6 @@
 import json
-from esperoj.database import getDatabase
+from esperoj.database import get_database
+
 
 def export_database(name):
     """Export the data and metadata of a database to JSON files.
@@ -11,7 +12,7 @@ def export_database(name):
     Returns:
         None
     """
-    db = getDatabase(name)
+    db = get_database(name, None)
     metadata = db.metadata
     for table in metadata["tables"]:
         table_name = table["name"]
