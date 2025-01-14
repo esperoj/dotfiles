@@ -3,7 +3,8 @@
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/start"
 set -Eeuo pipefail
 cd "${HOME}"
-start.sh esperoj_storage caddy
+install.sh filen
+start.sh esperoj_storage filen caddy
 parallel --keep-order -vj0 {} <<EOL
   command time -v info.sh
   command time -v daily-backup.sh
@@ -12,4 +13,4 @@ parallel --keep-order -vj0 {} <<EOL
   echo esperoj save_page "https://esperoj.vercel.app"
 EOL
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/${?}"
-stop.sh esperoj_storage caddy
+stop.sh esperoj_storage filen caddy

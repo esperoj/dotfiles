@@ -3,6 +3,7 @@ from pathlib import Path
 from esperoj.database import get_database
 from esperoj.utils import get_util
 
+
 def download(name, dest: Path = None):
     """Export the data and metadata of a database to JSON files.
 

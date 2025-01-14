@@ -54,7 +54,7 @@ install_dotfiles() {
     git remote set-url origin --push --add git@github.com:esperoj/dotfiles.git
     git remote set-url origin --push --add git@codeberg.org:esperoj/dotfiles.git
   )
-  ln -s "${chezmoi_path}"/{bin,scripts} .
+  ln -s "${chezmoi_path}"/{bin,data,scripts} .
 
   if [[ $APPLY == "true" ]]; then
     "${chezmoi}" init --apply --depth=1 --force

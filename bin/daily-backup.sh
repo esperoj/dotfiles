@@ -60,12 +60,11 @@ generate_current_backup() {
 
 update_backup() {
   (
-    parallel --keep-order -vj0 {} <<EOL
-      run generate_code
-      run generate_linkwarden_backup
-      run generate_current_backup
-      run generate_seatable_backup
-EOL
+    parallel --keep-order -vj0 run '{}' ::: \
+      'generate_code' \
+      'generate_linkwarden_backup' \
+      'generate_current_backup' \
+      'generate_seatable_backup'
     mv database code linkwarden-backup.json backup
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
     rclone move backup.7z public:
@@ -77,17 +76,20 @@ EOL
 export -f bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
 
 backup_container() {
-  parallel --keep-order -vj0 run '{}' ::: 'rclone sync workspace-0: workspace-1:' 'rclone sync archive-0: archive-1:' 'update_backup' 'bitwarden_backup'
+  parallel --keep-order -vj0 run '{}' ::: \
+    'rclone sync workspace-0: workspace-1:' \
+    'rclone sync archive-0: archive-1:' \
+    'update_backup' \
+    'bitwarden_backup' \
+    'rclone sync pcloud-0:esperoj filen:' \
+    'RCLONE_TRANSFERS=1 rclone sync megadisk:esperoj zoho:esperoj --tpslimit 1'
+
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
-  . ~/.profile ;
-  chezmoi update ;
-  . ~/.profile ;
-  parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
+      . ~/.profile ;
+      chezmoi update ;
+      . ~/.profile ;
+      parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
   '
-  install.sh filen
-  start.sh filen
-  rclone sync megadisk:esperoj zoho:esperoj
-  rclone sync pcloud-0:esperoj filen:
 }
 
 backup_phone() {

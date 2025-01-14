@@ -5,6 +5,7 @@
 .woodpecker/
 archive/
 bin/
+data/
 scripts/
 .drone.yml
 .gitlab-ci.yml
