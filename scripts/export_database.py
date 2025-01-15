@@ -13,7 +13,7 @@ def export_database(name):
         None
     """
     db = get_database(name, None)
-    metadata = db.metadata
+    metadata = db.metadata  # type: ignore
     for table in metadata["tables"]:
         table_name = table["name"]
         data = [record.model_dump() for record in db.get_table(table_name).query()]

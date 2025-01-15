@@ -13,8 +13,21 @@ def migrate():
     """
     db = get_database("primary")
     files = db.get_table("files")
-    files.query()
-    breakpoint()
+    records = list(files.query())
+    hash_to_mirrors = {}
+    fields_list = []
+    for record in records:
+        if record.mirrors["catbox"]["sources"][0]["sha256"] != record.sha256:
+            print(123445)
+    exit()
+    return
+    for record in records:
+        hash_to_mirrors[record.mirrors["audio-0"]["sources"][0]["sha256"]] = (
+            record.mirrors
+        )
+    for record in records:
+        fields_list.append({"id": record.id, "mirrors": hash_to_mirrors[record.sha256]})
+    files.batch_update(fields_list)
 
 
 def get_esperoj_method():

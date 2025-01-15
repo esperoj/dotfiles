@@ -4,7 +4,7 @@ from esperoj.database import get_database
 from esperoj.utils import get_util
 
 
-def download(name, dest: Path = None):
+def download(name, dest: Path | None = None):
     """Export the data and metadata of a database to JSON files.
 
     Args:
@@ -20,8 +20,7 @@ def download(name, dest: Path = None):
         dest = dest / name
     db = get_database("primary")
     files = db.get_table("files")
-    record = list(filter(lambda r: r.name == name, files.query()))[0]
-
+    record = next(filter(lambda r: r.name == name, files.query()))
     download_info = {
         **dict(record),
         "dest": dest,

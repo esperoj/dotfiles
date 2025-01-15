@@ -1,61 +1,71 @@
-"""Script to verify daily."""
-
+from esperoj.utils import get_util
+from esperoj.database import get_database
 import datetime
-from functools import partial
-
 from esperoj.exceptions import VerificationError
 
 
-def daily_verify(esperoj) -> None:
-    """Verify the integrity of files stored in various locations.
+def is_verified(file):
+    if not file.verified:
+        return False
+    for mirror_info in file.mirrors.values():
+        for source in mirror_info["sources"]:
+            if not source["verified"]:
+                return False
 
-    This function retrieves a list of files from the "Files" table in the "Primary" database.
-    It then verifies that the hash of the file stored in the primary storage, backup storage,
-    and Internet Archive matches the expected SHA256 hash stored in the database.
 
-    If any file fails the verification process, a VerificationError is raised with the names
-    of the failed files.
+def daily_verify():
+    """Export the data and metadata of a database to JSON files.
 
     Args:
-        esperoj (object): An object containing the necessary databases, storages, and loggers.
+        esperoj (object): An object containing the databases.
+        name (str): The name of the database to export.
 
-    Raises:
-        VerificationError: If the verification of one or more files fails.
+    Returns:
+        None
     """
-    file_hosts = esperoj.config["file_hosts"]
+    db = get_database("primary")
+    files_table = db.get_table("files")
     files = sorted(
-        esperoj.databases["Primary"].get_table("Files").query(),
-        key=lambda file: file["Created"],
+        files_table.query(),
+        key=lambda file: file.created,
         reverse=True,
     )
-    files = [
-        file
-        for file in files
-        if all(file.fields.get(key) for key in file_hosts)
-        and file["Verified"]
-        and file["Internet Archive"] != "https://example.com/"
-    ]
     num_shards = 28
     shard_size, extra = divmod(len(files), num_shards)
     today = datetime.datetime.now(datetime.UTC).day % num_shards
     begin = (shard_size + 1) * today if today < extra else shard_size * today
     end = begin + shard_size + (1 if today < extra else 0)
+    files_to_process = files[begin:end]
 
-    results = esperoj.utils.verify(esperoj, files[begin:end])
+    results = get_util("verify")(files_to_process)
     if not all(results):
-        raise VerificationError("Failed to verify one or more file.")
+        file_to_result = dict(zip(files_to_process, results))
+        raise VerificationError(
+            [file.name for file, result in file_to_result.items() if result is False]
+        )
+    else:
+        update_fields_list = []
+        for file in files_to_process:
+            if not is_verified(file):
+                file.verified = True
+                for mirror_info in file.mirrors.values():
+                    for source in mirror_info["sources"]:
+                        source["verified"] = True
+                update_fields_list.append(dict(file))
+        if len(update_fields_list) > 0:
+            files_table.batch_update(update_fields_list)
 
 
-def get_esperoj_method(esperoj):
+def get_esperoj_method():
     """Create a partial function with esperoj object.
 
     Args:
         esperoj (object): An object to be passed as an argument to the partial function.
 
     Returns:
-        functools.partial: A partial function with esperoj object bound to it.
+        function: A function.
     """
-    return partial(daily_verify, esperoj)
+    return daily_verify
 
 
 def get_click_command():
@@ -67,13 +77,12 @@ def get_click_command():
     import click
 
     @click.command()
-    @click.pass_obj
-    def click_command(esperoj):
-        """Execute the daily_verify function with the esperoj object.
+    def click_command():
+        """Execute the daily_verify function with the esperoj object and database name.
 
         Args:
             esperoj (object): An object passed from the parent function.
         """
-        daily_verify(esperoj)
+        daily_verify()
 
     return click_command

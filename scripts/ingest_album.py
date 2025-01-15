@@ -1,4 +1,3 @@
-from esperoj.database import get_database
 from esperoj.logging import get_logger
 import tomllib
 from pathlib import Path
@@ -9,7 +8,7 @@ logger = get_logger(__name__)
 
 
 def upload(src, dest):
-    process = subprocess.call(
+    subprocess.call(
         ["rclone", "sync", "-v", src, dest],
     )
 
