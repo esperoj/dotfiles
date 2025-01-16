@@ -13,6 +13,7 @@ fi
     if [ "${MACHINE_TYPE}" = "pubnix" ]; then
         if [ ! -d "${TMPDIR}" ]; then
             mkdir -p "${TMPDIR}"/{.cache,.npm,tmp}
+            chmod 700 "${TMPDIR}"
             rm -rf .cache .npm tmp
             ln -s "${TMPDIR}"/{.cache,.npm,tmp} .
         fi

@@ -5,10 +5,9 @@ set -Eeuo pipefail
 cd "${HOME}"
 install.sh filen
 start.sh esperoj_storage filen caddy
-parallel --keep-order -vj0 {} <<EOL
-  command time -v info.sh
-  command time -v daily-backup.sh
-  esperoj daily_verify
-EOL
+parallel --keep-order -vj0 command time -v {} ::: \
+  "info.sh" \
+  "daily-backup.sh" \
+  "esperoj daily_verify"
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/${?}"
 stop.sh esperoj_storage filen caddy
