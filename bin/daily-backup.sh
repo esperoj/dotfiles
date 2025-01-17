@@ -86,7 +86,7 @@ backup_container() {
 
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
       . ~/.profile ;
-      chezmoi update ;
+      chezmoi update --no-tty --force ;
       . ~/.profile ;
       parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
   '

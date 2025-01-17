@@ -30,7 +30,7 @@ jobs:
           cd /root
           export HOME=/root
           ~/bin/run-command.sh -h "local" -c "
-            chezmoi update
+            chezmoi update --no-tty --force
             . ./.profile
             daily.sh
           "
