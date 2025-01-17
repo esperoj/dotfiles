@@ -53,6 +53,8 @@ install_dotfiles() {
     git remote set-url origin git@github.com:esperoj/dotfiles.git
     git remote set-url origin --push --add git@github.com:esperoj/dotfiles.git
     git remote set-url origin --push --add git@codeberg.org:esperoj/dotfiles.git
+    git remote set-url origin --push --add git@framagit.org:esperoj/dotfiles.git
+    git remote set-url origin --push --add git@gitlab.com:esperoj-group/dotfiles.git
   )
   ln -s "${chezmoi_path}"/{bin,data,scripts} .
 
