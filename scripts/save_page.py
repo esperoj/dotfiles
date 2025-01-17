@@ -69,7 +69,7 @@ def save_page(url: str, capture_outlinks: int = 0) -> str:
         if time.time() - start_time > timeout:
             raise RuntimeError("Error: Archiving process timed out.")
         response = session.get(
-            f"https://web.archive.org/save/status/{job_id}", headers=headers, timeout=12
+            f"https://web.archive.org/save/status/{job_id}", headers=headers, timeout=120
         )
         if response.status_code != 200:
             raise RuntimeError(f"Error: {response.text}")
