@@ -7,7 +7,6 @@ parallel --keep-order -vj0 {} <<-EOL
   chezmoi status
   curl -sS https://ipwho.de
   df -hT
-  echo esperoj --help
   free -h
   lsblk
   lscpu

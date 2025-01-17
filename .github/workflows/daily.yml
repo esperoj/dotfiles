@@ -1,6 +1,9 @@
 name: Daily
 run-name: Daily
 
+permissions:
+  pull-requests: write
+
 on:
   workflow_dispatch:
   schedule:
@@ -25,6 +28,9 @@ jobs:
         PING_UUID: ${{ secrets.PING_UUID }}
     timeout-minutes: 60
     steps:
+      - name: Collect Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@master
+
       - name: Daily
         run: |
           cd /root
