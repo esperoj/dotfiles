@@ -68,7 +68,7 @@ update_backup() {
     mv database code linkwarden-backup.json backup
     7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
     rclone move backup.7z public:
-    parallel --keep-order -vj0 rclone sync --exclude='bitwarden.json.7z' ./backup "{}" ::: "backup-0:" "backup-1:" "mega:esperoj/backup"
+    parallel --keep-order -vj0 rclone sync --exclude='bitwarden.json.7z' ./backup "{}" ::: "backup-0:" "backup-1:" "nch:esperoj/backup"
   )
   esperoj save_page "https://public.esperoj.eu.org/backup.7z"
 }
@@ -81,15 +81,15 @@ backup_container() {
     'rclone sync archive-0: archive-1:' \
     'update_backup' \
     'bitwarden_backup' \
-    'rclone sync pcloud-0:esperoj filen:' \
-    'RCLONE_TRANSFERS=1 rclone sync megadisk:esperoj zoho:esperoj --tpslimit 1'
+    #'rclone sync pcloud-0:esperoj filen:'
+    # 'RCLONE_TRANSFERS=1 rclone sync jottacloud: zoho: --tpslimit 1'
 
-  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
-      . ~/.profile ;
-      chezmoi update --no-tty --force ;
-      . ~/.profile ;
-      parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
-  '
+#  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
+#      . ~/.profile ;
+#      chezmoi update --no-tty --force ;
+#      . ~/.profile ;
+#      parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
+#  '
 }
 
 backup_phone() {
