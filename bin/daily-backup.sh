@@ -91,7 +91,7 @@ backup_container() {
     echo $(date) > date.txt
     RCLONE_TRANSFERS=1 rclone sync zoho:esperoj/mimi jottacloud:esperoj/mimi --tpslimit 1 ;
     parallel --keep-order -vj0 rclone sync -v megadisk:esperoj/picture {} ::: "jottacloud:esperoj/picture" ;
-    parallel --keep-order -vj0 rclone sync -v ./date.txt {} ::: "box:" "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:" ;
+    parallel --keep-order -vj4 rclone sync -v ./date.txt {} ::: "box:" "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:" ;
     rclone sync -v --drive-acknowledge-abuse father-drive: filen:father-drive
   '
 }
