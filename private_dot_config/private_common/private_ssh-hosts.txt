@@ -1,11 +1,9 @@
-8lgm.segfault.net:22
 codeberg.org:22
 de1.hashbang.sh:22
 envs.net:22
 framagit.org:22
 git.gay:22
 gitlab.com:22
-cezeri.tech:22
 github.com:22
 s0.serv00.com:22
 s1.ct8.pl:22
