@@ -5,6 +5,7 @@ set -Eeuo pipefail
 cd "${HOME}"
 install.sh filen
 start.sh esperoj_storage filen caddy
+sleep 5
 parallel --keep-order -vj0 {} ::: \
   "time info.sh" \
   "time daily-backup.sh" \

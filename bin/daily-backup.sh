@@ -79,17 +79,21 @@ backup_container() {
   parallel --keep-order -vj0 run '{}' ::: \
     'rclone sync workspace-0: workspace-1:' \
     'rclone sync archive-0: archive-1:' \
+    'rclone sync megadisk:esperoj/picture filen:picture' \
+    'rclone sync filen:mimi zoho:esperoj/mimi' \
     'update_backup' \
-    'bitwarden_backup' \
-    #'rclone sync pcloud-0:esperoj filen:'
-    # 'RCLONE_TRANSFERS=1 rclone sync jottacloud: zoho: --tpslimit 1'
+    'bitwarden_backup'
 
-#  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
-#      . ~/.profile ;
-#      chezmoi update --no-tty --force ;
-#      . ~/.profile ;
-#      parallel --keep-order -vj0 rclone sync -v megadisk:esperoj {}:esperoj ::: jottacloud nch
-#  '
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs '
+    source ~/.profile ;
+    chezmoi update --no-tty --force ;
+    source ~/.profile ;
+    echo $(date) > date.txt
+    RCLONE_TRANSFERS=1 rclone sync zoho:esperoj/mimi jottacloud:esperoj/mimi --tpslimit 1 ;
+    parallel --keep-order -vj0 rclone sync -v megadisk:esperoj/picture {} ::: "jottacloud:esperoj/picture" ;
+    parallel --keep-order -vj0 rclone sync -v ./date.txt {} ::: "box:" "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:" ;
+    rclone sync -v --drive-acknowledge-abuse father-drive: filen:father-drive
+  '
 }
 
 backup_phone() {
