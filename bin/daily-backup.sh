@@ -28,7 +28,7 @@ generate_seatable_backup() {
   )
 }
 
-bitwarden_backup() {
+generate_bitwarden_backup() {
   install.sh bitwarden_cli
   bw config server "${BW_SERVER}"
   bw login --apikey
@@ -36,7 +36,6 @@ bitwarden_backup() {
   bw export --output bitwarden.json --format json
   bw logout
   7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" bitwarden.json.7z bitwarden.json
-  parallel --keep-order -vj0 rclone copy bitwarden.json.7z "{}" ::: "backup-0:" "backup-1:" "mega:esperoj/backup"
 }
 
 generate_code() {
@@ -59,41 +58,30 @@ generate_current_backup() {
 }
 
 update_backup() {
-  (
-    parallel --keep-order -vj0 run '{}' ::: \
-      'generate_code' \
-      'generate_linkwarden_backup' \
-      'generate_current_backup' \
-      'generate_seatable_backup'
-    mv database code linkwarden-backup.json backup
-    7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup
-    rclone move backup.7z public:
-    parallel --keep-order -vj0 rclone sync --exclude='bitwarden.json.7z' ./backup "{}" ::: "backup-0:" "backup-1:" "nch:esperoj/backup"
-  )
-  esperoj save_page "https://public.esperoj.eu.org/backup.7z"
+  parallel --keep-order -vj0 run '{}' ::: \
+    'generate_code' \
+    'generate_linkwarden_backup' \
+    'generate_current_backup' \
+    'generate_seatable_backup' \
+    'generate_bitwarden_backup'
+  mv database/ code/ bitwarden.json.7z linkwarden-backup.json ./backup/
+  7z a -mx9 "-p${ENCRYPTION_PASSPHRASE}" backup.7z ./backup/
+  parallel --keep-order -vj0 run '{}' ::: \
+    'parallel --keep-order -vj0 rclone sync ./backup "{}" ::: "backup-0:" "backup-1:"' \
+    'rclone move backup.7z public: && esperoj save_page "https://public.esperoj.eu.org/backup.7z"'
 }
 
-export -f bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
+export -f generate_bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup
 
 backup_container() {
   parallel --keep-order -vj0 run '{}' ::: \
-    'rclone sync workspace-0: workspace-1:' \
-    'rclone sync archive-0: archive-1:' \
-    'rclone sync megadisk:esperoj/picture filen:picture' \
     'update_backup' \
-    'bitwarden_backup'
-
+    'parallel --keep-order -vj0 rclone sync {}-0: {}-1: ::: workspace archive mini' \
+    'parallel --keep-order -vj0 rclone sync --drive-acknowledge-abuse father-drive: "{}" ::: "filen:father-drive" "pcloud-0:esperoj/father-drive"'
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs <<EOL
     source ~/.profile ;
     echo $(date) > date.txt ;
-    start.sh filen ;
-    sleep 5 ;
-    parallel --keep-order -vj0 {} ::: \
-        "parallel --keep-order -vj0 RCLONE_TRANSFERS=1 rclone sync -v --tpslimit 1 filen:mimi '{}' ::: 'zoho:esperoj/mimi' 'jottacloud:esperoj/mimi'" \
-        "rclone sync -v megadisk:esperoj/picture jottacloud:esperoj/picture" \
-        'parallel --keep-order -vj1 rclone sync -v ./date.txt {} ::: "box:" "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:"' \
-        'rclone sync -v --drive-acknowledge-abuse father-drive: filen:father-drive && rclone sync -v "filen:father-drive" "c2:esperoj-eu/father-drive"'
-    stop.sh filen ;
+    parallel --keep-order -vj2 rclone sync -v ./date.txt {} ::: "box:" "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:"
 EOL
 }
 
