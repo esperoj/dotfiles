@@ -76,7 +76,7 @@ export -f generate_bitwarden_backup generate_code generate_linkwarden_backup gen
 backup_container() {
   parallel --keep-order -vj0 run '{}' ::: \
     'update_backup' \
-    'parallel --keep-order -vj0 rclone sync {}-0: {}-1: ::: workspace archive mini' \
+    'parallel --keep-order -vj0 rclone sync {}-0: {}-1: ::: workspace archive mimi' \
     'parallel --keep-order -vj0 rclone sync --drive-acknowledge-abuse father-drive: "{}" ::: "filen:father-drive" "pcloud-0:esperoj/father-drive"'
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs <<EOL
     source ~/.profile ;
