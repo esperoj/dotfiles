@@ -3,7 +3,7 @@
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/start"
 set -Eeuo pipefail
 cd "${HOME}"
-install.sh filen
+install.sh filen internet_archive
 start.sh filen && sleep 3
 start.sh esperoj_storage caddy
 sleep 2
