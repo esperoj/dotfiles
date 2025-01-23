@@ -2,6 +2,7 @@ name: Run command
 run-name: Run command
 
 permissions:
+  actions: read
   pull-requests: write
 
 on:
