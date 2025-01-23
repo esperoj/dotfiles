@@ -81,7 +81,7 @@ backup_container() {
   ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs <<EOL
     source ~/.profile ;
     echo $(date) > date.txt ;
-    parallel --keep-order -vj2 rclone sync -v ./date.txt {} ::: "box:" "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:"
+    parallel --keep-order -vj2 rclone sync -v ./date.txt {} ::: "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:"
 EOL
 }
 
