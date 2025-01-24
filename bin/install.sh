@@ -160,8 +160,8 @@ main() {
       fi
     done
     parallel --keep-order -vj0 {} <<EOL
-    [[ -n "${install_using_apt_packages}" ]] && $SUDO_COMMAND apt-get install -q=2 --no-install-recommends $(echo "${install_using_apt_packages}")
-    [[ -n "${install_in_parallel_packages}" ]] && parallel --keep-order -vj0 "$0" {} ::: $(echo "${install_in_parallel_packages}")
+    if [[ -n "${install_using_apt_packages}" ]]; then $SUDO_COMMAND apt-get install -q=2 --no-install-recommends $(echo "${install_using_apt_packages}") fi
+    if [[ -n "${install_in_parallel_packages}" ]]; then parallel --keep-order -vj0 "$0" {} ::: $(echo "${install_in_parallel_packages}") fi
 EOL
   fi
 }
