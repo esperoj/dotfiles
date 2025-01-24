@@ -70,7 +70,7 @@ update_backup() {
   parallel --keep-order -vj0 run '{}' ::: \
     'parallel --keep-order -vj0 rclone sync ./backup "{}" ::: "backup-0:" "backup-1:"' \
     'rclone move backup.7z public: && esperoj save_page "https://public.esperoj.eu.org/backup.7z"' \
-    "[[ -f $JOURNAL_FILE && $(stat -c%s $JOURNAL_FILE) -gt 100000 ]] && ia upload xiaoqishi_riji $JOURNAL_FILE -H x-archive-keep-old-version:32"
+    '[[ -f $JOURNAL_FILE && $(stat -c%s $JOURNAL_FILE) -gt 100000 ]] && ia upload xiaoqishi_riji $JOURNAL_FILE -H x-archive-keep-old-version:32'
 }
 
 export -f generate_bitwarden_backup generate_code generate_linkwarden_backup generate_current_backup generate_seatable_backup run update_backup

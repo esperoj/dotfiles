@@ -7,6 +7,7 @@ install.sh filen internet_archive
 start.sh filen && sleep 3
 start.sh esperoj_storage caddy
 sleep 2
+exit
 parallel --keep-order -vj0 {} ::: \
   "time info.sh" \
   "time daily-backup.sh" \
