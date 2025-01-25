@@ -1,10 +1,8 @@
-identifier = ""
 title = ""
 creator = ""
 date = ""
 description = ""
-subject = [
+subjects = [
 ]
-collection = ["mimi"]
-source = [""]
-download_url = ""
+collections = ["mimi"]
+sources = []

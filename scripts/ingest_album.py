@@ -1,44 +1,23 @@
 from esperoj.logging import get_logger
+from esperoj.utils import get_util
 import tomllib
 from pathlib import Path
-import subprocess
-from urllib.parse import quote
+from esperoj.database import get_database
+from esperoj.database.models import Album
 
 logger = get_logger(__name__)
+ingest_file = get_util("ingest_file")
+albums = get_database("primary").get_table("albums")
 
 
-def upload(src, dest):
-    subprocess.call(
-        ["rclone", "sync", "-v", src, dest],
-    )
-
-
-def ingest_album(src, metadata_file):
+def ingest_album(file_path, metadata_file):
     metadata = tomllib.loads(metadata_file.read_text())
-    files = sorted([file.name for file in src.glob("*")])
-    images = [
-        f"""![{file}](https://ik.imagekit.io/xiwang/{metadata['identifier']}/{quote(file)})"""
-        for file in files
-    ]
-    upload(str(src), f'imagekit:{metadata["identifier"]}')
-    text = f"""# {metadata["title"]}
-
-Identifier: {metadata["identifier"]}
-Creator: {metadata["creator"]}
-Date: {metadata["date"]}
-Description: {metadata["description"]}
-Subject: {', '.join(metadata["subject"])}
-Collection: {metadata["collection"]}
-Source: {', '.join(metadata["source"])}
-Download: {metadata["download_url"]}
-
-# Images
-
-{'\n'.join(images)}"""
-    print(text)
+    logger.info("Started to ingest album '%s'", metadata["title"])
+    file = ingest_file(file_path, ["catbox", "internet_archive"])
+    album = albums.create(dict(Album(files=[file.id], **metadata)))
+    logger.info("Ingested album '%s'", album.title)
 
 
-# identifier-access
 def get_esperoj_method():
     """Create a partial function with esperoj object.
 
@@ -61,22 +40,23 @@ def get_click_command():
 
     @click.command()
     @click.argument(
-        "src",
-        type=click.Path(exists=True, dir_okay=True, path_type=Path),
-        required=True,
-    )
-    @click.argument(
-        "metadata_file",
+        "file_path",
         type=click.Path(exists=True, dir_okay=False, path_type=Path),
         required=True,
     )
-    def click_command(src, metadata_file):
+    @click.option(
+        "--metadata-file",
+        "-m",
+        type=click.Path(exists=True, dir_okay=False, path_type=Path),
+        required=True,
+    )
+    def click_command(file_path, metadata_file):
         """Execute the export_database function with the esperoj object and database name.
 
         Args:
             esperoj (object): An object passed from the parent function.
             identifier (str): The name of the database to export.
         """
-        ingest_album(src, metadata_file)
+        ingest_album(file_path, metadata_file)
 
     return click_command
