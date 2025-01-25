@@ -78,8 +78,8 @@ export -f generate_bitwarden_backup generate_code generate_linkwarden_backup gen
 backup_container() {
   parallel --keep-order -vj0 run '{}' ::: \
     'update_backup' \
-    'parallel --keep-order -vj0 rclone sync {}-0: {}-1: ::: workspace archive mimi' \
-    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs <<EOL
+    'parallel --keep-order -vj0 rclone sync {}-0: {}-1: ::: workspace archive mimi'
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs <<EOL
     source ~/.profile ;
     echo $(date) > date.txt ;
     parallel --keep-order -vj2 rclone sync -v ./date.txt {} ::: "cloudinary:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:"
