@@ -79,11 +79,10 @@ backup_container() {
   parallel --keep-order -vj0 run '{}' ::: \
     'update_backup' \
     'parallel --keep-order -vj0 rclone sync {}-0: {}-1: ::: workspace archive mimi' \
-    'parallel --keep-order -vj0 rclone sync --drive-acknowledge-abuse father-drive: "{}" ::: "filen:father-drive" "pcloud-0:esperoj/father-drive"'
-  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs <<EOL
+    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null envs <<EOL
     source ~/.profile ;
     echo $(date) > date.txt ;
-    parallel --keep-order -vj2 rclone sync -v ./date.txt {} ::: "cloudinary:" "drive:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:"
+    parallel --keep-order -vj2 rclone sync -v ./date.txt {} ::: "cloudinary:" "dropbox:" "imagekit:" "mega:" "onedrive:" "pcloud-0:" "pcloud-1:" "uloz:"
 EOL
 }
 
