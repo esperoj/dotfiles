@@ -29,14 +29,11 @@ case "${host}" in
   ;;
 tildegit)
   request() {
-    curl -sSX POST \
-      -H "Authorization: Bearer $TILDEGIT_DRONE_TOKEN" \
-      --data-urlencode "branch=main" \
-      --data-urlencode "COMMAND=${command}" \
-      https://drone.tildegit.org/api/repos/esperoj/dotfiles/builds
+    command=$(python3 -c 'from urllib.parse import quote; print(quote("""'"$command"'"""))')
+    curl -sSX POST -H "Authorization: Bearer $TILDEGIT_DRONE_TOKEN" \
+      "https://drone.tildegit.org/api/repos/esperoj/dotfiles/builds?COMMAND=$command"
   }
-  id=$(request | jq ".id")
-  echo "https://drone.tildegit.org/esperoj/dotfiles/${id}"
+  echo "https://drone.tildegit.org/esperoj/dotfiles/$(request | jq .number)"
   ;;
 github | blacksmith | blacksmith-arm)
   runner=$([ "${host}" = "github" ] && echo "ubuntu-latest" || echo "${host}")
