@@ -3,6 +3,8 @@ creator = ""
 date = ""
 description = ""
 subjects = [
+    "anime",
+    "fictional character"
 ]
 collections = ["mimi"]
-sources = []
+sources = [""]

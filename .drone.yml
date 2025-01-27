@@ -1,16 +1,13 @@
 kind: pipeline
 type: docker
-name: Daily
+name: Run Command
 
 clone:
   disable: true
 
 trigger:
   event:
-    - cron
     - custom
-  cron:
-    - daily
 
 steps:
   - name: run
@@ -20,10 +17,7 @@ steps:
         from_secret: encryption_passphrase
     commands:
       - |
-        command time -v ~/bin/run-command.sh -h "local" -c "
-        chezmoi update --no-tty --force
-        . ~/.profile
-        daily.sh"
+        command time -v ~/bin/run-command.sh -h "local"
 
   - name: notify
     image: codeberg.org/esperoj/dotfiles:base
@@ -37,6 +31,3 @@ steps:
           "Title: A job has completed" \
           "Actions: view, View Log, $DRONE_SYSTEM_HOST/repos/$DRONE_REPO/builds/$DRONE_BUILD_NUMBER" \
         | jq'
-    when:
-      status:
-        - failure

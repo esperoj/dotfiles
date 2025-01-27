@@ -5,13 +5,17 @@ from esperoj.exceptions import VerificationError
 
 
 def is_verified(file):
-    if not file.verified:
-        return False
     for mirror_info in file.mirrors.values():
         for source in mirror_info["sources"]:
             if not source["verified"]:
                 return False
+    return file.verified
 
+def is_completed(file):
+    for mirror_info in file.mirrors.values():
+        if len(mirror_info["sources"]) == 0:
+            return False
+    return True
 
 def daily_verify():
     """Export the data and metadata of a database to JSON files.
@@ -30,6 +34,7 @@ def daily_verify():
         key=lambda file: file.created,
         reverse=True,
     )
+    files = list(filter(is_completed, files))
     num_shards = 28
     shard_size, extra = divmod(len(files), num_shards)
     today = datetime.datetime.now(datetime.UTC).day % num_shards

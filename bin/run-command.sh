@@ -1,6 +1,6 @@
 #!/bin/bash
 
-host="local"
+host="tildegit"
 command="${COMMAND:-uptime}"
 
 usage() {
@@ -27,7 +27,17 @@ case "${host}" in
   ~/.local/bin/chezmoi init --apply --force
   bash -lc "${command}"
   ;;
-
+tildegit)
+  request() {
+    curl -sSX POST \
+      -H "Authorization: Bearer $TILDEGIT_DRONE_TOKEN" \
+      --data-urlencode "branch=main" \
+      --data-urlencode "COMMAND=${command}" \
+      https://drone.tildegit.org/api/repos/esperoj/dotfiles/builds
+  }
+  id=$(request | jq ".id")
+  echo "https://drone.tildegit.org/esperoj/dotfiles/${id}"
+  ;;
 github | blacksmith | blacksmith-arm)
   runner=$([ "${host}" = "github" ] && echo "ubuntu-latest" || echo "${host}")
   content=$(
@@ -91,7 +101,7 @@ codeberg | cezeri)
     -H "Content-type: application/json" \
     -d "${content}")
 
-  number=$(echo "${result}" | jq .number)
+  number=$(echo "${result}" | jq ".number")
 
   echo "https://${server}/repos/${repo_id}/pipeline/${number}"
   ;;

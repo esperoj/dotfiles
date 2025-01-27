@@ -46,7 +46,7 @@ jobs:
         run: |
           cd /root
           export HOME=/root
-          command time -v "$HOME/bin/run-command.sh"
+          command time -v "$HOME/bin/run-command.sh" -h local
 
       - name: Send notification
         if: ${{ always() }}
