@@ -46,9 +46,9 @@ def daily_verify():
 
     results = get_util("verify")(files_to_process)
     if not all(results):
-        file_to_result = dict(zip(files_to_process, results))
+        file_to_result = list(zip(files_to_process, results))
         raise VerificationError(
-            [file.name for file, result in file_to_result.items() if result is False]
+            [file.name for file, result in file_to_result if result is False]
         )
     else:
         update_fields_list = []
