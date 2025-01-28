@@ -11,11 +11,13 @@ def is_verified(file):
                 return False
     return file.verified
 
+
 def is_completed(file):
     for mirror_info in file.mirrors.values():
         if len(mirror_info["sources"]) == 0:
             return False
     return True
+
 
 def daily_verify():
     """Export the data and metadata of a database to JSON files.

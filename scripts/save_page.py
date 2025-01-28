@@ -55,14 +55,14 @@ def save_page(url: str, capture_outlinks: int = 0) -> str:
 
     logger.info(f"Start to save url '{url}'")
     response = session.post(
-        "https://web.archive.org/save", headers=headers, data=params, timeout=12
+        "https://web.archive.org/save", headers=headers, data=params, timeout=120
     )
     if response.status_code != 200:
         raise RuntimeError(f"Error: {response.text}")
     job_id = response.json()["job_id"]
 
     start_time = time.time()
-    timeout = 60 * 15
+    timeout = 60 * 16
 
     while True:
         logger.info(f"Check job_id '{job_id}'")
