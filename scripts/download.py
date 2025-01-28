@@ -28,7 +28,7 @@ def download(category: str, dest: Path | None = None):
     ]
     results = get_util("download")(download_info_list)
     for error, download_info in results:
-        if not error:
+        if error:
             raise RuntimeError("Can't download all files")
 
 

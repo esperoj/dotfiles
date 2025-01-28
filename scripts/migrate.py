@@ -2,6 +2,10 @@ from esperoj.database import get_database
 
 
 def migrate():
+    pass
+
+
+def fix_hash():
     """Export the data and metadata of a database to JSON files.
 
     Args:
@@ -22,6 +26,22 @@ def migrate():
         )
     for record in records:
         fields_list.append({"id": record.id, "mirrors": hash_to_mirrors[record.sha256]})
+    files.batch_update(fields_list)
+
+
+def fix_big_files():
+    db = get_database("primary")
+    files = db.get_table("files")
+    records = list(files.query())
+    fields_list = []
+    for record in records:
+        need_to_add = False
+        for mirror_name, mirror_info in record.mirrors.items():
+            if len(mirror_info["sources"]) > 1:
+                mirror_info["sources"] = []
+                need_to_add = True
+        if need_to_add:
+            fields_list.append({"id": record.id, "mirrors": record.mirrors})
     files.batch_update(fields_list)
 
 
