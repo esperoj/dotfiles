@@ -14,10 +14,14 @@ def migrate():
     db = get_database("primary")
     files = db.get_table("files")
     records = list(files.query())
+    hash_to_mirrors = {}
     fields_list = []
     for record in records:
-        record.mirrors["qu-ax"] = {"sources": [], "encrypted": False}
-        fields_list.append({"id": record.id, "mirrors": record.mirrors})
+        hash_to_mirrors[record.mirrors["internet-archive"]["sources"][0]["sha256"]] = (
+            record.mirrors
+        )
+    for record in records:
+        fields_list.append({"id": record.id, "mirrors": hash_to_mirrors[record.sha256]})
     files.batch_update(fields_list)
 
 

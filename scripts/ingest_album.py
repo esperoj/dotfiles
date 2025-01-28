@@ -13,7 +13,7 @@ albums = get_database("primary").get_table("albums")
 def ingest_album(file_path, metadata_file):
     metadata = tomllib.loads(metadata_file.read_text())
     logger.info("Started to ingest album '%s'", metadata["title"])
-    file = ingest_file(file_path, ["catbox", "internet-archive"])
+    file = ingest_file(file_path, ["catbox", "internet-archive", "qu-ax"])
     album = albums.create(dict(Album(files=[file.id], **metadata)))
     logger.info("Ingested album '%s'", album.title)
 
