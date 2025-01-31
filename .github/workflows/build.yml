@@ -59,7 +59,7 @@ jobs:
         uses: docker/build-push-action@master
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.meta-base.outputs.tags }}
           labels: ${{ steps.meta-base.outputs.labels }}
@@ -77,7 +77,7 @@ jobs:
         uses: docker/build-push-action@master
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           build-args: |
             BASE_IMAGE=${{ github.repository }}:base
             SETUP_NAME=docker_main
@@ -98,7 +98,7 @@ jobs:
         uses: docker/build-push-action@master
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           build-args: |
             BASE_IMAGE=${{ github.repository }}:main
             SETUP_NAME=docker_dev

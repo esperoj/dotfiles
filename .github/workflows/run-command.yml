@@ -39,8 +39,6 @@ jobs:
         MY_UUID: ${{ secrets.MY_UUID }}
     timeout-minutes: 360
     steps:
-      - name: Collect Workflow Telemetry
-        uses: catchpoint/workflow-telemetry-action@master
 
       - name: Run
         run: |

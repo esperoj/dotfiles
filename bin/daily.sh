@@ -11,6 +11,7 @@ uv tool upgrade --all
 parallel --keep-order -vj0 {} ::: \
   "time info.sh" \
   "time daily-backup.sh" \
-  "time esperoj daily_verify"
+  "time esperoj daily_verify" \
+  "time rclone delete tmp: --min-age 7d --rmdirs"
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/${?}"
 stop.sh esperoj_storage filen caddy
