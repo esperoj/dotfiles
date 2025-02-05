@@ -19,7 +19,7 @@ def is_completed(file):
     return True
 
 
-def daily_verify():
+def daily_verify(today: int | None = None):
     """Export the data and metadata of a database to JSON files.
 
     Args:
@@ -39,16 +39,19 @@ def daily_verify():
     files = list(filter(is_completed, files))
     num_shards = 28
     shard_size, extra = divmod(len(files), num_shards)
-    today = datetime.datetime.now(datetime.UTC).day % num_shards
+    today = (
+        today
+        if today is not None
+        else datetime.datetime.now(datetime.UTC).day % num_shards
+    )
     begin = (shard_size + 1) * today if today < extra else shard_size * today
     end = begin + shard_size + (1 if today < extra else 0)
     files_to_process = files[begin:end]
 
     results = get_util("verify")(files_to_process)
-    if not all(results):
-        file_to_result = list(zip(files_to_process, results))
+    if not all(result[1] for result in results):
         raise VerificationError(
-            [file.name for file, result in file_to_result if result is False]
+            [file.name for file, result in results if result is False]
         )
     else:
         update_fields_list = []
@@ -84,12 +87,13 @@ def get_click_command():
     import click
 
     @click.command()
-    def click_command():
+    @click.argument("today", type=int, required=False)
+    def click_command(today):
         """Execute the daily_verify function with the esperoj object and database name.
 
         Args:
             esperoj (object): An object passed from the parent function.
         """
-        daily_verify()
+        daily_verify(today)
 
     return click_command

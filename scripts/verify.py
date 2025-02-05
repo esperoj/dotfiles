@@ -30,7 +30,7 @@ def verify(name: str):
     files = db.get_table("files")
     file = next(filter(lambda f: f.name == name, files.query()))
     results = get_util("verify")([file])
-    if not all(results):
+    if not results[0][1]:
         raise VerificationError([file.name])
     else:
         if not is_verified(file):
