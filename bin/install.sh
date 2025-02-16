@@ -129,7 +129,7 @@ install_woodpecker_cli() {
 }
 
 cd "${HOME}"
-parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "internet_archive" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt-dlp" "woodpecker-cli")
+parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "internet_archive" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt_dlp" "woodpecker_cli")
 is_parallelable() {
   local name="$1"
   local package
