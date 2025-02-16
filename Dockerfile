@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=docker.io/ubuntu:latest
+ARG BASE_IMAGE=docker.io/python:3
 
 FROM ${BASE_IMAGE}
 ARG SETUP_NAME=docker_base

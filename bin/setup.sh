@@ -10,7 +10,6 @@ fi
 
 packages=""
 
-# lsb-release
 base_packages="
   7zip
   ca-certificates
@@ -36,6 +35,8 @@ main_packages="
   aria2
   caddy
   exiftool
+  filen
+  internet_archive
   nodejs
   npm
   rclone
@@ -46,15 +47,11 @@ main_packages="
   zstd
 "
 
-# python3-venv
-# python3-pip
-
 dev_packages="
   fzf
   oh_my_zsh
   shfmt
   tmux
-  uv
   vim
   zsh
 "
