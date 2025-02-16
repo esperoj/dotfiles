@@ -36,7 +36,6 @@ main_packages="
   caddy
   exiftool
   filen
-  internet_archive
   nodejs
   npm
   rclone
@@ -110,7 +109,7 @@ docker_base)
   ;;
 docker_main)
   install.sh $(echo "${main_packages}")
-  ~/.local/bin/uv tool install "esperoj[cli] @ git+https://github.com/esperoj/esperoj.git@main#egg=esperoj&subdirectory=projects/esperoj"
+  parallel --keep-order -vj0 ~/.local/bin/uv tool install ::: internetarchive "esperoj[cli] @ git+https://github.com/esperoj/esperoj.git@main#egg=esperoj&subdirectory=projects/esperoj"
   ;;
 docker_dev)
   install.sh $(echo "${dev_packages}")
