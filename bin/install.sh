@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export PATH="$HOME/bin:$PATH"
 OS_TYPE=$(uname)
 if [ "$OS_TYPE" == "Linux" ]; then
   OS="linux"
