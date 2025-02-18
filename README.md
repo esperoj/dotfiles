@@ -4,8 +4,10 @@
 
 ```bash
 cd ~
-export MACHINE_TYPE=phone
-export ENCRYPTION_PASSPHRASE=""
+read MACHINE_TYPE
+export MACHINE_TYPE="${MACHINE_TYPE:-phone}"
+read ENCRYPTION_PASSPHRASE
+export ENCRYPTION_PASSPHRASE="$ENCRYPTION_PASSPHRASE"
 
 # Install dotfiles
 apt-get update -y

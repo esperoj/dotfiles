@@ -37,7 +37,7 @@ install_chezmoi() {
 }
 
 install_dotfiles() {
-  export MACHINE_TYPE=${MACHINE_TYPE-container}
+  export MACHINE_TYPE=${MACHINE_TYPE:-container}
   cd "${HOME}"
   chezmoi="${HOME}/.local/bin/chezmoi"
   if command -v chezmoi >/dev/null; then

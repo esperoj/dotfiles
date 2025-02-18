@@ -33,3 +33,9 @@ host serveo-ssh-tunnel
     HostName serveo.net
     RemoteForward 20711 localhost:22
     RemoteForward serveo.esperoj.eu.org:22 localhost:22
+host textall
+    User root
+    HostName lulz.segfault.net
+    IdentityFile ~/.ssh/id_sf-lulz-segfault-net
+    SetEnv SECRET=FcHaRsiZOkUvSqIRvzQSmRys
+    LocalForward 5900 0:5900
