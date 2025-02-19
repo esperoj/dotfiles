@@ -1,6 +1,5 @@
 daily:
   stage: main
-  retry: 2
   timeout: 3 hours
   script:
     - |
