@@ -36,18 +36,17 @@ main_packages="
   caddy
   exiftool
   filen
-  nodejs
-  npm
   rclone
   openssh-server
   python3
   task
   uv
-  zstd
 "
 
 dev_packages="
   fzf
+  nodejs
+  npm
   oh_my_zsh
   shfmt
   tmux
