@@ -1,5 +1,4 @@
-# ARG BASE_IMAGE=docker.io/python:3
-ARG BASE_IMAGE=ghcr.io/abebus/free-threaded-python-docker-image:main
+ARG BASE_IMAGE=docker.io/python:3.13-slim
 
 FROM ${BASE_IMAGE}
 ARG SETUP_NAME=docker_base
