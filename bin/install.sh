@@ -34,7 +34,7 @@ install_caddy() {
 }
 
 install_chezmoi() {
-  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ".local/bin"
+  sh -c "$(curl -fsLS get.chezmoi.io/lb)"
 }
 
 install_dotfiles() {
@@ -122,7 +122,7 @@ install_task() {
 }
 
 install_yt_dlp() {
-  pkg-install.sh ghbin yt-dlp/yt-dlp "_linux%arch:x86_64=:aarch64=_aarch64%$" yt-dlp
+  uv tool install "yt-dlp[default,curl-cffi]"
 }
 
 install_woodpecker_cli() {

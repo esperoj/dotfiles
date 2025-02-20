@@ -39,3 +39,9 @@ host segfault
     IdentityFile ~/.ssh/id_sf-lulz-segfault-net
     SetEnv SECRET=FcHaRsiZOkUvSqIRvzQSmRys
     LocalForward 5900 0:5900
+host antiquevillage
+    User root
+    HostName adm.segfault.net
+    IdentityFile ~/.ssh/id_sf-adm-segfault-net
+    SetEnv SECRET=MqOKAAFQHCbQwDqatDaGgunv
+    LocalForward 5900 0:5900

@@ -1,0 +1,14 @@
+[
+   {
+        "time": 1.19,
+        "city": "New York 1",
+        "country": "USA",
+        "host": "107.152.43.179",
+        "new": false,
+        "paid": true,
+        "password": "pJTg94JCukVjz2b",
+        "port": "3128",
+        "premium": true,
+        "username": "ny_premium"
+    }
+]
