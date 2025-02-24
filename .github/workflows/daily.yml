@@ -21,7 +21,7 @@ jobs:
       cancel-in-progress: true
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/esperoj/dotfiles:main
+      image: ghcr.io/esperoj/dotfiles:base
       env:
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         MY_UUID: ${{ secrets.MY_UUID }}

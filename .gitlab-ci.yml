@@ -2,12 +2,16 @@ workflow:
   rules:
     - if: $CI_SERVER_HOST == "framagit.org"
       variables:
-        DEFAULT_TAG: Debian
-        DEFAULT_IMAGE: esperoj/dotfiles:main
+        DEFAULT_TAGS: [ Debian ]
+        DEFAULT_IMAGE: esperoj/dotfiles:base
     - if: $CI_SERVER_HOST == "gitlab.com"
       variables:
-        DEFAULT_TAG: saas-linux-small-amd64
-        DEFAULT_IMAGE: $CI_REGISTRY/esperoj-group/dotfiles/dotfiles:main
+        DEFAULT_TAGS: [ saas-linux-small-amd64 ]
+        DEFAULT_IMAGE: $CI_REGISTRY/esperoj-group/dotfiles/dotfiles:base
+    - if: $CI_SERVER_HOST == "gitlab.lain.la"
+      variables:
+        DEFAULT_TAGS: []
+        DEFAULT_IMAGE: esperoj/dotfiles:base
 
 stages:
   - main
@@ -17,8 +21,7 @@ default:
     name: $DEFAULT_IMAGE
     entrypoint: [""]
   timeout: 6 hours
-  tags:
-    - $DEFAULT_TAG
+  tags: $DEFAULT_TAGS
   after_script:
     - |
       EXCLUDES=("daily" "publish")

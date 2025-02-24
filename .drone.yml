@@ -11,7 +11,7 @@ trigger:
 
 steps:
   - name: run
-    image: codeberg.org/esperoj/dotfiles:main
+    image: codeberg.org/esperoj/dotfiles:base
     pull: always
     environment:
       ENCRYPTION_PASSPHRASE:
@@ -21,7 +21,7 @@ steps:
         command time -v ~/bin/run-command.sh -h "local"
 
   - name: notify
-    image: codeberg.org/esperoj/dotfiles:main
+    image: codeberg.org/esperoj/dotfiles:base
     pull: never
     environment:
       ENCRYPTION_PASSPHRASE:

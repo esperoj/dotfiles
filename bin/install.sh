@@ -18,6 +18,8 @@ fi
 
 install_7zip() {
   pkg-install.sh ghbin ip7z/7zip "${OS}-%arch:x86_64=x64:aarch64=arm64%.tar.xz$" "7zz"
+  cd ~/.local/bin
+  ln -s ~/.local/bin/7zz ./7z
 }
 
 install_asdf() {

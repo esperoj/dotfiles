@@ -32,7 +32,7 @@ jobs:
   run:
     runs-on: ${{ vars.default_runner == 'docker' && 'docker' || inputs.runner }}
     container:
-      image: esperoj/dotfiles:main
+      image: esperoj/dotfiles:base
       env:
         ENCRYPTION_PASSPHRASE: ${{ secrets.ENCRYPTION_PASSPHRASE }}
         COMMAND: ${{ inputs.command }}

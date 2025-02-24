@@ -13,34 +13,36 @@ packages=""
 base_packages="
   7zip
   ca-certificates
+  caddy
   curl
   dotfiles
   gnupg
   git
-  iputils-ping
+  filen
   jq
   openssh-client
   parallel
-  procps
+  python3
+  rclone
   screen
   sq
   sudo
   time
   tzdata
   unzip
+  uv
   wget
   xz-utils"
 
 main_packages="
   aria2
-  caddy
   exiftool
-  filen
-  rclone
+  ffmpeg
+  iputils-ping
+  rename
   openssh-server
-  python3
   task
-  uv
+  yt_dlp
 "
 
 dev_packages="
@@ -92,7 +94,6 @@ before() {
 }
 
 after() {
-  ln -s $(command -v 7zz) "${HOME}/.local/bin/7z"
   ln -s $(command -v python3) "${HOME}/.local/bin/python"
   mkdir -p ".ssh/sockets" ".sockets"
 }

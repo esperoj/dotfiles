@@ -1,6 +1,6 @@
 #!/bin/bash
 
-host="tildegit"
+host="incremental"
 command="${COMMAND:-uptime}"
 
 usage() {
@@ -27,13 +27,23 @@ case "${host}" in
   ~/.local/bin/chezmoi init --apply --force
   bash -lc "${command}"
   ;;
-tildegit)
+tildegit | envs)
+  case "${host}" in
+  tildegit)
+    server="https://drone.tildegit.org"
+    token="$TILDEGIT_DRONE_TOKEN"
+    ;;
+  envs)
+    server="https://drone.envs.net"
+    token="$ENVS_DRONE_TOKEN"
+    ;;
+  esac
   request() {
     command=$(python3 -c 'from urllib.parse import quote; print(quote("""'"$command"'"""))')
-    curl -sSX POST -H "Authorization: Bearer $TILDEGIT_DRONE_TOKEN" \
-      "https://drone.tildegit.org/api/repos/esperoj/dotfiles/builds?COMMAND=$command"
+    curl -sSX POST -H "Authorization: Bearer $token" \
+      "${server}/api/repos/esperoj/dotfiles/builds?COMMAND=$command"
   }
-  echo "https://drone.tildegit.org/esperoj/dotfiles/$(request | jq .number)"
+  echo "${server}/esperoj/dotfiles/$(request | jq .number)"
   ;;
 github | blacksmith | blacksmith-arm)
   runner=$([ "${host}" = "github" ] && echo "ubuntu-latest" || echo "${host}")
@@ -68,7 +78,7 @@ github | blacksmith | blacksmith-arm)
   fi
   ;;
 
-codeberg | cezeri)
+codeberg)
   content=$(
     jq -n \
       --arg command "${command}" \
@@ -86,11 +96,6 @@ codeberg | cezeri)
     server=ci.codeberg.org
     repo_id=12554
     token="${WOODPECKER_TOKEN}"
-    ;;
-  cezeri)
-    server=build.cezeri.tech
-    repo_id=9
-    token="${CEZERI_WOODPECKER_TOKEN}"
     ;;
   esac
   result=$(curl -sSX POST "https://${server}/api/repos/${repo_id}/pipelines" \
@@ -127,12 +132,17 @@ framagit | gitlab)
   bash -c "echo ${result}"
   ;;
 
-git-gay)
+git-gay | incremental)
   case "${host}" in
   git-gay)
     runner="docker"
     server="https://git.gay"
     token="${GIT_GAY_ACCESS_TOKEN}"
+    ;;
+  incremental)
+    runner="docker"
+    server="https://code.incremental.social"
+    token="${INCREMENTAL_ACCESS_TOKEN}"
     ;;
   esac
   content=$(
