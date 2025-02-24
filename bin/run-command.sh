@@ -108,7 +108,7 @@ codeberg)
   echo "https://${server}/repos/${repo_id}/pipeline/${number}"
   ;;
 
-framagit | gitlab)
+framagit | gitlab | lain)
   case "${host}" in
   gitlab)
     server="https://gitlab.com"
@@ -119,6 +119,11 @@ framagit | gitlab)
     server="https://framagit.org"
     project_id=108057
     token="${FRAMAGIT_DOTFILES_TRIGGER_TOKEN}"
+    ;;
+  lain)
+    server="https://gitlab.lain.la"
+    project_id=207
+    token="${LAIN_DOTFILES_TRIGGER_TOKEN}"
     ;;
   esac
   result=$(curl -sSX POST \
