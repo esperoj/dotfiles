@@ -22,6 +22,9 @@ start_esperoj_command='
 serve_filen_command='
 filen webdav --w-user esperoj --w-password $MY_UUID --webdav-port 20712 --w-port 20712 --w-threads 4
 '
+start_wireproxy_command='
+  cd ~/data && wireproxy -c wireproxy.conf
+'
 
 for service in "$@"; do
   case "${service}" in
@@ -44,6 +47,9 @@ for service in "$@"; do
     service ssh start
     echo "Connecting to Serveo for forwarding..."
     ssh -f -N serveo-ssh-tunnel
+    ;;
+  wireproxy)
+    screen -dmS wireproxy sh -lc "${start_wireproxy_command}"
     ;;
   esac
 done

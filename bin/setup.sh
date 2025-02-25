@@ -18,6 +18,7 @@ base_packages="
   dotfiles
   gnupg
   git
+  esperoj
   filen
   jq
   openssh-client
@@ -109,7 +110,6 @@ docker_base)
   ;;
 docker_main)
   install.sh $(echo "${main_packages}")
-  parallel --keep-order -vj0 ~/.local/bin/uv tool install ::: "esperoj[cli] @ git+https://github.com/esperoj/esperoj.git@main#egg=esperoj&subdirectory=projects/esperoj"
   ;;
 docker_dev)
   install.sh $(echo "${dev_packages}")

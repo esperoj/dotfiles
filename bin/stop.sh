@@ -21,5 +21,8 @@ for service in "$@"; do
     ssh -O exit serveo-ssh-tunnel
     service ssh stop
     ;;
+  wireproxy)
+    screen -S wireproxy -X stuff "^C"
+    ;;
   esac
 done

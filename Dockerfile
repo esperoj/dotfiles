@@ -10,5 +10,3 @@ RUN export PATH="/root/temp_bin/:${PATH}"; \
     setup.sh ${SETUP_NAME}; \
     apt-get -q=2 dist-clean; \
     rm -rf ~/.cache /var/lib/apt/lists /var/cache/ /root/temp_bin/ /usr/share/doc/*
-ENTRYPOINT [ "/root/bin/run-command.sh", "-h", "local", "-c" ]
-CMD ["bash"]
