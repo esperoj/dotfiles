@@ -13,7 +13,7 @@ when: *base_conditions
 steps:
   run:
     image: codeberg.org/esperoj/dotfiles:base
-    pull: false
+    pull: true
     environment:
       ENCRYPTION_PASSPHRASE:
         from_secret: encryption_passphrase
