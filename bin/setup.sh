@@ -18,8 +18,8 @@ base_packages="
   dotfiles
   gnupg
   git
-  esperoj
   filen
+  esperoj
   jq
   openssh-client
   parallel
@@ -31,7 +31,6 @@ base_packages="
   time
   tzdata
   unzip
-  uv
   wget
   xz-utils"
 
@@ -95,8 +94,7 @@ before() {
 }
 
 after() {
-  ln -s $(command -v python3) "${HOME}/.local/bin/python"
-  mkdir -p ".ssh/sockets" ".sockets"
+  echo Nothing
 }
 
 before
@@ -106,6 +104,7 @@ ct8)
   ;;
 docker_base)
   $SUDO_COMMAND apt-get install -q=2 --no-install-recommends ca-certificates curl gnupg git jq openssh-client parallel sq sudo unzip wget xz-utils
+  install.sh uv
   install.sh $(echo "${base_packages}")
   ;;
 docker_main)

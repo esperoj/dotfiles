@@ -60,6 +60,7 @@ install_dotfiles() {
     git remote set-url origin --push --add git@gitlab.com:esperoj-group/dotfiles.git
   )
   ln -s "${chezmoi_path}"/{bin,data,scripts} .
+  mkdir -p ".ssh/sockets" ".sockets"
 
   if [[ $APPLY == "true" ]]; then
     "${chezmoi}" init --apply --depth=1 --force
