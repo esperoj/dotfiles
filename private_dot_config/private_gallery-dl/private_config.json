@@ -1,4 +1,5 @@
 {
+
     "#": "gallery-dl default configuration file",
 
     "#": "full documentation at",
@@ -410,6 +411,9 @@
         "newgrounds":
         {
             "username": "",
+            "password": "",
+            "password": "",
+            "password": "",
             "password": "",
             "sleep-request": "0.5-1.5",
 
@@ -855,9 +859,6 @@
         },
         "derpibooru": {
             "filter": 56027
-        },
-        "ponybooru": {
-            "filter": 3
         },
         "twibooru": {
             "sleep-request": "6.0-6.1"

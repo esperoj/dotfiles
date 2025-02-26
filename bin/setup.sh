@@ -19,7 +19,6 @@ base_packages="
   gnupg
   git
   filen
-  esperoj
   jq
   openssh-client
   parallel
@@ -31,6 +30,7 @@ base_packages="
   time
   tzdata
   unzip
+  uv
   wget
   xz-utils"
 
@@ -104,8 +104,8 @@ ct8)
   ;;
 docker_base)
   $SUDO_COMMAND apt-get install -q=2 --no-install-recommends ca-certificates curl gnupg git jq openssh-client parallel sq sudo unzip wget xz-utils
-  install.sh uv
   install.sh $(echo "${base_packages}")
+  install.sh esperoj
   ;;
 docker_main)
   install.sh $(echo "${main_packages}")
