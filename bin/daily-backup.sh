@@ -59,7 +59,7 @@ generate_current_backup() {
 
 update_backup() {
   export JOURNAL_FILE="./backup/database/journal.json"
-  parallel --keep-order -vj0 run '{}' ::: \
+  parallel --keep-order --tag -vj0 run '{}' ::: \
     'generate_code' \
     'generate_linkwarden_backup' \
     'generate_current_backup' \

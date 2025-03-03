@@ -2,7 +2,7 @@ workflow:
   rules:
     - if: $CI_SERVER_HOST == "framagit.org"
       variables:
-        DEFAULT_IMAGE: esperoj/dotfiles:base
+        DEFAULT_IMAGE: codeberg.org/esperoj/dotfiles:base
     - if: $CI_SERVER_HOST == "gitlab.com"
       variables:
         DEFAULT_IMAGE: $CI_REGISTRY/esperoj-group/dotfiles/dotfiles:base

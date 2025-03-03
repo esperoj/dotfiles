@@ -3,7 +3,9 @@
 curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/start"
 set -Eeuo pipefail
 cd "${HOME}"
-start.sh filen esperoj_storage caddy
+start.sh filen
+sleep 3
+start.sh esperoj_storage caddy
 uv tool upgrade --all
 parallel --keep-order -vj0 {} ::: \
   "time info.sh" \

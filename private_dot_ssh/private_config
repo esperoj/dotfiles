@@ -4,6 +4,10 @@ ControlMaster auto
 ControlPath ~/.ssh/sockets/%r@%h:%p
 ControlPersist 60m
 
+host bsd
+    User esperoj
+    HostName bsd.tilde.team
+    IdentityFile ~/.ssh/id_ed25519
 host envs
     User esperoj
     HostName envs.net
@@ -45,3 +49,11 @@ host antiquevillage
     IdentityFile ~/.ssh/id_sf-adm-segfault-net
     SetEnv SECRET=MqOKAAFQHCbQwDqatDaGgunv
     LocalForward 5900 0:5900
+host tteam
+    User esperoj
+    HostName tteam
+    IdentityFile ~/.ssh/id_ed25519
+host vern
+    User esperoj
+    HostName vern.cc
+    IdentityFile ~/.ssh/id_ed25519
