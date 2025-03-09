@@ -114,8 +114,8 @@ docker_dev)
   install.sh $(echo "${dev_packages}")
   ;;
 termux)
-  apt-get update -y
-  apt-get install -y --no-install-recommends $(echo "${termux_packages}")
+  apt-get update -o "Acquire::https::Verify-Peer=false" --allow-unauthenticated -y
+  apt-get install -o "Acquire::https::Verify-Peer=false" --allow-unauthenticated -y --no-install-recommends $(echo "${termux_packages}")
   install.sh oh_my_zsh
   chsh -s $(which zsh)
   termux-setup-storage
