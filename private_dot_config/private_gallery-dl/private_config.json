@@ -397,7 +397,7 @@
             "username": "",
             "password": "",
             "directory": ["{manga}", "{chapter:03}. {title}"],
-            "filename": "c{chapter}_{page:03}.{extension}",
+            "filename": "c{chapter:03}_{page:03}.{extension}",
             "api-server": "https://api.mangadex.org",
             "api-parameters": null,
             "lang": "en",
