@@ -16,6 +16,12 @@ else
   export SUDO_COMMAND="sudo"
 fi
 
+cleanup() {
+  rm -rf "${tempdir}"
+}
+tempdir="$(mktemp -d)"
+trap cleanup EXIT
+
 install_7zip() {
   pkg-install.sh ghbin ip7z/7zip "${OS}-%arch:x86_64=x64:aarch64=arm64%.tar.xz$" "7zz"
   cd ~/.local/bin
@@ -80,6 +86,14 @@ install_esperoj() {
   uv tool install "esperoj[cli] @ git+https://github.com/esperoj/esperoj.git@main#egg=esperoj&subdirectory=projects/esperoj"
 }
 
+install_exiftool() {
+  curl -fsSL "https://exiftool.org/Image-ExifTool-13.25.tar.gz" | tar -C "${tempdir}" -xzf -
+  cd "${HOME}/.local/"
+  rm -rf {opt,bin}/exiftool
+  mv -f "$tempdir"/Image-ExifTool* opt/exiftool
+  ln -s "$(pwd)/opt/exiftool/exiftool" bin/
+}
+
 install_gallery_dl() {
   uv tool install gallery-dl
 }
@@ -141,7 +155,7 @@ install_woodpecker_cli() {
 }
 
 cd "${HOME}"
-parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "internet_archive" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt_dlp" "wgcf" "wireproxy" "woodpecker_cli")
+parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "exiftool" "internet_archive" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt_dlp" "wgcf" "wireproxy" "woodpecker_cli")
 is_parallelable() {
   local name="$1"
   local package

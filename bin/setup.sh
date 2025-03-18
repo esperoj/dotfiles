@@ -90,7 +90,7 @@ ct8_packages="
 cd "${HOME}"
 
 before() {
-  mkdir -p ".local"/{bin,share,lib,lib64}
+  mkdir -p ".local"/{bin,share,lib,lib64,opt}
 }
 
 after() {
