@@ -19,6 +19,7 @@ fi
 cleanup() {
   rm -rf "${tempdir}"
 }
+
 tempdir="$(mktemp -d)"
 trap cleanup EXIT
 
