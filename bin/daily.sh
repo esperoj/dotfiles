@@ -10,7 +10,7 @@ parallel --keep-order -vj0 {} ::: \
   "uv tool upgrade --all"
 
 start.sh esperoj_storage caddy
-
+sleep 3
 parallel --keep-order -vj0 {} ::: \
   "time daily-backup.sh" \
   "time esperoj daily_verify"
