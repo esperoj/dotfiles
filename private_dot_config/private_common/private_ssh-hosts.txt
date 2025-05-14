@@ -12,4 +12,5 @@ s1.ct8.pl:22
 serveo.net:22
 ssh-esperoj.alwaysdata.net:22
 tilde.team:22
+tilde.town:22
 vern.cc:22
