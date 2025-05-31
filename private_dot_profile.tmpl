@@ -7,6 +7,9 @@ set -a && . "${HOME}/.env" && set +a
 if [[ "$(hostname)" = "core.envs.net" || "$(hostname)" = "de1" ]]; then
     export TMPDIR="/dev/shm/esperoj"
 fi
+if [[ "$(hostname)" = "bsd.tilde.team" ]]; then
+    export TMPDIR="/tmp/esperoj"
+fi
 
 (
     cd ~
