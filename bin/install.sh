@@ -26,7 +26,7 @@ trap cleanup EXIT
 install_7zip() {
   pkg-install.sh ghbin ip7z/7zip "${OS}-%arch:x86_64=x64:aarch64=arm64%.tar.xz$" "7zz"
   cd ~/.local/bin
-  ln -s ~/.local/bin/7zz ./7z
+  ln -s "$(pwd)/7zz" "$(pwd)/7z"
 }
 
 install_asdf() {
@@ -43,7 +43,7 @@ install_caddy() {
 }
 
 install_chezmoi() {
-  sh -c "$(curl -fsLS get.chezmoi.io/lb)"
+  bash -c "$(curl -fsLS get.chezmoi.io/lb)"
 }
 
 install_dotfiles() {
@@ -53,7 +53,7 @@ install_dotfiles() {
   if command -v chezmoi >/dev/null; then
     chezmoi="$(command -v chezmoi)"
   else
-    sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${HOME}/.local/bin"
+    install_chezmoi
   fi
   chezmoi_path=".local/share/chezmoi"
   mkdir -p "${chezmoi_path}"

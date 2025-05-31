@@ -15,6 +15,7 @@ start_home_command='
   --poll-interval 0 \
   --user esperoj \
   -L .'
+
 start_esperoj_storage_command='
   export RCLONE_AUTH_KEY="esperoj,${MY_UUID}"
   rclone serve s3 \
@@ -23,9 +24,11 @@ start_esperoj_storage_command='
   --poll-interval 0 \
   --vfs-cache-mode writes \
   esperoj:'
+
 start_esperoj_command='
   esperoj start
 '
+
 start_wireproxy_command='
   cd ~/data && wireproxy -c wireproxy.conf
 '
