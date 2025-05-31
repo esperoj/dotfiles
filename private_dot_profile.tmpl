@@ -4,10 +4,10 @@ echo "Running ${HOME}/.profile"
 export MACHINE_TYPE={{ .machineType | quote }}
 set -a && . "${HOME}/.env" && set +a
 [ ! -d "${HOME}/.asdf" ] || . "$HOME/.asdf/asdf.sh"
-if [[ "$(hostname)" = "core.envs.net" || "$(hostname)" = "de1" ]]; then
+if [ "$(hostname)" = "core.envs.net" ] || [ "$(hostname)" = "de1" ]; then
     export TMPDIR="/dev/shm/esperoj"
 fi
-if [[ "$(hostname)" = "bsd.tilde.team" ]]; then
+if [ "$(hostname)" = "bsd.tilde.team" ]; then
     export TMPDIR="/tmp/esperoj"
 fi
 
@@ -22,3 +22,13 @@ fi
         fi
     fi
 )
+
+# Don't run code below if shell is non-interactive
+case $- in
+  *i*)
+    if [ -z "$TMUX" ]; then
+      tmux attach -t work 2>/dev/null || tmux new-session -s work
+      exit
+    fi
+  ;;
+esac
