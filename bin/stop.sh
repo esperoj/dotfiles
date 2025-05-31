@@ -1,18 +1,19 @@
 #!/bin/bash
 
+stop() {
+  tmux send-keys -t $1 C-c
+}
+
 for service in "$@"; do
   case "${service}" in
   home)
-    screen -S home -X stuff "^C"
+    stop home
     ;;
   esperoj)
-    screen -S esperoj -X stuff "^C"
+    stop esperoj
     ;;
   esperoj_storage)
-    screen -S esperoj_storage -X stuff "^C"
-    ;;
-  filen)
-    screen -S filen -X stuff "^C"
+    stop esperoj_storage
     ;;
   caddy)
     caddy stop
@@ -22,7 +23,7 @@ for service in "$@"; do
     service ssh stop
     ;;
   wireproxy)
-    screen -S wireproxy -X stuff "^C"
+    stop wireproxy
     ;;
   esac
 done

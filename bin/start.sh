@@ -1,6 +1,13 @@
 #!/bin/bash
 cd ~
-serve_home_command='
+
+start() {
+  name="$1"
+  command_name="start_${name}_command"
+  tmux new-session -d -s "${name}" "${!command_name}"
+}
+
+start_home_command='
   export RCLONE_PASS="${MY_UUID}"
   rclone serve webdav \
   --addr "unix://${HOME}/.sockets/home.sock" \
@@ -8,7 +15,7 @@ serve_home_command='
   --poll-interval 0 \
   --user esperoj \
   -L .'
-serve_esperoj_storage_command='
+start_esperoj_storage_command='
   export RCLONE_AUTH_KEY="esperoj,${MY_UUID}"
   rclone serve s3 \
   --addr "unix://${HOME}/.sockets/esperoj-storage.sock" \
@@ -19,9 +26,6 @@ serve_esperoj_storage_command='
 start_esperoj_command='
   esperoj start
 '
-serve_filen_command='
-filen webdav --w-user esperoj --w-password $MY_UUID --webdav-port 20712 --w-port 20712 --w-threads 4
-'
 start_wireproxy_command='
   cd ~/data && wireproxy -c wireproxy.conf
 '
@@ -29,19 +33,16 @@ start_wireproxy_command='
 for service in "$@"; do
   case "${service}" in
   home)
-    screen -dmS home sh -lc "${serve_home_command}"
+    start home
     ;;
   caddy)
     caddy start
     ;;
   esperoj)
-    screen -dmS esperoj sh -lc "${start_esperoj_command}"
+    start esperoj
     ;;
   esperoj_storage)
-    screen -dmS esperoj_storage sh -lc "${serve_esperoj_storage_command}"
-    ;;
-  filen)
-    screen -dmS filen sh -lc "${serve_filen_command}"
+    start esperoj_storage
     ;;
   ssh_server)
     service ssh start
@@ -49,7 +50,7 @@ for service in "$@"; do
     ssh -f -N serveo-ssh-tunnel
     ;;
   wireproxy)
-    screen -dmS wireproxy sh -lc "${start_wireproxy_command}"
+    start wireproxy
     ;;
   esac
 done
