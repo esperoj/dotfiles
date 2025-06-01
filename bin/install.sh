@@ -103,6 +103,12 @@ install_internet_archive() {
   uv tool install internetarchive
 }
 
+install_jq() {
+  if [[ "$OS" == "freebsd" ]]; then
+    pkg-install.sh pkg jq jq
+  fi
+}
+
 install_kopia() {
   pkg-install.sh ghbin kopia/kopia "-linux-%arch:x86_64=x64:aarch64=arm64%.tar.gz$" kopia
 }
@@ -128,7 +134,14 @@ install_restic() {
 }
 
 install_shfmt() {
-  pkg-install.sh ghbin mvdan/sh "_linux_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
+  case $OS in
+  linux)
+    pkg-install.sh ghbin mvdan/sh "_${OS}_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
+    ;;
+  freebsd)
+    pkg-install.sh pkg shfmt shfmt
+    ;;
+  esac
 }
 
 install_uv() {
@@ -156,7 +169,7 @@ install_woodpecker_cli() {
 }
 
 cd "${HOME}"
-parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "exiftool" "internet_archive" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt_dlp" "wgcf" "wireproxy" "woodpecker_cli")
+parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "exiftool" "internet_archive" "jq" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt_dlp" "wgcf" "wireproxy" "woodpecker_cli")
 is_parallelable() {
   local name="$1"
   local package

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
-
 if [ "$(uname)" = "FreeBSD" ]; then
   tar() {
     gtar "$@"
@@ -79,6 +78,13 @@ dlx() {
     curl -SsfL "$url" | tar xfvz - --transform="flags=r;s|.*/||" --no-anchored -C "${dstdir}" --wildcards "$asset" &&
       chmod 755 "${dstdir}/${asset}" &&
       return 0
+    ;;
+  *.pkg)
+    curl -SsfL "$url" | tar xfz - --strip-components=2 -C "${dstdir}" "/usr/local" &&
+      chmod 755 "${dstdir}/bin/"*
+    cd "$HOME/.local/bin"
+    ln -s "${dstdir}/bin/"* .
+    return 0
     ;;
   *.gz)
     curl -SsfL "$url" | gunzip >"${dstdir}/${asset}" &&
@@ -166,6 +172,24 @@ bin() {
   dlx "$src" "$2"
 }
 
+pkg() {
+  local url
+  local name
+  local bin
+  local destdir
+
+  name="$1"
+  bin="$2"
+  destdir="${HOME}/.local/opt/${name}"
+  rm -rf "$destdir"
+  mkdir -p "$destdir"
+
+  url=$(command pkg search -Q url --glob "${1}-[0-9]*.*" |
+    grep "Pkg URL" |
+    cut -d '+' -f 2)
+  dlx "$url" "$bin" "$destdir"
+}
+
 [[ "$1" == ghbin ]] && {
   shift 1
   ghbin "$@"
@@ -187,6 +211,12 @@ bin() {
 [[ "$1" == bin ]] && {
   shift 1
   bin "$@"
+  exit "${force_exit_code:-$?}"
+}
+
+[[ "$1" == pkg ]] && {
+  shift 1
+  pkg "$@"
   exit "${force_exit_code:-$?}"
 }
 
