@@ -175,19 +175,19 @@ bin() {
 pkg() {
   local url
   local name
-  local bin
+  local pattern
   local destdir
 
   name="$1"
-  bin="$2"
+  pattern="$2"
   destdir="${HOME}/.local/opt/${name}"
   rm -rf "$destdir"
   mkdir -p "$destdir"
 
-  url=$(command pkg search -Q url --glob "${1}-[0-9]*.*" |
+  url=$(command pkg search -Q url --glob "${pattern}" |
     grep "Pkg URL" |
     cut -d '+' -f 2)
-  dlx "$url" "$bin" "$destdir"
+  dlx "$url" "$name" "$destdir"
 }
 
 [[ "$1" == ghbin ]] && {

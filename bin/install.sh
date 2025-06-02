@@ -88,11 +88,18 @@ install_esperoj() {
 }
 
 install_exiftool() {
-  curl -fsSL "https://exiftool.org/Image-ExifTool-13.25.tar.gz" | tar -C "${tempdir}" -xzf -
-  cd "${HOME}/.local/"
-  rm -rf {opt,bin}/exiftool
-  mv -f "$tempdir"/Image-ExifTool* opt/exiftool
-  ln -s "$(pwd)/opt/exiftool/exiftool" bin/
+  local url
+  local dstdir
+  dstdir="${HOME}/.local/opt/exiftool"
+  rm -rf "$dstdir"
+  cd "$tempdir"
+  url="https://github.com/exiftool/exiftool/archive/refs/heads/master.zip"
+  curl -SsfL -o pkg.zip "$url" || return
+  unzip pkg.zip || return
+  mv exiftool-master "$dstdir"
+  rm -f pkg.zip
+  cd "$HOME/.local/bin"
+  ln -s "${dstdir}/exiftool" .
 }
 
 install_gallery_dl() {
@@ -105,7 +112,7 @@ install_internet_archive() {
 
 install_jq() {
   if [[ "$OS" == "freebsd" ]]; then
-    pkg-install.sh pkg jq jq
+    pkg-install.sh pkg jq "jq-[0-9]*"
   fi
 }
 
@@ -119,6 +126,17 @@ install_mdbook() {
 
 install_oh_my_zsh() {
   curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash -s -- --RUNZSH=no --CHSH=yes
+}
+
+install_parallel() {
+  case $OS in
+  linux)
+    pkg-install.sh ghbin mvdan/sh "_${OS}_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
+    ;;
+  freebsd)
+    pkg-install.sh pkg parallel "parallel-[0-9]*"
+    ;;
+  esac
 }
 
 install_pipx() {
@@ -139,7 +157,7 @@ install_shfmt() {
     pkg-install.sh ghbin mvdan/sh "_${OS}_%arch:x86_64=amd64:aarch64=arm64%$" shfmt
     ;;
   freebsd)
-    pkg-install.sh pkg shfmt shfmt
+    pkg-install.sh pkg shfmt "shfmt-[0-9]*"
     ;;
   esac
 }
@@ -169,7 +187,7 @@ install_woodpecker_cli() {
 }
 
 cd "${HOME}"
-parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "exiftool" "internet_archive" "jq" "kopia" "mdbook" "oh_my_zsh" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt_dlp" "wgcf" "wireproxy" "woodpecker_cli")
+parallelable_installs=("7zip" "asdf" "bitwarden_cli" "caddy" "chezmoi" "dotfiles" "filen" "fzf" "esperoj" "exiftool" "internet_archive" "jq" "kopia" "mdbook" "oh_my_zsh" "parallel" "pipx" "rclone" "restic" "shfmt" "uv" "task" "yt_dlp" "wgcf" "wireproxy" "woodpecker_cli")
 is_parallelable() {
   local name="$1"
   local package
