@@ -4,7 +4,7 @@ from esperoj.database import get_database
 from esperoj.utils import get_util
 
 
-def download(category: str, dest: Path | None = None):
+def download(name: str, dest: Path | None = None):
     """Export the data and metadata of a database to JSON files.
 
     Args:
@@ -15,10 +15,10 @@ def download(category: str, dest: Path | None = None):
         None
     """
     if not dest:
-        dest = Path(category)
+        dest = Path.cwd()
     db = get_database("primary")
     files = db.get_table("files")
-    records = list(filter(lambda r: len(getattr(r, category)) > 0, files.query()))
+    records = list(filter(lambda r: r.name == name, files.query()))
     download_info_list = [
         {
             **dict(record),
@@ -53,18 +53,18 @@ def get_click_command():
     import click
 
     @click.command()
-    @click.argument("category", type=str, required=True)
+    @click.argument("name", type=str, required=True)
     @click.argument(
         "dest",
         type=click.Path(exists=False, dir_okay=True, path_type=Path),
         required=False,
     )
-    def click_command(category, dest):
+    def click_command(name, dest):
         """Execute the download function with the esperoj object and database name.
 
         Args:
             esperoj (object): An object passed from the parent function.
         """
-        download(category, dest)
+        download(name, dest)
 
     return click_command

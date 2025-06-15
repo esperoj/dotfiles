@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 def ingest_comic(identifier):
     item = get_item(identifier)
     metadata = item.item_metadata["metadata"]
-    logger.info(f"Ingesting {metadata["title"]}")
+    logger.info(f"Ingesting {metadata['title']}")
     if metadata.get("contributor"):
         metadata["contributor"] = metadata["contributor"].split("; ")
     if type(metadata.get("subject")) is str:

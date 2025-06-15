@@ -80,7 +80,7 @@ def save_page(url: str, capture_outlinks: int = 0) -> str:
             case "pending":
                 time.sleep(5)
             case "success":
-                return f'https://web.archive.org/web/{status["timestamp"]}/{status["original_url"]}'
+                return f"https://web.archive.org/web/{status['timestamp']}/{status['original_url']}"
             case _:
                 raise RuntimeError(f"Error: {response.text}")
 

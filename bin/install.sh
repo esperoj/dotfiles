@@ -90,7 +90,7 @@ install_esperoj() {
 install_exiftool() {
   local url
   local dstdir
-  dstdir="${HOME}/.local/opt/exiftool"
+  dstdir="${HOME}/.local/share/exiftool"
   rm -rf "$dstdir"
   cd "$tempdir"
   url="https://github.com/exiftool/exiftool/archive/refs/heads/master.zip"
