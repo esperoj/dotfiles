@@ -1,6 +1,6 @@
 from internetarchive import get_item
 from esperoj.database import get_database
-from esperoj.logging import get_logger
+from esperoj.log import get_logger
 
 logger = get_logger(__name__)
 

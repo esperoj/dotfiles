@@ -2,7 +2,7 @@ from esperoj.utils import get_util
 from esperoj.database import get_database
 
 from esperoj.exceptions import VerificationError
-from esperoj.logging import get_logger
+from esperoj.log import get_logger
 
 logger = get_logger(__name__)
 

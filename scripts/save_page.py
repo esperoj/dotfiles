@@ -3,7 +3,7 @@ import time
 
 import requests
 from requests.adapters import HTTPAdapter, Retry
-from esperoj.logging import get_logger
+from esperoj.log import get_logger
 
 logger = get_logger(__name__)
 

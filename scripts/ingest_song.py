@@ -1,4 +1,4 @@
-from esperoj.logging import get_logger
+from esperoj.log import get_logger
 from esperoj.utils import get_util
 from pathlib import Path
 from esperoj.database import get_database

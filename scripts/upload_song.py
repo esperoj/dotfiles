@@ -1,9 +1,8 @@
-from esperoj.logging import get_logger
+from esperoj.log import get_logger
 from esperoj.utils import get_util
 from pathlib import Path
 from esperoj.database import get_database
-from esperoj.database.models import Song
-from internetarchive import get_item
+from internetarchive import upload
 
 logger = get_logger(__name__)
 ingest_file = get_util("ingest_file")
@@ -23,12 +22,13 @@ def ingest_song(path):
         "subject": song.subjects,
         "language": song.language,
         "album": song.album,
-        "composer": song.composer,
+        "composer": song.composers,
         "title": song.title,
-        "creator": song.artist,
+        "creator": song.artists,
+        "www": song.www,
     }
-    item = get_item(song.identifier)
-    res = item.upload(
+    upload(
+        song.identifier,
         files=[str(path)],
         metadata=metadata,
         verbose=True,
@@ -38,8 +38,9 @@ def ingest_song(path):
         retries_sleep=6,
         validate_identifier=True,
     )[0]
-    res.raise_for_status()
+    breakpoint()
     logger.info("Uploaded song '%s'", song.title)
+    print(f"https://archive.org/details/{song.identifier}")
 
 
 def get_esperoj_method():
