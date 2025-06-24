@@ -3,8 +3,9 @@
 .SHELLFLAGS     := -eu -o pipefail -c
 MAKEFLAGS       += --warn-undefined-variables
 MAKEFLAGS       += --no-builtin-rules
-
+SHELL           := bash
 export
+
 DEBIAN_FRONTEND := noninteractive
 LOCAL_BIN       := $(HOME)/.local/bin
 PATH            := $(LOCAL_BIN):$(HOME)/bin:$(PATH)
@@ -14,6 +15,7 @@ SETUP_NAME      ?= docker_base
 docker_base: $(HOME)/ports/
 	$(MAKE) -j1 dotfiles docker_base_ports
 docker_base_ports:
+	$(MAKE) -j -C "${HOME}/ports" jq
 	$(MAKE) -j -C "${HOME}/ports" 7zip caddy pipx rclone esperoj
 .PHONY: docker_base docker_base_ports
 

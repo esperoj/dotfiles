@@ -190,6 +190,28 @@ pkg() {
   dlx "$url" "$name" "$destdir"
 }
 
+deb() {
+  local name
+  local package
+  local destdir
+  name="$1"
+  package="$2"
+  destdir="${HOME}/.local/opt/${name}"
+  rm -rf "$destdir"
+  mkdir -p "$destdir"
+  tempdir="$(mktemp -d)"
+  cleanup() {
+    rm -rf "${tempdir}"
+  }
+  trap cleanup EXIT
+
+  (
+    cd $tempdir
+    apt download "$package"
+    dpkg-deb -x *.deb "$destdir"
+  )
+}
+
 [[ "$1" == ghbin ]] && {
   shift 1
   ghbin "$@"
@@ -217,6 +239,12 @@ pkg() {
 [[ "$1" == pkg ]] && {
   shift 1
   pkg "$@"
+  exit "${force_exit_code:-$?}"
+}
+
+[[ "$1" == deb ]] && {
+  shift 1
+  deb "$@"
   exit "${force_exit_code:-$?}"
 }
 
