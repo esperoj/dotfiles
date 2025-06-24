@@ -15,7 +15,8 @@ SETUP_NAME      ?= docker_base
 docker_base: $(HOME)/ports/
 	$(MAKE) -j1 dotfiles docker_base_ports
 docker_base_ports:
-	$(MAKE) -j -C "${HOME}/ports" jq
+	apt-get install -qqy --no-install-recommends \
+	    jq
 	$(MAKE) -j -C "${HOME}/ports" 7zip caddy pipx rclone esperoj
 .PHONY: docker_base docker_base_ports
 

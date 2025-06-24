@@ -5,7 +5,8 @@ FROM ${BASE_IMAGE}
 ENV MACHINE_TYPE="container"
 WORKDIR /root
 COPY ./Makefile .
-RUN export SETUP_NAME; \
+RUN apt-get update -yqq; \
+    export SETUP_NAME; \
     make -j "${SETUP_NAME}"; \
     make -j clean;
 ENTRYPOINT ["/bin/bash"]
