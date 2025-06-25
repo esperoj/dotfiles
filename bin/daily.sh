@@ -4,10 +4,6 @@ curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/s
 set -Eeuo pipefail
 cd "${HOME}"
 
-parallel --keep-order -vj0 {} ::: \
-  "install.sh filen && start.sh filen" \
-  "uv tool upgrade --all"
-
 start.sh esperoj_storage caddy
 sleep 3
 parallel --keep-order -vj0 {} ::: \

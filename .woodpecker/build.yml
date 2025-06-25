@@ -10,6 +10,7 @@ variables:
       auto_tag: true
       tags:
         - base
+        - base-${CI_COMMIT_SHA}
       registry: codeberg.org
       platforms: linux/amd64
       username: esperoj
@@ -32,6 +33,7 @@ steps:
       <<: *base_docker_settings
       tags:
         - main
+        - main-${CI_COMMIT_SHA}
       build_args:
         - BASE_IMAGE=codeberg.org/esperoj/dotfiles:base
         - SETUP_NAME=docker_main
@@ -43,6 +45,7 @@ steps:
       <<: *base_docker_settings
       tags:
         - dev
+        - dev-${CI_COMMIT_SHA}
         - latest
       build_args:
         - BASE_IMAGE=codeberg.org/esperoj/dotfiles:main

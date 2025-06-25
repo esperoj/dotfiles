@@ -53,7 +53,9 @@ jobs:
           images: |
             esperoj/dotfiles
             ghcr.io/${{ github.repository }}
-          tags: base
+          tags: |
+            base
+            base-${{ github.sha }}
 
       - name: Build and push base Docker image
         uses: docker/build-push-action@master
@@ -71,7 +73,9 @@ jobs:
           images: |
             esperoj/dotfiles
             ghcr.io/${{ github.repository }}
-          tags: main
+          tags: |
+            main
+            main-${{ github.sha }}
 
       - name: Build and push main Docker image (depends on base)
         uses: docker/build-push-action@master
@@ -92,7 +96,9 @@ jobs:
           images: |
             esperoj/dotfiles
             ghcr.io/${{ github.repository }}
-          tags: dev
+          tags: |
+            dev
+            dev-${{ github.sha }}
 
       - name: Build and push dev Docker image (depends on main)
         uses: docker/build-push-action@master
