@@ -1,9 +1,8 @@
 ARG BASE_IMAGE=docker.io/pypy:3.11
-ARG SETUP_NAME=docker_base
 
 FROM ${BASE_IMAGE}
 ENV MACHINE_TYPE="container"
-ENV SETUP_NAME=${SETUP_NAME}
+ARG SETUP_NAME=docker_base
 WORKDIR /root
 COPY ./Makefile .
 RUN set -eux; \
