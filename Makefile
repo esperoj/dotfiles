@@ -16,7 +16,8 @@ docker_base: $(HOME)/ports/
 	$(MAKE) -j1 dotfiles docker_base_ports
 docker_base_ports:
 	apt-get install -qqy --no-install-recommends \
-	    jq
+	    jq \
+	    tmux
 	$(MAKE) -j -C "${HOME}/ports" 7zip caddy pipx rclone esperoj
 .PHONY: docker_base docker_base_ports
 
@@ -34,7 +35,6 @@ docker_dev_pkgs:
 	apt-get install -qqy --no-install-recommends \
 	    nodejs \
 	    npm \
-	    tmux \
 	    vim \
 	    zsh
 	$(MAKE) -C "${HOME}/ports" oh_my_zsh
