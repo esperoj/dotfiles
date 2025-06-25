@@ -17,11 +17,11 @@ daily: hc-start info daily-backup daily-verify
 .PHONY: daily
 
 info: start-services wait
-	# time info.sh
+	time info.sh
 .PHONY: info
 
 daily-verify: start-services wait
-	# time esperoj daily_verify
+	time esperoj daily_verify
 .PHONY: daily-verify
 
 hc-start:

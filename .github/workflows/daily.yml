@@ -36,7 +36,7 @@ jobs:
           ~/bin/run-command.sh -h "local" -c "
             chezmoi update --no-tty --force
             . ./.profile
-            daily.sh
+            make -f ~/recipes/daily.mk -j
           "
 
       - name: Send notification
