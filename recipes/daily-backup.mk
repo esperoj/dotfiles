@@ -26,7 +26,7 @@ upload-backup: backup-bitwarden backup-database backup-linkwarden backup-repos
 .PHONY: upload-backup
 
 backup-journal: backup-database
-	JOURNAL_FILE = "$${BACKUP_FOLDER}/databases/journal.json"
+	JOURNAL_FILE="$${BACKUP_FOLDER}/databases/journal.json"
 	[[ -f $$JOURNAL_FILE && $$(stat -c%s $$JOURNAL_FILE) -gt 100000 ]] && rclone copy -v "$$JOURNAL_FILE" ia:xiaoqishi_riji --header-upload "x-archive-keep-old-version:32" --internetarchive-front-endpoint="https://archive.org"
 .PHONY: backup-journal
 
