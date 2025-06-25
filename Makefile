@@ -18,7 +18,7 @@ docker_base_ports:
 	apt-get install -qqy --no-install-recommends \
 	    aria2 \
 	    jq \
-	    python3.11-venv \
+	    python3-venv \
 	    time \
 	    tmux
 	$(MAKE) -j -C "${HOME}/ports" 7zip caddy esperoj parallel pipx rclone
