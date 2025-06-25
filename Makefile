@@ -19,7 +19,7 @@ docker_base_ports:
 	    jq \
 	    time \
 	    tmux
-	$(MAKE) -j -C "${HOME}/ports" 7zip caddy pipx rclone esperoj
+	$(MAKE) -j -C "${HOME}/ports" 7zip caddy esperoj parallel pipx rclone
 .PHONY: docker_base docker_base_ports
 
 docker_main: docker_main_pkgs docker_main_ports
