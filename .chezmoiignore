@@ -11,5 +11,6 @@ scripts/
 .gitlab-ci.yml
 Dockerfile
 LICENSE
+Makefile
 README.md
 Taskfile.yml
