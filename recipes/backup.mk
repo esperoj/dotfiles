@@ -1,18 +1,14 @@
 RCLONE_VERBOSE := 1
 RCLONE_FLAGS   := --exclude="{tmp/**,.*,.*/**}"
-BACKUP_FOLDER  ?= $(PWD)/daily-backup
+BACKUP_FOLDER  ?= $(PWD)/backup
+BACKUP_LIST    ?= backup-bitwarden backup-database backup-linkwarden backup-repos
 
-daily-backup: sync-backup backup-journal
-.PHONY: daily-backup
-
-$(BACKUP_FOLDER): upload-backup
-
-sync-backup: $(BACKUP_FOLDER)
+sync-backup: $(BACKUP_LIST)
 	# TODO: rclone sync "backup-0:" "backup-1:"
 	rclone sync "backup-0:" "koofr:backup"
 .PHONY: sync-backup
 
-upload-backup: backup-bitwarden backup-database backup-linkwarden backup-repos
+upload-backup: $(BACKUP_LIST)
 	export TEMP_DIR="$$(mktemp -d)"
 	cd "$$TEMP_DIR"
 
@@ -30,14 +26,14 @@ backup-journal: backup-database
 	[[ -f $$JOURNAL_FILE && $$(stat -c%s $$JOURNAL_FILE) -gt 100000 ]] && rclone copy -v "$$JOURNAL_FILE" ia:xiaoqishi_riji --header-upload "x-archive-keep-old-version:32" --internetarchive-front-endpoint="https://archive.org"
 .PHONY: backup-journal
 
-daily-backup-init: start-services wait
+backup-init:
 	mkdir -p "$${BACKUP_FOLDER}"
-.PHONY: daily-backup-init
+.PHONY: backup-init
 
 backup-bitwarden: $(BACKUP_FOLDER)/bitwarden.json.7z
 .PHONY: backup-bitwarden
 
-$(BACKUP_FOLDER)/bitwarden.json.7z: daily-backup-init
+$(BACKUP_FOLDER)/bitwarden.json.7z: backup-init
 	cd "$${BACKUP_FOLDER}"
 	$(MAKE) -C ~/ports bitwarden_cli
 	bw config server "$${BW_SERVER}"
@@ -51,7 +47,7 @@ $(BACKUP_FOLDER)/bitwarden.json.7z: daily-backup-init
 backup-database: $(BACKUP_FOLDER)/databases/
 .PHONY: backup-database
 
-$(BACKUP_FOLDER)/databases/: daily-backup-init
+$(BACKUP_FOLDER)/databases/: backup-init
 	mkdir "$${BACKUP_FOLDER}/databases"
 	cd "$${BACKUP_FOLDER}/databases"
 	esperoj export_database primary
@@ -60,7 +56,7 @@ $(BACKUP_FOLDER)/databases/: daily-backup-init
 backup-linkwarden: $(BACKUP_FOLDER)/linkwarden.json
 .PHONY: backup-linkwarden
 
-$(BACKUP_FOLDER)/linkwarden.json: daily-backup-init
+$(BACKUP_FOLDER)/linkwarden.json: backup-init
 	curl -fsSm 10 --retry 5 -H "Authorization: Bearer $${LINKWARDEN_ACCESS_TOKEN}" \
 	"https://links.adminforge.de/api/v1/migration">"$${BACKUP_FOLDER}/linkwarden.json"
 	rclone copy "$${BACKUP_FOLDER}/linkwarden.json" backup-0:
@@ -68,7 +64,7 @@ $(BACKUP_FOLDER)/linkwarden.json: daily-backup-init
 backup-repos: $(BACKUP_FOLDER)/repos/
 .PHONY: backup-repos
 
-$(BACKUP_FOLDER)/repos/: daily-backup-init
+$(BACKUP_FOLDER)/repos/: backup-init
 	mkdir "$${BACKUP_FOLDER}/repos"
 	cd "$${BACKUP_FOLDER}/repos"
 	parallel --keep-order -vj0 wget -qO {}.zip https://github.com/esperoj/{}/archive/refs/heads/main.zip ::: archive dotfiles esperoj notebook ports

@@ -9,14 +9,20 @@ export
 
 .DEFAULT_GOAL   := daily
 ROOT_DIR        != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
+BACKUP_LIST     ?= backup-database backup-linkwarden backup-repos
 
-include $(ROOT_DIR)/daily-backup.mk
+include $(ROOT_DIR)/backup.mk
+
 
 daily: hc-start info daily-backup daily-verify
 	$(MAKE) -f $(ROOT_DIR)/daily.mk stop-services hc-stop
 .PHONY: daily
 
-info: start-services wait
+daily-backup: sync-backup backup-journal upload-backup
+	rm -r "$${BACKUP_FOLDER}"
+.PHONY: daily-backup
+
+info:
 	time info.sh
 .PHONY: info
 

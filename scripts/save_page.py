@@ -37,7 +37,7 @@ def save_page(url: str, capture_outlinks: int = 0) -> str:
         "force_get": 0,
         "skip_first_archive": 1,
         "outlinks_availability": 0,
-        "email_result": 1,
+        "email_result": 0,
         "js_behavior_timeout": 30,
     }
 
