@@ -1,13 +1,13 @@
 RCLONE_VERBOSE := 1
 RCLONE_FLAGS   := --exclude="{tmp/**,.*,.*/**}"
-BACKUP_FOLDER  ?= daily-backup
+BACKUP_FOLDER  ?= $(PWD)/daily-backup/
 
-daily-backup: $(BACKUP_FOLDER)
+daily-backup: sync-backup backup-journal
 .PHONY: daily-backup
 
-$(BACKUP_FOLDER): sync-backup upload-backup backup-journal
+$(BACKUP_FOLDER): upload-backup
 
-sync-backup: backup-bitwarden backup-database backup-linkwarden backup-repos
+sync-backup: $(BACKUP_FOLDER)
 	# TODO: rclone sync "backup-0:" "backup-1:"
 	rclone sync "backup-0:" "koofr:backup"
 .PHONY: sync-backup
