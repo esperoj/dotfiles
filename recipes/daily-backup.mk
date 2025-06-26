@@ -1,6 +1,6 @@
 RCLONE_VERBOSE := 1
 RCLONE_FLAGS   := --exclude="{tmp/**,.*,.*/**}"
-BACKUP_FOLDER  ?= $(PWD)/daily-backup/
+BACKUP_FOLDER  ?= $(PWD)/daily-backup
 
 daily-backup: sync-backup backup-journal
 .PHONY: daily-backup
