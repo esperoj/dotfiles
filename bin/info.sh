@@ -7,9 +7,6 @@ parallel --keep-order -vj0 {} <<-EOL
 	chezmoi status
 	curl -sS https://ipwho.de
 	df -hT
-	free -h
-	lsblk
-	lscpu
 	pwd
 	python3 --version
 	rclone listremotes

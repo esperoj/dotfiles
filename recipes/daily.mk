@@ -11,11 +11,11 @@ export
 ROOT_DIR        != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
 BACKUP_LIST     ?= backup-database backup-linkwarden backup-repos
 
-include $(ROOT_DIR/utils.mk) $(ROOT_DIR)/backup.mk
+include $(ROOT_DIR)/utils.mk $(ROOT_DIR)/backup.mk
 
 
 daily: hc-start info daily-backup daily-verify
-	$(MAKE) -f $(ROOT_DIR)/daily.mk stop-services hc-stop
+	$(MAKE) -f $(ROOT_DIR)/daily.mk stop-services
 .PHONY: daily
 
 daily-backup: sync-backup backup-journal upload-backup
@@ -34,8 +34,9 @@ hc-start:
 	curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/$${PING_UUID}/daily/start"
 .PHONY: hc-start
 
+hc-stop: EXIT_CODE ?= 0
 hc-stop:
-	curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/0"
+	curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/${EXIT_CODE}"
 .PHONY: hc-stop
 
 start-services:
