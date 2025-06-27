@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=docker.io/pypy:3.11
+ARG BASE_IMAGE=docker.io/buildpack-deps:stable
 
 FROM ${BASE_IMAGE}
 ENV MACHINE_TYPE="container"

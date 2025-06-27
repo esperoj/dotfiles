@@ -11,7 +11,7 @@ export
 ROOT_DIR        != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
 BACKUP_LIST     ?= backup-database backup-linkwarden backup-repos
 
-include $(ROOT_DIR)/backup.mk
+include $(ROOT_DIR/utils.mk) $(ROOT_DIR)/backup.mk
 
 
 daily: hc-start info daily-backup daily-verify
