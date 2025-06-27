@@ -19,7 +19,6 @@ daily: hc-start info daily-backup daily-verify
 .PHONY: daily
 
 daily-backup: sync-backup backup-journal upload-backup
-	rm -r "$${BACKUP_FOLDER}"
 .PHONY: daily-backup
 
 info:
