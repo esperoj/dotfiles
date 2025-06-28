@@ -4,9 +4,16 @@ BACKUP_FOLDER  ?= $(HOME)/backup
 BACKUP_LIST    ?= backup-bitwarden backup-database backup-linkwarden backup-repos
 
 sync-backup: $(BACKUP_LIST)
-	# TODO: parallel -vj0 --keep-order rclone sync "$$BACKUP_FOLDER" ::: "backup-0:" "backup-1:"
-	parallel -vj0 --keep-order rclone sync "$$BACKUP_FOLDER" ::: "backup-0:" "koofr:backup"
+	parallel -vj0 --keep-order rclone sync "$$BACKUP_FOLDER" ::: "backup-0:" "backup-1:"
 .PHONY: sync-backup
+
+sync-workspace:
+	rclone sync workspace-0: workspace-1:
+.PHONY: sync-workspace
+
+sync-archive:
+	rclone sync archive-0: archive-1:
+.PHONY: sync-archive
 
 upload-backup: $(BACKUP_LIST)
 	$(MAKE_TEMP_DIR)

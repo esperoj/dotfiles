@@ -10,11 +10,13 @@ export
 .DEFAULT_GOAL   := daily
 ROOT_DIR        != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
 BACKUP_LIST     ?= backup-database backup-linkwarden backup-repos
+DATE            != date -I
+LOG_FILE        ?= $(HOME)/log/daily-cron/$(DATE).log
 
 include $(ROOT_DIR)/utils.mk $(ROOT_DIR)/backup.mk
 
 
-daily: hc-start info daily-backup daily-verify
+daily: hc-start info daily-backup daily-verify sync-archive sync-workspace
 	$(MAKE) -f $(ROOT_DIR)/daily.mk stop-services
 .PHONY: daily
 
@@ -33,9 +35,9 @@ hc-start:
 	curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/$${PING_UUID}/daily/start"
 .PHONY: hc-start
 
-hc-stop: EXIT_CODE ?= 0
+hc-stop: export EXIT_CODE ?= 0
 hc-stop:
-	curl -fsS -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/${EXIT_CODE}"
+	curl -fsS --data-binary @"$${LOG_FILE}" -m 10 --retry 5 -o /dev/null "https://hc-ping.com/${PING_UUID}/daily/${EXIT_CODE}"
 .PHONY: hc-stop
 
 start-services:
