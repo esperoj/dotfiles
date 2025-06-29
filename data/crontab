@@ -1,0 +1,4 @@
+CRON_TZ=UTC
+SHELL=/bin/bash
+
+15 22 * * * "${HOME}/bin/daily.sh"
