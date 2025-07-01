@@ -17,7 +17,6 @@ include $(ROOT_DIR)/utils.mk $(ROOT_DIR)/backup.mk
 
 
 daily: hc-start info daily-backup daily-verify sync-archive sync-workspace
-	$(MAKE) -f $(ROOT_DIR)/daily.mk stop-services
 .PHONY: daily
 
 daily-backup: sync-backup backup-journal upload-backup

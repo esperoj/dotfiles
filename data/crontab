@@ -1,4 +1,5 @@
 CRON_TZ=UTC
+MAILTO="esperoj@esperoj.eu.org"
 SHELL=/bin/bash
 
 15 22 * * * "${HOME}/bin/daily.sh"

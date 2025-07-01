@@ -15,7 +15,7 @@ parallel --keep-order -vj0 {} <<-EOL
 	ssh hashbang "uptime"
 	ssh serv00 "uptime"
 	ssh tteam "uptime"
-	ssh ttown "uptime"
+	# ssh ttown "uptime"
 	ssh vern "uptime"
 	ssh projectsegfault "uptime"
 	uptime
