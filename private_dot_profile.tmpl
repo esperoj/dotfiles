@@ -13,23 +13,19 @@ else
   export LD_LIBRARY_PATH="$HOME/.local/lib"
 fi
 
-if [ "$(hostname)" = "core.envs.net" ] || [ "$(hostname)" = "de1" ]; then
-    export TMPDIR="/dev/shm/esperoj"
+if [ "${MACHINE_TYPE}" = "pubnix" ]; then
+  if [ "$(hostname)" = "core.envs.net" ] || [ "$(hostname)" = "de1" ]; then
+      export TMPDIR="/dev/shm/esperoj"
+  else
+      export TMPDIR="/tmp/esperoj"
+  fi
+  if [ ! -d "${TMPDIR}" ]; then
+      mkdir -p "${TMPDIR}"/{.cache,.cargo,.npm,tmp}
+      chmod 700 "${TMPDIR}"
+      rm -rf "${HOME}"/{.cache,.npm,tmp,.cargo}
+      ln -vs "${TMPDIR}"/{.cache,.cargo,.npm,tmp} "${HOME}"
+  fi
 fi
-if [ "$(hostname)" = "bsd.tilde.team" ] || [ "$(hostname)" = "tilde" ]; then
-    export TMPDIR="/tmp/esperoj"
-fi
-(
-    cd ~
-    if [ "${MACHINE_TYPE}" = "pubnix" ]; then
-        if [ ! -d "${TMPDIR}" ]; then
-            mkdir -p "${TMPDIR}"/{.cache,.npm,tmp}
-            chmod 700 "${TMPDIR}"
-            rm -rf .cache .npm tmp
-            ln -s "${TMPDIR}"/{.cache,.npm,tmp} .
-        fi
-    fi
-)
 
 # Don't run code below if shell is non-interactive
 case $- in
