@@ -13,3 +13,12 @@ starttransfer:  %{time_starttransfer}s\n\
 -------------------------\n\
         total:  %{time_total}s\n" -so /dev/null "$@" -so /dev/null "$@"
 }
+
+run-with-proxy() {
+(
+  export http_proxy=http://localhost:25345
+  export https_proxy=http://localhost:25345
+
+  $@
+)
+}

@@ -1,5 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+
 echo "Running ${HOME}/.profile"
+. ~/.bash_aliases
 
 export MACHINE_TYPE={{ .machineType | quote }}
 set -a && . "${HOME}/.env" && set +a
