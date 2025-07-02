@@ -2,7 +2,7 @@ compression-info() {
 	7z l -slt "$0"
 }
 
-curltime() {
+export -f curltime() {
 	curl -w "\
    namelookup:  %{time_namelookup}s\n\
       connect:  %{time_connect}s\n\
@@ -21,4 +21,15 @@ run-with-proxy() {
 
   $@
 )
+}
+
+export -f make-temp-dir() {
+	TEMP_DIR="$$(mktemp -d)"
+
+	cleanup_temp_dir() {
+	  rm -rf "$${TEMP_DIR}"
+	}
+
+	trap cleanup_temp_dir EXIT
+	cd "$${TEMP_DIR}"
 }
