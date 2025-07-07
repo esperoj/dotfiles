@@ -26,7 +26,7 @@ def ingest_song(path):
         "title": song.title,
         "creator": song.artists,
         "www": song.www,
-        "date": song.date
+        "date": song.date,
     }
     upload(
         song.identifier,

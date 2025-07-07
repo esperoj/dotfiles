@@ -16,3 +16,10 @@ source "${HOME}/.oh-my-zsh/oh-my-zsh.sh"
 # [[ -e /etc/shellrc ]] && source /etc/shellrc && unalias vi vim
 
 . "${HOME}/.profile"
+
+# bun completions
+[ -s "/home/esperoj/.bun/_bun" ] && source "/home/esperoj/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
