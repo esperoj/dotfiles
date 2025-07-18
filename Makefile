@@ -72,7 +72,7 @@ $(HOME)/ports/:
 	git clone --depth=1 https://codeberg.org/esperoj/ports.git
 	(
 	  cd ports
-	  git remote set-url origin git@codeberg.org/esperoj/ports.git
+		git remote set-url origin ssh://git@codeberg.org/esperoj/ports.git
 	)
 
 clean:
