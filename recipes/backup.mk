@@ -21,11 +21,6 @@ upload-backup: $(BACKUP_LIST)
 	rclone copy backup.7z public:
 .PHONY: upload-backup
 
-backup-journal: backup-database
-	JOURNAL_FILE="$${BACKUP_FOLDER}/databases/journal.json"
-	rclone copy "$${JOURNAL_FILE}" ia:xiaoqishi_riji --header-upload "x-archive-keep-old-version:32" --internetarchive-front-endpoint="https://archive.org"
-.PHONY: backup-journal
-
 backup-init:
 	rclone sync backup-0: "$${BACKUP_FOLDER}"
 .PHONY: backup-init

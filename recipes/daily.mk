@@ -19,7 +19,7 @@ include $(ROOT_DIR)/utils.mk $(ROOT_DIR)/backup.mk
 daily: hc-start info daily-backup daily-verify sync-archive sync-workspace
 .PHONY: daily
 
-daily-backup: sync-backup backup-journal upload-backup
+daily-backup: sync-backup upload-backup
 .PHONY: daily-backup
 
 info:
