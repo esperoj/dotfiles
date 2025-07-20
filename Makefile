@@ -70,10 +70,8 @@ termux:
 $(HOME)/ports/:
 	cd "${HOME}"
 	git clone --depth=1 https://codeberg.org/esperoj/ports.git
-	(
-	  cd ports
-		git remote set-url origin ssh://git@codeberg.org/esperoj/ports.git
-	)
+	cd ports
+	git remote set-url origin ssh://git@codeberg.org/esperoj/ports.git
 
 clean:
 	@case "$${SETUP_NAME}" in
