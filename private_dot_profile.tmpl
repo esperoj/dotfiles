@@ -36,12 +36,3 @@ if [ `hostname` = bsd.tilde.team ]; then
   export PYTHONPATH=${PYTHONPATH}:`echo -n ${HOME}/.local/lib/python3.*/site-packages`
 fi
 
-# Don't run code below if shell is non-interactive
-case $- in
-  *i*)
-    if [ -z "$TMUX" ]; then
-      tmux attach -t work 2>/dev/null || tmux new-session -s work
-      exit
-    fi
-  ;;
-esac
