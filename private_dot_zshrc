@@ -8,16 +8,11 @@ CASE_SENSITIVE="true"
 zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 13
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-plugins=(fzf git npm)
+plugins=(fzf git)
 source "${HOME}/.oh-my-zsh/oh-my-zsh.sh"
 
 # Aliases
 
-# [[ -e /etc/shellrc ]] && source /etc/shellrc && unalias vi vim
+[[ -e /etc/shellrc ]] && source /etc/shellrc && unalias vi vim
 
 . "${HOME}/.profile"
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
