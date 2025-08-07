@@ -16,7 +16,7 @@ LOG_FILE        ?= $(HOME)/log/daily-cron/$(DATE).log
 include $(ROOT_DIR)/utils.mk $(ROOT_DIR)/backup.mk
 
 
-daily: hc-start info daily-backup daily-verify sync-archive sync-workspace
+daily: hc-start info daily-backup daily-verify sync-archive sync-kopia sync-workspace
 .PHONY: daily
 
 daily-backup: sync-backup upload-backup

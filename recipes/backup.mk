@@ -57,3 +57,6 @@ backup-repos: backup-init
 	rm -r "$${BACKUP_FOLDER}"/repos
 	cp -r . "$${BACKUP_FOLDER}"/repos
 .PHONY: backup-repos
+
+sync-kopia:
+	rclone sync e2-sg:kopia pcloud-0:esperoj/kopia
