@@ -20,15 +20,17 @@ fi
 
 if [ "${MACHINE_TYPE}" = "pubnix" ]; then
   if [ "$(hostname)" = "core.envs.net" ] || [ "$(hostname)" = "de1" ]; then
-      export TMPDIR="/dev/shm/esperoj"
+      export TMPDIR="/run/user/$(id --user)/tmp"
   else
-      export TMPDIR="/tmp/esperoj"
+      export TMPDIR="/tmp/$(whoami)"
   fi
   if [ ! -d "${TMPDIR}" ]; then
-      mkdir -p "${TMPDIR}"/{.cache,.cargo,.npm,tmp}
+      for dir in .cache .cargo .npm tmp; do
+          mkdir -p "${TMPDIR}/$dir"
+          rm -rf "${HOME}/$dir"
+          ln -s "${TMPDIR}/$dir" "${HOME}/$dir"
+      done
       chmod 700 "${TMPDIR}"
-      rm -rf "${HOME}"/{.cache,.npm,tmp,.cargo}
-      ln -vs "${TMPDIR}"/{.cache,.cargo,.npm,tmp} "${HOME}"
   fi
 fi
 

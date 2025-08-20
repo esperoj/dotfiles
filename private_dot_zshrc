@@ -11,8 +11,4 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(fzf git)
 source "${HOME}/.oh-my-zsh/oh-my-zsh.sh"
 
-# Aliases
-
-[[ -e /etc/shellrc ]] && source /etc/shellrc && unalias vi vim
-
-. "${HOME}/.profile"
+source "${HOME}/.profile"
