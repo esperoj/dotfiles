@@ -19,7 +19,7 @@ else
 fi
 
 if [ "${MACHINE_TYPE}" = "pubnix" ]; then
-  if [ "$(hostname)" = "core.envs.net" ] || [ "$(hostname)" = "de1" ]; then
+  if [ "$(hostname)" = "core.envs.net" ] || [ "$(hostname)" = "de1" ] || [ "$(hostname)" = "verntil" ] ; then
       export TMPDIR="/run/user/$(id --user)/tmp"
   else
       export TMPDIR="/tmp/$(whoami)"
