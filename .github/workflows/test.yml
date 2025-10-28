@@ -1,0 +1,10 @@
+name: Test
+
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: shipfox-2vcpu-ubuntu-2404-arm
+    steps:
+      - name: test
+        run: curl -sL https://yabs.sh | bash
