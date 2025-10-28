@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    runs-on: shipfox-2vcpu-ubuntu-2404-arm
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: test
         run: curl -sL https://yabs.sh | bash
